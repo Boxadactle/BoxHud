@@ -1,6 +1,7 @@
 plugins {
     id 'multiloader-loader'
     id 'fabric-loom'
+    id "me.shedaniel.unified-publishing"
 }
 dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
@@ -60,6 +61,42 @@ tasks.named('processResources') {
             jsonFile.text = JsonOutput.prettyPrint(JsonOutput.toJson(data))
         } else {
             println "mixin config not found at ${jsonFile}"
+        }
+    }
+}
+
+unifiedPublishing {
+    project {
+        displayName = "[Fabric ${rootProject.minecraft_version}] v$rootProject.version"
+        version = "$rootProject.version-fabric"
+        changelog = "A changelog can be found here: https://github.com/Boxadactle/BoxHud/releases/tag/$rootProject.version"
+        releaseType = rootProject.release_type
+        gameVersions = Arrays.asList(rootProject.game_versions.split(","))
+        gameLoaders = [ "fabric", "quilt" ]
+        relations {
+            it.depends {
+                it.curseforge = "boxlib"
+                it.modrinth = "boxlib"
+            }
+        }
+
+        mainPublication tasks.remapJar
+
+        var cfToken = System.getenv("CURSEFORGE_TOKEN")
+        if (cfToken != null) {
+            curseforge {
+                token = cfToken
+                id = rootProject.project_id_curseforge
+            }
+        }
+
+        var modrinthToken = System.getenv("MODRINTH_TOKEN")
+        if (modrinthToken != null) {
+            modrinth {
+                token = modrinthToken
+                id = rootProject.project_id_modrinth
+                version = "${rootProject.version}-fabric"
+            }
         }
     }
 }
