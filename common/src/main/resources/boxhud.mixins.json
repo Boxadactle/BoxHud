@@ -1,0 +1,21 @@
+{
+  "required": true,
+  "package": "dev.boxadactle.boxhud.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "minVersion": "0.8",
+  "client": [
+    "ActionbarMixin",
+    "BossHealthOverlayAccessor",
+    "BossHealthOverlayMixin",
+    "CrosshairMixin",
+    "GuiInvoker",
+    "MinecraftAccessor",
+    "MinecraftMixin",
+    "MouseHandlerMixin",
+    "PlayerMixin",
+    "ScoreboardMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "${mod_id}",
+  "version": "${version}",
+  "name": "${mod_name}",
+  "description": "${description}",
+  "authors": [ "${mod_author}" ],
+  "license": "${license}",
+  "icon": "icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "dev.boxadactle.boxhud.fabric.BoxhudFabric"
+    ],
+    "modmenu": [
+      "dev.boxadactle.boxhud.fabric.BoxhudModMenu"
+    ]
+  },
+  "mixins": [
+    "boxhud.mixins.json",
+    "fabric.boxhud.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": "*",
+    "minecraft": "${minecraft_version_range_fabric}",
+    "fabric-api": "*",
+    "boxlib": "${boxlib_version_range_fabric}"
+  },
+  "suggests": {
+    "coordinatesdisplay": "${cd_version_range_fabric}"
+  }
+}

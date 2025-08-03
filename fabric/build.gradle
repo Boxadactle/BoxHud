@@ -1,0 +1,65 @@
+plugins {
+    id 'multiloader-loader'
+    id 'fabric-loom'
+}
+dependencies {
+    minecraft "com.mojang:minecraft:${minecraft_version}"
+    mappings loom.layered {
+        officialMojangMappings()
+        parchment("org.parchmentmc.data:parchment-${parchment_minecraft}:${parchment_version}@zip")
+    }
+    modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
+
+    modImplementation ("dev.boxadactle:Boxlib-fabric:${boxlib_version}") { transitive = false }
+    modImplementation("dev.boxadactle:CoordinatesDisplay-fabric:${rootProject.coordinates_display_version}") { transitive = false }
+
+    modImplementation("com.terraformersmc:modmenu:${rootProject.modmenu_version}") {
+        transitive = false
+    }
+}
+
+loom {
+    def aw = project(':common').file("src/main/resources/${mod_id}.accesswidener")
+    if (aw.exists()) {
+        accessWidenerPath.set(aw)
+    }
+    mixin {
+        defaultRefmapName.set("${mod_id}.refmap.json")
+    }
+    runs {
+        client {
+            client()
+            setConfigName('Fabric Client')
+            ideConfigGenerated(true)
+            runDir('runs/client')
+        }
+        server {
+            server()
+            setConfigName('Fabric Server')
+            ideConfigGenerated(true)
+            runDir('runs/server')
+        }
+    }
+}
+
+import groovy.json.JsonSlurper
+import groovy.json.JsonOutput
+
+// someone pls make this work like its suppposed to
+tasks.named('processResources') {
+    doLast {
+        def jsonFile = file("$buildDir/resources/main/boxhud.mixins.json")
+
+        if (jsonFile.exists()) {
+            def jsonSlurper = new JsonSlurper()
+            def data = jsonSlurper.parse(jsonFile)
+
+            data["refmap"] = "${mod_id}.refmap.json"
+
+            jsonFile.text = JsonOutput.prettyPrint(JsonOutput.toJson(data))
+        } else {
+            println "mixin config not found at ${jsonFile}"
+        }
+    }
+}
