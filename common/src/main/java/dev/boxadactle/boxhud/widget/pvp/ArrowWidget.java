@@ -120,12 +120,17 @@ public class ArrowWidget implements Widgets.Pvp {
 
     @Override
     public int getDefaultX() {
-        return 0;
+        return 50;
     }
 
     @Override
     public int getDefaultY() {
-        return 2000;
+        return 20;
+    }
+
+    @Override
+    public PositionModifiers getDefaultModifier() {
+        return PositionModifiers.BOTTOM_LEFT;
     }
 
     @Override

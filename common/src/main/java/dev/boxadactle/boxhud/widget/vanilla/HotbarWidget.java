@@ -15,7 +15,7 @@ import net.minecraft.world.item.Items;
 public class HotbarWidget implements VanillaWidget {
     @Override
     public void render(GuiGraphics graphics, int x, int y) {
-        renderPositioned(graphics, x, y, () -> ((GuiInvoker) ClientUtils.getClient().gui).invokeRenderHotbar(graphics, 0.0F));
+        renderPositioned(graphics, x, y, () -> ((GuiInvoker) ClientUtils.getClient().gui).invokeRenderHotbar(graphics, getDummyTracker()));
     }
 
     @Override
@@ -24,8 +24,8 @@ public class HotbarWidget implements VanillaWidget {
             render(graphics, x, y);
         } else {
             renderPositioned(graphics, x, y, () -> {
-                graphics.blitSprite(new ResourceLocation("hud/hotbar"), 0, 40, 182, 22);
-                graphics.blitSprite(new ResourceLocation("hud/hotbar_selection"), 59, 39, 24, 23);
+                graphics.blitSprite(ResourceLocation.withDefaultNamespace("hud/hotbar"), 0, 40, 182, 22);
+                graphics.blitSprite(ResourceLocation.withDefaultNamespace("hud/hotbar_selection"), 59, 39, 24, 23);
 
                 graphics.renderFakeItem(new ItemStack(Items.OAK_BOAT), 64, 44);
                 graphics.drawCenteredString(GuiUtils.getTextRenderer(), Items.OAK_BOAT.getName(null), 91, 25, GuiUtils.WHITE);

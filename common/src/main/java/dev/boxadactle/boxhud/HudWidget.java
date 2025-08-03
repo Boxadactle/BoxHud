@@ -5,6 +5,7 @@ import dev.boxadactle.boxlib.gui.config.widget.button.BBooleanButton;
 import dev.boxadactle.boxlib.layouts.RenderingLayout;
 import dev.boxadactle.boxlib.math.geometry.Vec2;
 import dev.boxadactle.boxlib.util.GuiUtils;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
@@ -133,6 +134,22 @@ public interface HudWidget {
         public void add(WidgetEntry<?> entry, Consumer<BOptionEntry<?>> consumer) {
             addCustomConfigEntries((WidgetEntry<T>) entry, consumer);
         }
+    }
+
+    default DeltaTracker getDummyTracker() {
+        return new DeltaTracker() {
+            public float getGameTimeDeltaTicks() {
+                return 0.0F;
+            }
+
+            public float getGameTimeDeltaPartialTick(boolean runsNormally) {
+                return 0.0F;
+            }
+
+            public float getRealtimeDeltaTicks() {
+                return 0.0F;
+            }
+        };
     }
 
     enum HudCategory {

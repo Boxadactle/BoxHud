@@ -28,7 +28,7 @@ public class ServerInfoWidget implements Widgets.General {
 
     final static HashMap<String, FaviconTexture> serverIcons = new HashMap<>();
 
-    final static ResourceLocation empty = new ResourceLocation("textures/misc/unknown_server.png");
+    final static ResourceLocation empty = ResourceLocation.withDefaultNamespace("textures/misc/unknown_server.png");
 
     public boolean showIcon = true;
     public boolean showName = true;

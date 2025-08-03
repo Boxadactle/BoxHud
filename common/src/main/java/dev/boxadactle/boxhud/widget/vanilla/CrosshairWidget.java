@@ -16,6 +16,7 @@ import dev.boxadactle.boxlib.math.geometry.Dimension;
 import dev.boxadactle.boxlib.util.ClientUtils;
 import dev.boxadactle.boxlib.util.GuiUtils;
 import dev.boxadactle.boxlib.util.WorldUtils;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
@@ -37,7 +38,7 @@ public class CrosshairWidget implements VanillaWidget {
 
     @Override
     public void render(GuiGraphics graphics, int x, int y) {
-        renderPositioned(graphics, x, y, () -> ((GuiInvoker) ClientUtils.getClient().gui).invokeRenderCrosshair(graphics, 0.0F));
+        renderPositioned(graphics, x, y, () -> ((GuiInvoker) ClientUtils.getClient().gui).invokeRenderCrosshair(graphics, getDummyTracker()));
     }
 
     @Override
@@ -105,7 +106,7 @@ public class CrosshairWidget implements VanillaWidget {
         }
 
         if (crosshairType == CrosshairType.DEFAULT) {
-            guiGraphics.blitSprite(new ResourceLocation("hud/crosshair"), x, y, 15, 15);
+            guiGraphics.blitSprite(ResourceLocation.withDefaultNamespace("hud/crosshair"), x, y, 15, 15);
         } else {
             guiGraphics.blit(crosshairType.texture, x, y, 0, 0, 15, 15, 15, 15);
         }
@@ -209,7 +210,7 @@ public class CrosshairWidget implements VanillaWidget {
         }
 
         CrosshairType(String n) {
-            this(new ResourceLocation(Boxhud.MOD_ID, "textures/crosshairs/" + n));
+            this(ResourceLocation.fromNamespaceAndPath(Boxhud.MOD_ID, "textures/crosshairs/" + n));
         }
     }
 

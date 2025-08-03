@@ -7,8 +7,8 @@ import dev.boxadactle.boxhud.widget.system.*;
 import dev.boxadactle.boxhud.widget.vanilla.*;
 import dev.boxadactle.boxlib.command.BCommandManager;
 import dev.boxadactle.boxlib.command.BCommandSourceStack;
-import dev.boxadactle.boxlib.command.api.BClientCommand;
-import dev.boxadactle.boxlib.command.api.BClientSubcommand;
+import dev.boxadactle.boxlib.command.api.BCommand;
+import dev.boxadactle.boxlib.command.api.BSubcommand;
 import dev.boxadactle.boxlib.config.BConfigClass;
 import dev.boxadactle.boxlib.config.BConfigHandler;
 import dev.boxadactle.boxlib.scheduling.Scheduling;
@@ -60,10 +60,10 @@ public final class Boxhud {
         BoxWidgets.registerWidget("scoreboard", ScoreboardWidget.class);
 
 
-        BCommandManager.register(BClientCommand.create("boxhud", (c) -> {
+        BCommandManager.register(BCommand.create("boxhud", (c) -> {
             Scheduling.nextTick(() -> ClientUtils.setScreen(new WidgetPositionScreen(null)));
             return 0;
-        }).registerSubcommand(new BClientSubcommand() {
+        }).registerSubcommand(new BSubcommand() {
             @Override
             public ArgumentBuilder<BCommandSourceStack, ?> getSubcommand() {
                 return BCommandManager.literal("disable");
@@ -82,7 +82,7 @@ public final class Boxhud {
                     }));
                 }
             }
-        }).registerSubcommand(new BClientSubcommand() {
+        }).registerSubcommand(new BSubcommand() {
             @Override
             public ArgumentBuilder<BCommandSourceStack, ?> getSubcommand() {
                 return BCommandManager.literal("enable");

@@ -46,7 +46,7 @@ public class ResourcePackWidget implements Widgets.General {
             return packIcons.get(resourcepack.getId());
         }
 
-        ResourceLocation unknownPackIcon = new ResourceLocation("textures/misc/unknown_pack.png");
+        ResourceLocation unknownPackIcon = ResourceLocation.withDefaultNamespace("textures/misc/unknown_pack.png");
         try (PackResources packresources = resourcepack.open()) {
             IoSupplier<InputStream> iosupplier = packresources.getRootResource("pack.png");
             if (iosupplier == null) {
@@ -57,7 +57,7 @@ public class ResourcePackWidget implements Widgets.General {
 
             String s = resourcepack.getId();
             String var10003 = Util.sanitizeName(s, ResourceLocation::validPathChar);
-            ResourceLocation resourcelocation = new ResourceLocation("minecraft", "pack/" + var10003 + "/" + Hashing.sha256().hashUnencodedChars(s) + "/icon");
+            ResourceLocation resourcelocation = ResourceLocation.withDefaultNamespace("pack/" + var10003 + "/" + Hashing.sha256().hashUnencodedChars(s) + "/icon");
 
             try (InputStream inputstream = iosupplier.get()) {
                 NativeImage nativeimage = NativeImage.read(inputstream);

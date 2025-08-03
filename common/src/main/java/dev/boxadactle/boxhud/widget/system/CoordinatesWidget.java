@@ -104,7 +104,7 @@ public class CoordinatesWidget implements Widgets.System {
     }
 
     private ResourceLocation getBiomeKey(Holder<Biome> b) {
-        ResourceLocation def = new ResourceLocation("minecraft", "plains");
+        ResourceLocation def = ResourceLocation.fromNamespaceAndPath("minecraft", "plains");
         if (b == null) {
             return def;
         }

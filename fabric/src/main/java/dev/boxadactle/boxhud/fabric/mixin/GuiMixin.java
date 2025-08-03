@@ -1,6 +1,7 @@
 package dev.boxadactle.boxhud.fabric.mixin;
 
 import dev.boxadactle.boxhud.BoxWidgets;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.LayeredDraw;
@@ -17,21 +18,19 @@ public abstract class GuiMixin {
 
     @Shadow @Final private LayeredDraw layers;
 
-    @Shadow protected abstract void renderCameraOverlays(GuiGraphics guiGraphics, float partialTick);
+    @Shadow protected abstract void renderCameraOverlays(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
 
-    @Shadow protected abstract void renderEffects(GuiGraphics guiGraphics, float partialTick);
+    @Shadow protected abstract void renderEffects(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
 
-    @Shadow protected abstract void renderDemoOverlay(GuiGraphics guiGraphics, float partialTick);
+    @Shadow protected abstract void renderDemoOverlay(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
 
     @Shadow @Final protected DebugScreenOverlay debugOverlay;
 
-    @Shadow protected abstract void renderScoreboardSidebar(GuiGraphics guiGraphics, float partialTick);
+    @Shadow protected abstract void renderTitle(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
 
-    @Shadow protected abstract void renderTitle(GuiGraphics guiGraphics, float partialTick);
+    @Shadow protected abstract void renderChat(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
 
-    @Shadow protected abstract void renderChat(GuiGraphics guiGraphics, float partialTick);
-
-    @Shadow protected abstract void renderTabList(GuiGraphics guiGraphics, float partialTick);
+    @Shadow protected abstract void renderTabList(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
 
     @Shadow @Final protected SubtitleOverlay subtitleOverlay;
 

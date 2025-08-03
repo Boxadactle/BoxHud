@@ -2,6 +2,7 @@ package dev.boxadactle.boxhud.neoforge.mixin;
 
 import dev.boxadactle.boxhud.BoxWidgets;
 import dev.boxadactle.boxhud.Boxhud;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.LayeredDraw;
@@ -24,34 +25,32 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class GuiMixin {
     @Shadow @Final private GuiLayerManager layerManager;
 
-    @Shadow protected abstract void renderCameraOverlays(GuiGraphics guiGraphics, float partialTick);
+    @Shadow protected abstract void renderCameraOverlays(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
 
-    @Shadow protected abstract void maybeRenderSpectatorTooltip(GuiGraphics p_316628_, float p_316765_);
+    @Shadow protected abstract void maybeRenderSpectatorTooltip(GuiGraphics p_316628_, DeltaTracker deltaTracker);
 
-    @Shadow protected abstract void renderEffects(GuiGraphics guiGraphics, float partialTick);
+    @Shadow protected abstract void renderEffects(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
 
-    @Shadow protected abstract void renderDemoOverlay(GuiGraphics guiGraphics, float partialTick);
+    @Shadow protected abstract void renderDemoOverlay(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
 
     @Shadow @Final protected DebugScreenOverlay debugOverlay;
 
-    @Shadow protected abstract void renderScoreboardSidebar(GuiGraphics guiGraphics, float partialTick);
+    @Shadow protected abstract void renderTitle(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
 
-    @Shadow protected abstract void renderTitle(GuiGraphics guiGraphics, float partialTick);
+    @Shadow protected abstract void renderChat(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
 
-    @Shadow protected abstract void renderChat(GuiGraphics guiGraphics, float partialTick);
-
-    @Shadow protected abstract void renderTabList(GuiGraphics guiGraphics, float partialTick);
+    @Shadow protected abstract void renderTabList(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
 
     @Shadow @Final protected SubtitleOverlay subtitleOverlay;
 
-    @Shadow public abstract void renderSavingIndicator(GuiGraphics guiGraphics, float partialTick);
+    @Shadow public abstract void renderSavingIndicator(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
 
     @Inject(
             method = "<init>",
             at = @At("RETURN")
     )
     public void init(CallbackInfo ci) {
-        layerManager.add(new ResourceLocation(Boxhud.MOD_ID, "widgets"), ((guiGraphics, f) -> BoxWidgets.renderAll(guiGraphics)));
+        layerManager.add(ResourceLocation.fromNamespaceAndPath(Boxhud.MOD_ID, "widgets"), ((guiGraphics, f) -> BoxWidgets.renderAll(guiGraphics)));
     }
 
     @ModifyArg(

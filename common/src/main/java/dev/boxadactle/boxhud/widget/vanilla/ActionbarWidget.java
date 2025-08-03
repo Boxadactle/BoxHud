@@ -14,7 +14,7 @@ public class ActionbarWidget implements VanillaWidget {
 
     @Override
     public void render(GuiGraphics graphics, int x, int y) {
-        renderPositioned(graphics, x, y, () -> ((GuiInvoker) ClientUtils.getClient().gui).invokeRenderOverlayMessage(graphics, 0.0f));
+        renderPositioned(graphics, x, y, () -> ((GuiInvoker) ClientUtils.getClient().gui).invokeRenderOverlayMessage(graphics, getDummyTracker()));
     }
 
     @Override

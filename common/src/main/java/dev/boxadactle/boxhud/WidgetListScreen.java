@@ -65,9 +65,9 @@ public class WidgetListScreen extends BOptionScreen {
 
         addRenderableWidget(createDoneButton(i, i1, b -> onClose()));
 
-        addRenderableWidget(new IconButton(3, 3, 24, 24, 16, 16, new ResourceLocation(Boxhud.MOD_ID, "textures/icons/move.png"), (b) -> ClientUtils.setScreen(new WidgetPositionScreen(this))));
+        addRenderableWidget(new IconButton(3, 3, 24, 24, 16, 16, ResourceLocation.fromNamespaceAndPath(Boxhud.MOD_ID, "textures/icons/move.png"), (b) -> ClientUtils.setScreen(new WidgetPositionScreen(this))));
 
-        addRenderableWidget(new IconButton(width - 27, 3, 24, 24, 16, 16, new ResourceLocation(Boxhud.MOD_ID, "textures/icons/settings.png"), (b) -> ClientUtils.setScreen(new WidgetConfigScreen(this))));
+        addRenderableWidget(new IconButton(width - 27, 3, 24, 24, 16, 16, ResourceLocation.fromNamespaceAndPath(Boxhud.MOD_ID, "textures/icons/settings.png"), (b) -> ClientUtils.setScreen(new WidgetConfigScreen(this))));
 
     }
 

@@ -68,7 +68,7 @@ public class ScoreboardWidget implements VanillaWidget {
 
     @Override
     public void render(GuiGraphics graphics, int x, int y) {
-        renderPositioned(graphics, x, y, () -> ((GuiInvoker) ClientUtils.getClient().gui).invokeRenderScoreboardSidebar(graphics, 0.0F));
+        renderPositioned(graphics, x, y, () -> ((GuiInvoker) ClientUtils.getClient().gui).invokeRenderScoreboardSidebar(graphics, getDummyTracker()));
 
         Scoreboard scoreboard = WorldUtils.getWorld().getScoreboard();
         Objective objective = null;
