@@ -28,17 +28,10 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Build and Publish with Gradle
-        run: ./gradlew build publishMods
+        run: ./gradlew build publishUnified
         env:
           CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
           MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
-
-      - name: Build and Publish with Gradle
-        run: ./gradlew publish
-        env:
-          MAVEN_USER: ${{ secrets.MAVEN_USERNAME }}
-          MAVEN_PASS: ${{ secrets.MAVEN_PASSWORD }}
-          IS_SNAPSHOT_PUBLISH: false
 
       - name: Create GitHub release
         run: ./gradlew githubRelease
