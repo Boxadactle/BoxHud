@@ -14,7 +14,7 @@ public class ScoreboardMixin {
 
     @Inject(
             method = "displayScoreboardSidebar",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;drawManaged(Ljava/lang/Runnable;)V")
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;fill(IIIII)V", ordinal = 0)
     )
     public void startTranslation(GuiGraphics guiGraphics, Objective objective, CallbackInfo ci, @Local(ordinal = 1) int j) {
         guiGraphics.pose().pushPose();
@@ -30,7 +30,7 @@ public class ScoreboardMixin {
 
     @Inject(
             method = "displayScoreboardSidebar",
-            at = @At("RETURN")
+            at = @At("TAIL")
     )
     public void endTranslation(GuiGraphics guiGraphics, Objective objective, CallbackInfo ci) {
         guiGraphics.pose().popPose();

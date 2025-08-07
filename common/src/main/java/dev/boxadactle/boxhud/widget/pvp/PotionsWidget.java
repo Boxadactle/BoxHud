@@ -17,6 +17,7 @@ import dev.boxadactle.boxlib.layouts.layout.RowLayout;
 import dev.boxadactle.boxlib.util.ClientUtils;
 import dev.boxadactle.boxlib.util.WorldUtils;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.CommonComponents;
@@ -79,7 +80,7 @@ public class PotionsWidget implements Widgets.Pvp {
                     Holder<MobEffect> holder = effect.getEffect();
                     TextureAtlasSprite textureAtlasSprite = ClientUtils.getClient().getMobEffectTextures().get(holder);
 
-                    guiGraphics.blit(i, i1, 0, getWidth(), getHeight(), textureAtlasSprite);
+                    guiGraphics.blitSprite(RenderType::guiTextured, textureAtlasSprite, i, i1, getWidth(), getHeight());
                 }
             });
 
@@ -87,7 +88,7 @@ public class PotionsWidget implements Widgets.Pvp {
             if (renderNames) {
                 layout1.addComponent(new TextComponent(getEffectName(effect)));
             } else {
-                // this stupid thing needs to be centeerd or it looks bad
+                // this stupid thing needs to be centered or it looks bad
                 layout1.addComponent(new LayoutComponent<>(null) {
                     public int getWidth() {
                         return 0;

@@ -52,7 +52,7 @@ public abstract class GuiMixin {
     )
     public LayeredDraw removeRenderers(LayeredDraw layeredDraw) {
         // we only add what we don't override so it still renders
-        return (new LayeredDraw()).add(this::renderCameraOverlays).add(this::renderEffects);
+        return (new LayeredDraw()).add(this::renderCameraOverlays);
     }
 
     @ModifyArg(

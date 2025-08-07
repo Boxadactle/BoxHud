@@ -46,10 +46,9 @@ Just drop [**Coordinates Display**](https://modrinth.com/mod/coordinates-display
 
 Choose from **10 crosshair styles** with full color control.  
 Includes a **Dynamic Crosshair Mode** that changes color based on:
-- Whether an entity is in range (turns red or green)
-- If you're about to land a critical hit
-- When reloading a crossbow or similar item
-- Whether a block is within range for interaction
+- Whether an entity is in range (red)
+- If you're about to land a critical hit (dark red)
+- Whether a block is within range for interaction (green)
 
 ### 🖱️ User-Friendly Widget GUIs
 ![widget move GUI](https://boxadactle.dev/img/boxhud/widget_move.png)

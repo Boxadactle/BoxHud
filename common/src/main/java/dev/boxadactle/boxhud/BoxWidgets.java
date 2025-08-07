@@ -3,8 +3,10 @@ package dev.boxadactle.boxhud;
 import com.google.gson.*;
 import dev.boxadactle.boxlib.core.BoxLib;
 import dev.boxadactle.boxlib.layouts.RenderingLayout;
+import dev.boxadactle.boxlib.util.ClientUtils;
 import dev.boxadactle.boxlib.util.RenderUtils;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.util.profiling.Profiler;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -127,7 +129,9 @@ public class BoxWidgets {
         for (var entry : widgetConfigs.entrySet()) {
             WidgetEntry<?> hudEntry = entry.getValue();
             if (hudEntry.enabled) {
+                Profiler.get().push("boxhud.widget." + hudEntry.widget.getNameKey());
                 hudEntry.render(graphics);
+                Profiler.get().pop();
             }
         }
     }

@@ -175,7 +175,7 @@ public class ItemInfoWidget implements Widgets.General {
         public boolean newItems(ItemStack item, int change) {
             if (item.is(this.item.getItem())) {
                 count += change;
-                despawn = change != 0 ? itemExpiry * 20 : 0;
+                despawn = count != 0 ? itemExpiry * 20 : 0;
 
                 return true;
             }
@@ -184,14 +184,14 @@ public class ItemInfoWidget implements Widgets.General {
         }
 
         public Component createComponent() {
-            Component count = Component.literal(this.count + "x").withColor(countColor);
+            Component count = Component.literal(Math.abs(this.count) + "x").withColor(countColor);
             Component itemName = item.getHoverName();
             if (this.count > 0) {
                 return translation("add", count, itemName.copy().withColor(additionColor))
                         .copy().withColor(additionColor);
             } else {
                 return translation("remove", count, itemName.copy().withColor(removalColor))
-                        .copy().withColor(-removalColor);
+                        .copy().withColor(removalColor);
             }
         }
     }

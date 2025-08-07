@@ -1,12 +1,12 @@
 package dev.boxadactle.boxhud.mixin;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import dev.boxadactle.boxhud.BoxWidgets;
 import dev.boxadactle.boxhud.WidgetEntry;
 import dev.boxadactle.boxhud.widget.vanilla.CrosshairWidget;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.DebugScreenOverlay;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import org.joml.Matrix4f;
 import org.joml.Matrix4fStack;
@@ -15,21 +15,23 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
+import java.util.function.Function;
+
 @Mixin(Gui.class)
 public class CrosshairMixin {
     @Redirect(
             method = "renderCrosshair",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/gui/GuiGraphics;blitSprite(Lnet/minecraft/resources/ResourceLocation;IIII)V",
+                    target = "Lnet/minecraft/client/gui/GuiGraphics;blitSprite(Ljava/util/function/Function;Lnet/minecraft/resources/ResourceLocation;IIII)V",
                     ordinal = 0
             )
     )
-    public void redirectBlitSprite(GuiGraphics guiGraphics, ResourceLocation resourceLocation, int x, int y, int width, int height) {
+    public void redirectBlitSprite(GuiGraphics instance, Function<ResourceLocation, RenderType> p_365180_, ResourceLocation p_298820_, int p_300417_, int p_298256_, int p_299965_, int p_300008_) {
         WidgetEntry<CrosshairWidget> entry = BoxWidgets.getWidgetEntryUnchecked("crosshair");
 
         assert entry != null;
-        entry.widget.renderCrosshair(guiGraphics, 0, 0);
+        entry.widget.renderCrosshair(instance, 0, 0);
     }
 
     @ModifyVariable(
@@ -75,17 +77,5 @@ public class CrosshairMixin {
     )
     public Matrix4f redirectTranslate(Matrix4fStack instance, float x, float y, float z) {
         return instance.translate(10.0F, 10.0F, 0.0F);
-    }
-
-    @Redirect(
-            method = "renderCrosshair",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lcom/mojang/blaze3d/systems/RenderSystem;blendFuncSeparate(Lcom/mojang/blaze3d/platform/GlStateManager$SourceFactor;Lcom/mojang/blaze3d/platform/GlStateManager$DestFactor;Lcom/mojang/blaze3d/platform/GlStateManager$SourceFactor;Lcom/mojang/blaze3d/platform/GlStateManager$DestFactor;)V",
-                    ordinal = 0
-            )
-    )
-    public void blockBlending(GlStateManager.SourceFactor $$0, GlStateManager.DestFactor $$1, GlStateManager.SourceFactor $$2, GlStateManager.DestFactor $$3) {
-        // we do our own blending
     }
 }

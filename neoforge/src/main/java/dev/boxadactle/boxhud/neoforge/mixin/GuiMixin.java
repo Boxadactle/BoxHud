@@ -29,8 +29,6 @@ public abstract class GuiMixin {
 
     @Shadow protected abstract void maybeRenderSpectatorTooltip(GuiGraphics p_316628_, DeltaTracker deltaTracker);
 
-    @Shadow protected abstract void renderEffects(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
-
     @Shadow protected abstract void renderDemoOverlay(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
 
     @Shadow @Final protected DebugScreenOverlay debugOverlay;
@@ -65,8 +63,7 @@ public abstract class GuiMixin {
         // we only add what we aren't overriding so it still renders
         return (new GuiLayerManager())
                 .add(VanillaGuiLayers.CAMERA_OVERLAYS, this::renderCameraOverlays)
-                .add(VanillaGuiLayers.SPECTATOR_TOOLTIP, this::maybeRenderSpectatorTooltip)
-                .add(VanillaGuiLayers.EFFECTS, this::renderEffects);
+                .add(VanillaGuiLayers.SPECTATOR_TOOLTIP, this::maybeRenderSpectatorTooltip);
     }
 
     @ModifyArg(

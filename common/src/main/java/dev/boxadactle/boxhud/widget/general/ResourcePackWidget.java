@@ -18,6 +18,7 @@ import dev.boxadactle.boxlib.layouts.layout.RowLayout;
 import dev.boxadactle.boxlib.util.ClientUtils;
 import net.minecraft.Util;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackResources;
@@ -102,7 +103,7 @@ public class ResourcePackWidget implements Widgets.General {
 
                 @Override
                 public void render(GuiGraphics guiGraphics, int i, int i1) {
-                    guiGraphics.blit(getPackIcon(pack), i, i1, 0.0F, 0.0F, 16, 16, 16, 16);
+                    guiGraphics.blit(RenderType::guiTextured, getPackIcon(pack), i, i1, 0.0F, 0.0F, 16, 16, 16, 16);
                 }
             });
 

@@ -51,7 +51,7 @@ public class ScoreboardWidget implements VanillaWidget {
             width = Math.max(width, entryWidth);
         }
 
-        return width;
+        return width + 4;
     }
 
     public int calculateSidebarScoreboardHeight(Objective objective) {

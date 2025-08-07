@@ -58,8 +58,8 @@ public class KeystrokeWidget implements Widgets.System, HudWidget {
         layout.addComponent(new LayoutContainerComponent(row2));
 
         RowLayout row3 = new RowLayout(0, 0, innerPadding);
-        row3.addComponent(new Keystroke(2, options.keyAttack, "RMB", true));
-        row3.addComponent(new Keystroke(2, options.keyUse, "LMB", true));
+        row3.addComponent(new Keystroke(2, options.keyAttack, "LMB", true));
+        row3.addComponent(new Keystroke(2, options.keyUse, "RMB", true));
         layout.addComponent(new LayoutContainerComponent(row3));
 
         var jump = KeybindHelper.getBoundKey(options.keyJump);

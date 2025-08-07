@@ -183,8 +183,7 @@ public class WidgetListScreen extends BOptionScreen {
 
             guiGraphics.pose().pushPose();
             guiGraphics.pose().scale(scale, scale, 0.0F);
-            guiGraphics.pose().translate(x / scale, y / scale, 0.0F);
-            widg.setPosition(0, 0);
+            widg.setPosition((int) (x / scale), (int) (y / scale));
             RenderUtils.drawSquare(guiGraphics, widg.calculateRect(), Boxhud.getConfig().backgroundColor);
             widg.render(guiGraphics);
             guiGraphics.pose().popPose();

@@ -8,6 +8,7 @@ import dev.boxadactle.boxlib.util.ClientUtils;
 import dev.boxadactle.boxlib.util.GuiUtils;
 import dev.boxadactle.boxlib.util.WorldUtils;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -24,11 +25,12 @@ public class HotbarWidget implements VanillaWidget {
             render(graphics, x, y);
         } else {
             renderPositioned(graphics, x, y, () -> {
-                graphics.blitSprite(ResourceLocation.withDefaultNamespace("hud/hotbar"), 0, 40, 182, 22);
-                graphics.blitSprite(ResourceLocation.withDefaultNamespace("hud/hotbar_selection"), 59, 39, 24, 23);
+                graphics.blitSprite(RenderType::guiTextured, ResourceLocation.withDefaultNamespace("hud/hotbar"), 0, 40, 182, 22);
+                graphics.blitSprite(RenderType::guiTextured, ResourceLocation.withDefaultNamespace("hud/hotbar_selection"), 59, 39, 24, 23);
 
-                graphics.renderFakeItem(new ItemStack(Items.OAK_BOAT), 64, 44);
-                graphics.drawCenteredString(GuiUtils.getTextRenderer(), Items.OAK_BOAT.getName(null), 91, 25, GuiUtils.WHITE);
+                var stack = new ItemStack(Items.OAK_BOAT);
+                graphics.renderFakeItem(stack, 64, 44);
+                graphics.drawCenteredString(GuiUtils.getTextRenderer(), Items.OAK_BOAT.getName(stack), 91, 25, GuiUtils.WHITE);
             });
         }
     }

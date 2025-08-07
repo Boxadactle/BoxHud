@@ -16,14 +16,15 @@ import dev.boxadactle.boxlib.math.geometry.Dimension;
 import dev.boxadactle.boxlib.util.ClientUtils;
 import dev.boxadactle.boxlib.util.GuiUtils;
 import dev.boxadactle.boxlib.util.WorldUtils;
-import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.HitResult;
 
 import java.util.function.Consumer;
@@ -62,60 +63,45 @@ public class CrosshairWidget implements VanillaWidget {
     }
 
     private int getColor() {
-        if (colorType == ColorType.CUSTOM) return color;
+        return switch (colorType) {
+            case ColorType.DEFAULT -> -1;
+            case ColorType.DYNAMIC -> {
+                if (ClientUtils.getClient().crosshairPickEntity != null && WorldUtils.getWorld() != null) {
+                    if (ClientUtils.getClient().crosshairPickEntity instanceof LivingEntity) {
+                        yield WorldUtils.getPlayer().getAttackStrengthScale(0.0F) >= 1.0F ?
+                                willCrit(WorldUtils.getPlayer()) ? GuiUtils.DARK_RED : GuiUtils.RED :
+                                GuiUtils.LIGHT_PURPLE;
+                    } else {
+                        yield GuiUtils.GRAY;
+                    }
+                } else if (WorldUtils.getWorld() != null) {
+                    HitResult res = WorldUtils.getCamera().pick(WorldUtils.getPlayer().blockInteractionRange(), 0.0F, false);
+                    if (res.getType().equals(HitResult.Type.BLOCK)) {
+                        yield GuiUtils.GREEN;
+                    }
+                }
 
-        if (ClientUtils.getClient().crosshairPickEntity != null && WorldUtils.getWorld() != null) {
-            if (ClientUtils.getClient().crosshairPickEntity instanceof LivingEntity) {
-                return WorldUtils.getPlayer().getAttackStrengthScale(0.0F) >= 1.0F ?
-                        willCrit(WorldUtils.getPlayer()) ? GuiUtils.GREEN : GuiUtils.RED :
-                        GuiUtils.LIGHT_PURPLE;
-            } else {
-                return GuiUtils.GRAY;
+                yield GuiUtils.WHITE;
             }
-        } else if (WorldUtils.getWorld() != null) {
-            HitResult res = WorldUtils.getCamera().pick(WorldUtils.getPlayer().blockInteractionRange(), 0.0F, false);
-            if (res.getType().equals(HitResult.Type.BLOCK)) {
-                return GuiUtils.GREEN;
-            }
-        }
-
-        return GuiUtils.WHITE;
+            case ColorType.CUSTOM -> color;
+        };
     }
 
-    public float getRed(int color) {
-        return ((color >> 16) & 0xFF) / 255.0F;
-    }
-
-    public float getGreen(int color) {
-        return ((color >> 8) & 0xFF) / 255.0F;
-    }
-
-    public float getBlue(int color) {
-        return (color & 0xFF) / 255.0F;
+    private int applyAlpha(int color) {
+        int alpha = (int) (opacity * 255);
+        return (color & 0x00FFFFFF) | (alpha << 24);
     }
 
     public void renderCrosshair(GuiGraphics guiGraphics, int x, int y) {
-        boolean bl = colorType != ColorType.DEFAULT;
-
         RenderSystem.enableBlend();
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-
-        if (bl) {
-            int color = getColor();
-            RenderSystem.setShaderColor(getRed(color), getGreen(color), getBlue(color), opacity);
-        }
 
         if (crosshairType == CrosshairType.DEFAULT) {
-            guiGraphics.blitSprite(ResourceLocation.withDefaultNamespace("hud/crosshair"), x, y, 15, 15);
+            guiGraphics.blitSprite(RenderType::guiTextured, ResourceLocation.withDefaultNamespace("hud/crosshair"), x, y, 15, 15, applyAlpha(getColor()));
         } else {
-            guiGraphics.blit(crosshairType.texture, x, y, 0, 0, 15, 15, 15, 15);
+            guiGraphics.blit(RenderType::guiTextured, crosshairType.texture, x, y, 0, 0, 15, 15, 15, 15, applyAlpha(getColor()));
         }
 
         RenderSystem.disableBlend();
-
-        if (bl) {
-            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        }
     }
 
     @Override

@@ -22,8 +22,6 @@ public abstract class GuiMixin {
 
     @Shadow protected abstract void renderCameraOverlays(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
 
-    @Shadow protected abstract void renderEffects(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
-
     @Shadow protected abstract void renderDemoOverlay(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
 
     @Shadow @Final protected DebugScreenOverlay debugOverlay;
@@ -54,7 +52,7 @@ public abstract class GuiMixin {
     )
     public LayeredDraw removeRenderers(LayeredDraw layeredDraw) {
         // we only add what we don't override so it still renders
-        return (new LayeredDraw()).add(this::renderCameraOverlays).add(this::renderEffects);
+        return (new LayeredDraw()).add(this::renderCameraOverlays);
     }
 
     @ModifyArg(
