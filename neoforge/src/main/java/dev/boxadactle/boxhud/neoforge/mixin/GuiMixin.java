@@ -23,8 +23,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @SuppressWarnings("UnstableApiUsage")
 @Mixin(Gui.class)
 public abstract class GuiMixin {
-    @Shadow @Final private GuiLayerManager layerManager;
-
     @Shadow protected abstract void renderCameraOverlays(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
 
     @Shadow protected abstract void maybeRenderSpectatorTooltip(GuiGraphics p_316628_, DeltaTracker deltaTracker);
@@ -43,14 +41,6 @@ public abstract class GuiMixin {
 
     @Shadow public abstract void renderSavingIndicator(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
 
-    @Inject(
-            method = "<init>",
-            at = @At("RETURN")
-    )
-    public void init(CallbackInfo ci) {
-        layerManager.add(ResourceLocation.fromNamespaceAndPath(Boxhud.MOD_ID, "widgets"), ((guiGraphics, f) -> BoxWidgets.renderAll(guiGraphics)));
-    }
-
     @ModifyArg(
             method = "<init>",
             at = @At(
@@ -63,7 +53,8 @@ public abstract class GuiMixin {
         // we only add what we aren't overriding so it still renders
         return (new GuiLayerManager())
                 .add(VanillaGuiLayers.CAMERA_OVERLAYS, this::renderCameraOverlays)
-                .add(VanillaGuiLayers.SPECTATOR_TOOLTIP, this::maybeRenderSpectatorTooltip);
+                .add(VanillaGuiLayers.SPECTATOR_TOOLTIP, this::maybeRenderSpectatorTooltip)
+                .add(ResourceLocation.fromNamespaceAndPath(Boxhud.MOD_ID, "widgets"), ((guiGraphics, f) -> BoxWidgets.renderAll(guiGraphics)));
     }
 
     @ModifyArg(

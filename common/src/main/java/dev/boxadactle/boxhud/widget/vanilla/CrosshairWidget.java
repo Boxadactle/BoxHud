@@ -23,8 +23,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.HitResult;
 
 import java.util.function.Consumer;
@@ -69,7 +67,7 @@ public class CrosshairWidget implements VanillaWidget {
                 if (ClientUtils.getClient().crosshairPickEntity != null && WorldUtils.getWorld() != null) {
                     if (ClientUtils.getClient().crosshairPickEntity instanceof LivingEntity) {
                         yield WorldUtils.getPlayer().getAttackStrengthScale(0.0F) >= 1.0F ?
-                                willCrit(WorldUtils.getPlayer()) ? GuiUtils.DARK_RED : GuiUtils.RED :
+                                willCrit(WorldUtils.getPlayer()) ? GuiUtils.RED : 0xffa81c :
                                 GuiUtils.LIGHT_PURPLE;
                     } else {
                         yield GuiUtils.GRAY;

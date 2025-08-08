@@ -17,9 +17,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Gui.class)
 public abstract class GuiMixin {
-
-    @Shadow @Final private LayeredDraw layers;
-
     @Shadow protected abstract void renderCameraOverlays(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
 
     @Shadow protected abstract void renderDemoOverlay(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
@@ -34,14 +31,6 @@ public abstract class GuiMixin {
 
     @Shadow @Final protected SubtitleOverlay subtitleOverlay;
 
-    @Inject(
-            method = "<init>",
-            at = @At("RETURN")
-    )
-    public void init(CallbackInfo ci) {
-        layers.add(((guiGraphics, f) -> BoxWidgets.renderAll(guiGraphics)));
-    }
-
     @ModifyArg(
             method = "<init>",
             at = @At(
@@ -52,7 +41,8 @@ public abstract class GuiMixin {
     )
     public LayeredDraw removeRenderers(LayeredDraw layeredDraw) {
         // we only add what we don't override so it still renders
-        return (new LayeredDraw()).add(this::renderCameraOverlays);
+        return (new LayeredDraw()).add(this::renderCameraOverlays)
+                .add(((guiGraphics, f) -> BoxWidgets.renderAll(guiGraphics)));
     }
 
     @ModifyArg(

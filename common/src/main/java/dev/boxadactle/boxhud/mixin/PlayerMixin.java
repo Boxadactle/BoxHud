@@ -1,6 +1,5 @@
 package dev.boxadactle.boxhud.mixin;
 
-import dev.boxadactle.boxhud.Boxhud;
 import dev.boxadactle.boxhud.events.BoxEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;

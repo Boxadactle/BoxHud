@@ -36,8 +36,8 @@ public class WidgetListScreen extends BOptionScreen {
     }
 
     @Override
-    protected int getScrollbarPosition() {
-        return super.getScrollbarPosition() + 65;
+    protected int getScrollbarX() {
+        return super.getScrollbarX() + 65;
     }
 
     @Override
