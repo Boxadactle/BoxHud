@@ -4,6 +4,7 @@ import dev.boxadactle.boxhud.Boxhud;
 import dev.boxadactle.boxhud.HudWidget;
 import dev.boxadactle.boxhud.PositionModifiers;
 import dev.boxadactle.boxhud.WidgetEntry;
+import dev.boxadactle.boxhud.mixin.InventoryAccessor;
 import dev.boxadactle.boxhud.widget.Widgets;
 import dev.boxadactle.boxlib.gui.config.BOptionEntry;
 import dev.boxadactle.boxlib.gui.config.widget.button.BBooleanButton;
@@ -48,7 +49,7 @@ public class ArrowWidget implements Widgets.Pvp {
 
         if (bl) number = 173;
         else {
-            for (ItemStack s : WorldUtils.getPlayer().getInventory().items) {
+            for (ItemStack s : ((InventoryAccessor)WorldUtils.getPlayer().getInventory()).getItems()) {
                 if (s.is(Items.ARROW) || s.is(Items.SPECTRAL_ARROW) || s.is(Items.TIPPED_ARROW)) {
                     number += s.getCount();
                 }

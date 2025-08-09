@@ -7,6 +7,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.InputEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
@@ -15,8 +16,6 @@ import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 @Mod(Boxhud.MOD_ID)
 public final class BoxhudNeoForge {
     public BoxhudNeoForge() {
-        Boxhud.init();
-
         ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class, () ->
                 (minecraft, screen) -> new WidgetListScreen(screen)
         );
@@ -27,6 +26,11 @@ public final class BoxhudNeoForge {
     @EventBusSubscriber(modid = Boxhud.MOD_ID, value = Dist.CLIENT)
     public static class ClientNeoforgeEvents {
         @SubscribeEvent
+        public static void go(FMLClientSetupEvent e) {
+            Boxhud.init();
+        }
+
+        @SubscribeEvent
         public static void tick(ClientTickEvent.Pre event) {
             Boxhud.tick();
         }
@@ -35,10 +39,7 @@ public final class BoxhudNeoForge {
         public static void keyInput(InputEvent.Key e) {
             Bindings.check();
         }
-    }
 
-    @EventBusSubscriber(modid = Boxhud.MOD_ID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
-    public static class ModForgeEvents {
         @SubscribeEvent
         public static void registerKeys(RegisterKeyMappingsEvent e) {
             Bindings.register(e::register);

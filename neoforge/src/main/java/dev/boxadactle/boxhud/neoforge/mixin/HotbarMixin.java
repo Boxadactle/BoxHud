@@ -14,8 +14,6 @@ public abstract class HotbarMixin {
 
     @Shadow protected abstract void renderExperienceLevel(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
 
-    @Shadow protected abstract void renderAirLevel(GuiGraphics p_283143_);
-
     @Inject(
             method = "renderHotbarAndDecorations",
             at = @At("HEAD")

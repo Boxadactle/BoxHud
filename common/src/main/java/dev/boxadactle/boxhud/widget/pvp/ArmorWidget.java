@@ -15,6 +15,7 @@ import dev.boxadactle.boxlib.layouts.layout.RowLayout;
 import dev.boxadactle.boxlib.util.GuiUtils;
 import dev.boxadactle.boxlib.util.WorldUtils;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
@@ -61,7 +62,13 @@ public class ArmorWidget implements Widgets.Pvp {
 
     @Override
     public RenderingLayout createWidget(int x, int y) {
-        return new PaddingLayout(x, y, padding(), create(WorldUtils.getPlayer().getInventory().armor));
+        Inventory inventory = WorldUtils.getPlayer().getInventory();
+        return new PaddingLayout(x, y, padding(), create(List.of(
+                inventory.getItem(36),
+                inventory.getItem(37),
+                inventory.getItem(38),
+                inventory.getItem(39)
+        )));
     }
 
     @Override

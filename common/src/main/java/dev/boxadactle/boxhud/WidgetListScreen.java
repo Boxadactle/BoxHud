@@ -32,12 +32,12 @@ public class WidgetListScreen extends BOptionScreen {
 
     @Override
     protected int getRowWidth() {
-        return super.getRowWidth() + 145;
+        return super.getRowWidth() + 180;
     }
 
     @Override
     protected int getScrollbarX() {
-        return super.getScrollbarX() + 65;
+        return width - 10;
     }
 
     @Override
@@ -117,8 +117,7 @@ public class WidgetListScreen extends BOptionScreen {
         public void render(GuiGraphics p_93523_, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
             p_93523_.pose().pushPose();
             p_93523_.pose().scale(2.0F, 2.0F, 0.0F);
-            p_93523_.pose().translate(x + entryWidth / 5.0F, y / 2.0F + entryHeight / 4.0F, 0.0F);
-            p_93523_.drawCenteredString(GuiUtils.getTextRenderer(), title, 0, 0, GuiUtils.WHITE);
+            p_93523_.drawCenteredString(GuiUtils.getTextRenderer(), title, WidgetListScreen.this.width / 4, y / 2 + entryHeight / 4, GuiUtils.WHITE);
             p_93523_.pose().popPose();
         }
     }

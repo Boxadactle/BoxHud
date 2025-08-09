@@ -23,9 +23,6 @@ neoForge {
         client {
             client()
         }
-        clientData {
-            clientData()
-        }
         server {
             server()
         }
@@ -39,9 +36,16 @@ neoForge {
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
+configurations {
+    shadowBundle {
+        canBeResolved = true
+        canBeConsumed = false
+    }
+}
+
 dependencies {
-    implementation "dev.boxadactle:Boxlib-neoforge:$boxlib_version"
-    implementation "dev.boxadactle:CoordinatesDisplay-neoforge:$rootProject.coordinates_display_version"
+    implementation "dev.boxadactle:Boxlib-neoforge:$rootProject.boxlib_version"
+    compileOnly "dev.boxadactle:CoordinatesDisplay-neoforge:$rootProject.coordinates_display_version"
 }
 
 unifiedPublishing {

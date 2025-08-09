@@ -91,15 +91,11 @@ public class CrosshairWidget implements VanillaWidget {
     }
 
     public void renderCrosshair(GuiGraphics guiGraphics, int x, int y) {
-        RenderSystem.enableBlend();
-
         if (crosshairType == CrosshairType.DEFAULT) {
             guiGraphics.blitSprite(RenderType::guiTextured, ResourceLocation.withDefaultNamespace("hud/crosshair"), x, y, 15, 15, applyAlpha(getColor()));
         } else {
             guiGraphics.blit(RenderType::guiTextured, crosshairType.texture, x, y, 0, 0, 15, 15, 15, 15, applyAlpha(getColor()));
         }
-
-        RenderSystem.disableBlend();
     }
 
     @Override

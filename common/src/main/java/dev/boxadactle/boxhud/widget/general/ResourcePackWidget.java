@@ -62,7 +62,7 @@ public class ResourcePackWidget implements Widgets.General {
 
             try (InputStream inputstream = iosupplier.get()) {
                 NativeImage nativeimage = NativeImage.read(inputstream);
-                ClientUtils.getClient().getTextureManager().register(resourcelocation, new DynamicTexture(nativeimage));
+                ClientUtils.getClient().getTextureManager().register(resourcelocation, new DynamicTexture(resourcelocation::toString, nativeimage));
                 packIcons.put(resourcepack.getId(), resourcelocation);
                 return resourcelocation;
             }

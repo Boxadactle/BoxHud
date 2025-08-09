@@ -1,6 +1,7 @@
 package dev.boxadactle.boxhud.util;
 
 import dev.boxadactle.boxhud.Boxhud;
+import dev.boxadactle.boxhud.mixin.InventoryAccessor;
 import dev.boxadactle.boxlib.util.WorldUtils;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -16,11 +17,10 @@ public class InventoryUtils {
     }
 
     public static List<ItemStack> getItemList(Player player) {
-        List<ItemStack> items = new ArrayList<>();
         Inventory inventory = player.getInventory();
-        items.addAll(inventory.armor.stream().map(ItemStack::copy).toList());
-        items.addAll(inventory.offhand.stream().map(ItemStack::copy).toList());
-        items.addAll(inventory.items.stream().map(ItemStack::copy).toList());
+        List<ItemStack> items = new ArrayList<>(((InventoryAccessor) inventory).getItems().stream().map(ItemStack::copy).toList());
+        for (int i = 36; i <= 40; i++) items.add(player.getInventory().getItem(i));
+
         return items;
     }
 

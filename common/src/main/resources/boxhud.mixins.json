@@ -13,7 +13,8 @@
     "MinecraftMixin",
     "MouseHandlerMixin",
     "PlayerMixin",
-    "ScoreboardMixin"
+    "ScoreboardMixin",
+    "InventoryAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

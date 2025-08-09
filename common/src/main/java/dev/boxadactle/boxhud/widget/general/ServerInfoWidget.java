@@ -71,9 +71,7 @@ public class ServerInfoWidget implements Widgets.General {
 
                 @Override
                 public void render(GuiGraphics guiGraphics, int i, int i1) {
-                    RenderSystem.enableBlend();
                     guiGraphics.blit(RenderType::guiTextured, getIcon(data), i, i1, 0.0F, 0.0F, size, size, size, size);
-                    RenderSystem.disableBlend();
                 }
             });
         }

@@ -48,8 +48,6 @@ public class ComboWidget implements Widgets.Pvp, SimpleTextWidget {
             return;
         }
 
-        Boxhud.LOGGER.info(entity.getId() + " attacked by " + WorldUtils.getPlayer().getId());
-
         if (target == -1 || entity.getId() != target) {
             target = entity.getId();
             count = 1;

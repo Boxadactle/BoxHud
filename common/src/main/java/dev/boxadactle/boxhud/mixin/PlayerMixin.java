@@ -20,7 +20,7 @@ public abstract class PlayerMixin extends LivingEntity {
 
     @Inject(
             method = "attack",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;setLastHurtMob(Lnet/minecraft/world/entity/Entity;)V")
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/Item;getAttackDamageBonus(Lnet/minecraft/world/entity/Entity;FLnet/minecraft/world/damagesource/DamageSource;)F", ordinal = 0)
     )
     public void onAttack(Entity target, CallbackInfo ci) {
         if (level().isClientSide()) BoxEvents.ENTITY_ATTACK.invoker().onEntityAttack(target);
