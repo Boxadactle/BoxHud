@@ -17,6 +17,7 @@ import dev.boxadactle.boxlib.util.ClientUtils;
 import dev.boxadactle.boxlib.util.GuiUtils;
 import dev.boxadactle.boxlib.util.WorldUtils;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -92,9 +93,9 @@ public class CrosshairWidget implements VanillaWidget {
 
     public void renderCrosshair(GuiGraphics guiGraphics, int x, int y) {
         if (crosshairType == CrosshairType.DEFAULT) {
-            guiGraphics.blitSprite(RenderType::guiTextured, ResourceLocation.withDefaultNamespace("hud/crosshair"), x, y, 15, 15, applyAlpha(getColor()));
+            guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, ResourceLocation.withDefaultNamespace("hud/crosshair"), x, y, 15, 15, applyAlpha(getColor()));
         } else {
-            guiGraphics.blit(RenderType::guiTextured, crosshairType.texture, x, y, 0, 0, 15, 15, 15, 15, applyAlpha(getColor()));
+            guiGraphics.blit(RenderPipelines.GUI_TEXTURED, crosshairType.texture, x, y, 0, 0, 15, 15, 15, 15, applyAlpha(getColor()));
         }
     }
 

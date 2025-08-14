@@ -1,10 +1,12 @@
 package dev.boxadactle.boxhud;
 
 import dev.boxadactle.boxhud.util.IconButton;
+import dev.boxadactle.boxlib.gui.config.BConfigList;
 import dev.boxadactle.boxlib.gui.config.BOptionScreen;
 import dev.boxadactle.boxlib.gui.config.widget.button.BBooleanButton;
-import dev.boxadactle.boxlib.gui.config.widget.button.BConfigScreenButton;
+import dev.boxadactle.boxlib.gui.config.widget.button.BScreenButton;
 import dev.boxadactle.boxlib.gui.config.widget.label.BLabel;
+import dev.boxadactle.boxlib.gui.widget.CenteredLabelWidget;
 import dev.boxadactle.boxlib.layouts.RenderingLayout;
 import dev.boxadactle.boxlib.util.ClientUtils;
 import dev.boxadactle.boxlib.util.GuiUtils;
@@ -12,6 +14,7 @@ import dev.boxadactle.boxlib.util.RenderUtils;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.layouts.LinearLayout;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -22,12 +25,12 @@ public class WidgetListScreen extends BOptionScreen {
     String search = "";
 
     public WidgetListScreen(Screen parent) {
-        super(parent);
+        super(parent, Component.translatable("boxhud.gui.widget"));
     }
 
     @Override
-    protected int getScrollingWidgetStart() {
-        return super.getScrollingWidgetStart() + 22;
+    protected int getHeaderHeight() {
+        return super.getHeaderHeight() + 22;
     }
 
     @Override
@@ -46,24 +49,25 @@ public class WidgetListScreen extends BOptionScreen {
     }
 
     @Override
-    protected Component getName() {
-        return Component.translatable("boxhud.gui.widget");
-    }
+    protected void addTitle() {
+        LinearLayout title = layout.addToHeader(LinearLayout.vertical().spacing(getPadding()));
 
-    @Override
-    protected void initFooter(int i, int i1) {
+        title.addChild(new CenteredLabelWidget(0, 0, getButtonWidth(ButtonType.NORMAL), 20, this.title));
+
         EditBox searchField = addRenderableWidget(new EditBox(GuiUtils.getTextRenderer(), 0, 20, Component.translatable("screen.flatedit.selectblock.search")));
         searchField.setResponder(s -> {
             search = s;
             configList.children().clear();
-            initConfigButtons();
+            addOptions();
         });
-        searchField.setX(i);
-        searchField.setY(20);
         searchField.setMaxLength(128);
         searchField.setWidth(250);
+        title.addChild(searchField);
+    }
 
-        addRenderableWidget(createDoneButton(i, i1, b -> onClose()));
+    @Override
+    protected void initFooter(LinearLayout layout) {
+        layout.addChild(createDoneButton(b -> onClose()));
 
         addRenderableWidget(new IconButton(3, 3, 24, 24, 16, 16, ResourceLocation.fromNamespaceAndPath(Boxhud.MOD_ID, "textures/icons/move.png"), (b) -> ClientUtils.setScreen(new WidgetPositionScreen(this))));
 
@@ -72,7 +76,7 @@ public class WidgetListScreen extends BOptionScreen {
     }
 
     @Override
-    protected void initConfigButtons() {
+    protected void addOptions() {
         for (var category : HudWidget.HudCategory.values()) {
             var widgets = BoxWidgets.widgetConfigs.values().stream()
                     .filter(e -> e.widget.getCategory() == category)
@@ -94,7 +98,7 @@ public class WidgetListScreen extends BOptionScreen {
         BoxWidgets.saveConfig(Boxhud.widgetConfigFile);
     }
 
-    public class WidgetCategoryEntry extends ConfigList.ConfigEntry {
+    public class WidgetCategoryEntry extends BConfigList.ConfigEntry {
 
         Component title;
 
@@ -115,19 +119,19 @@ public class WidgetListScreen extends BOptionScreen {
 
         @Override
         public void render(GuiGraphics p_93523_, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-            p_93523_.pose().pushPose();
-            p_93523_.pose().scale(2.0F, 2.0F, 0.0F);
+            p_93523_.pose().pushMatrix();
+            p_93523_.pose().scale(2.0F, 2.0F);
             p_93523_.drawCenteredString(GuiUtils.getTextRenderer(), title, WidgetListScreen.this.width / 4, y / 2 + entryHeight / 4, GuiUtils.WHITE);
-            p_93523_.pose().popPose();
+            p_93523_.pose().popMatrix();
         }
     }
 
-    public class WidgetConfigEntry extends ConfigList.ConfigEntry {
+    public class WidgetConfigEntry extends BConfigList.ConfigEntry {
 
         BLabel title;
 
         BBooleanButton enabled;
-        BConfigScreenButton settings;
+        BScreenButton settings;
 
         WidgetEntry<?> entry;
 
@@ -139,7 +143,7 @@ public class WidgetListScreen extends BOptionScreen {
                     entry.enabled,
                     v -> entry.enabled = v
             );
-            this.settings = new BConfigScreenButton(
+            this.settings = new BScreenButton(
                     Component.translatable("boxhud.gui.widget.settings"),
                     WidgetListScreen.this,
                     p -> entry.widget.getConfigScreen(p, entry)
@@ -180,12 +184,12 @@ public class WidgetListScreen extends BOptionScreen {
             x += (int) ((maxWidth - rect.getWidth() * scale) / 2) + 5;
             y += (int) ((getRowHeight() - rect.getHeight() * scale) / 2 - 2);
 
-            guiGraphics.pose().pushPose();
-            guiGraphics.pose().scale(scale, scale, 0.0F);
+            guiGraphics.pose().pushMatrix();
+            guiGraphics.pose().scale(scale, scale);
             widg.setPosition((int) (x / scale), (int) (y / scale));
             RenderUtils.drawSquare(guiGraphics, widg.calculateRect(), Boxhud.getConfig().backgroundColor);
             widg.render(guiGraphics);
-            guiGraphics.pose().popPose();
+            guiGraphics.pose().popMatrix();
         }
 
         @Override

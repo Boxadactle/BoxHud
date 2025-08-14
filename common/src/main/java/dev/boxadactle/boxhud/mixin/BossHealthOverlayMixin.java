@@ -15,8 +15,8 @@ public class BossHealthOverlayMixin {
             at = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiling/ProfilerFiller;push(Ljava/lang/String;)V")
     )
     public void translateBar(GuiGraphics p_283175_, CallbackInfo ci) {
-        p_283175_.pose().pushPose();
-        p_283175_.pose().translate((float) -p_283175_.guiWidth() / 2 + 91, -3, 0.0F);
+        p_283175_.pose().pushMatrix();
+        p_283175_.pose().translate((float) -p_283175_.guiWidth() / 2 + 91, -3);
     }
 
     @Inject(
@@ -24,7 +24,7 @@ public class BossHealthOverlayMixin {
             at = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiling/ProfilerFiller;pop()V")
     )
     public void popBar(GuiGraphics p_283175_, CallbackInfo ci) {
-        p_283175_.pose().popPose();
+        p_283175_.pose().popMatrix();
     }
 
 }

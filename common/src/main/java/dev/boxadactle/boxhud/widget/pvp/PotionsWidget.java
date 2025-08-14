@@ -16,7 +16,9 @@ import dev.boxadactle.boxlib.layouts.layout.PaddingLayout;
 import dev.boxadactle.boxlib.layouts.layout.RowLayout;
 import dev.boxadactle.boxlib.util.ClientUtils;
 import dev.boxadactle.boxlib.util.WorldUtils;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Holder;
@@ -78,9 +80,7 @@ public class PotionsWidget implements Widgets.Pvp {
                 @Override
                 public void render(GuiGraphics guiGraphics, int i, int i1) {
                     Holder<MobEffect> holder = effect.getEffect();
-                    TextureAtlasSprite textureAtlasSprite = ClientUtils.getClient().getMobEffectTextures().get(holder);
-
-                    guiGraphics.blitSprite(RenderType::guiTextured, textureAtlasSprite, i, i1, getWidth(), getHeight());
+                    guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, Gui.getMobEffectSprite(holder), i, i1, getWidth(), getHeight());
                 }
             });
 

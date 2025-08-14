@@ -45,7 +45,7 @@ configurations {
 
 dependencies {
     implementation "dev.boxadactle:Boxlib-neoforge:$rootProject.boxlib_version"
-    compileOnly "dev.boxadactle:CoordinatesDisplay-neoforge:$rootProject.coordinates_display_version"
+    compileOnly(name: "coordinatesdisplay-neoforge-${rootProject.coordinates_display_version}")
 }
 
 unifiedPublishing {

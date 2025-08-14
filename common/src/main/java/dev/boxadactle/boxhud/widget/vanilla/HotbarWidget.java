@@ -2,12 +2,14 @@ package dev.boxadactle.boxhud.widget.vanilla;
 
 import dev.boxadactle.boxhud.PositionModifiers;
 import dev.boxadactle.boxhud.mixin.GuiInvoker;
+import dev.boxadactle.boxhud.util.ModUtil;
 import dev.boxadactle.boxhud.widget.VanillaWidget;
 import dev.boxadactle.boxlib.math.geometry.Dimension;
 import dev.boxadactle.boxlib.util.ClientUtils;
 import dev.boxadactle.boxlib.util.GuiUtils;
 import dev.boxadactle.boxlib.util.WorldUtils;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -16,7 +18,7 @@ import net.minecraft.world.item.Items;
 public class HotbarWidget implements VanillaWidget {
     @Override
     public void render(GuiGraphics graphics, int x, int y) {
-        renderPositioned(graphics, x, y, () -> ((GuiInvoker) ClientUtils.getClient().gui).invokeRenderHotbar(graphics, getDummyTracker()));
+        renderPositioned(graphics, x, y, () -> ModUtil.renderHotbar(ClientUtils.getClient().gui, graphics, getDummyTracker()));
     }
 
     @Override
@@ -25,8 +27,8 @@ public class HotbarWidget implements VanillaWidget {
             render(graphics, x, y);
         } else {
             renderPositioned(graphics, x, y, () -> {
-                graphics.blitSprite(RenderType::guiTextured, ResourceLocation.withDefaultNamespace("hud/hotbar"), 0, 40, 182, 22);
-                graphics.blitSprite(RenderType::guiTextured, ResourceLocation.withDefaultNamespace("hud/hotbar_selection"), 59, 39, 24, 23);
+                graphics.blitSprite(RenderPipelines.GUI_TEXTURED, ResourceLocation.withDefaultNamespace("hud/hotbar"), 0, 40, 182, 22);
+                graphics.blitSprite(RenderPipelines.GUI_TEXTURED, ResourceLocation.withDefaultNamespace("hud/hotbar_selection"), 59, 39, 24, 23);
 
                 var stack = new ItemStack(Items.OAK_BOAT);
                 graphics.renderFakeItem(stack, 64, 44);

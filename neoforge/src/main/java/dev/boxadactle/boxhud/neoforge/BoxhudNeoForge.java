@@ -1,6 +1,7 @@
 package dev.boxadactle.boxhud.neoforge;
 
 import dev.boxadactle.boxhud.*;
+import dev.boxadactle.boxhud.neoforge.mixin.GuiInvoker;
 import dev.boxadactle.boxhud.util.ModUtil;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -21,6 +22,7 @@ public final class BoxhudNeoForge {
         );
 
         ModUtil.packExclusionFilter = (pack) -> pack.getId().startsWith("mod/") || pack.getId().equalsIgnoreCase("mod_resources");
+        ModUtil.hotbarRenderer = (gui, graphics, delta) -> ((GuiInvoker) gui).invokeRenderHotbar(graphics, delta);
     }
 
     @EventBusSubscriber(modid = Boxhud.MOD_ID, value = Dist.CLIENT)

@@ -51,10 +51,10 @@ public class CompassWidget implements Widgets.General {
 
             @Override
             public void render(GuiGraphics guiGraphics, int i, int i1) {
-                guiGraphics.pose().pushPose();
-                guiGraphics.pose().scale(2, 2, 2);
+                guiGraphics.pose().pushMatrix();
+                guiGraphics.pose().scale(2, 2);
                 guiGraphics.renderItem(new ItemStack(Items.COMPASS), i / 2, i1 / 2);
-                guiGraphics.pose().popPose();
+                guiGraphics.pose().popMatrix();
             }
         });
 

@@ -27,10 +27,10 @@ public interface VanillaWidget extends Widgets.Vanilla {
     default void renderPositioned(GuiGraphics graphics, int x, int y, Runnable runnable) {
         // since our mixin moves the overlay to 0, 0,
         // we can use matrix to translate the position
-        graphics.pose().pushPose();
-        graphics.pose().translate(x, y, 0);
+        graphics.pose().pushMatrix();
+        graphics.pose().translate(x, y);
         runnable.run();
-        graphics.pose().popPose();
+        graphics.pose().popMatrix();
     }
 
     @Override

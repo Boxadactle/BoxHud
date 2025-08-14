@@ -51,7 +51,6 @@ public class WidgetPositionScreen extends Screen {
 
     @Override
     public void render(GuiGraphics guiGraphics, int i, int j, float f) {
-        renderBackground(guiGraphics, i, j, f);
         RenderUtils.drawSquare(guiGraphics, 0, 0, width, height, 0x901b1c1c);
         super.render(guiGraphics, i, j, f);
         RenderUtils.drawTextCentered(guiGraphics, Component.translatable("boxhud.gui.widgetconfig.doubleClick"), width / 2, 5);
@@ -245,8 +244,8 @@ public class WidgetPositionScreen extends Screen {
             moveHud(mouseX, mouseY);
 
             if (!bl) {
-                guiGraphics.pose().pushPose();
-                guiGraphics.pose().scale(entry.scale, entry.scale, 1.0f);
+                guiGraphics.pose().pushMatrix();
+                guiGraphics.pose().scale(entry.scale, entry.scale);
                 RenderUtils.drawSquare(guiGraphics, bounds, 0x801f1f1f);
 
                 // outline
@@ -260,7 +259,7 @@ public class WidgetPositionScreen extends Screen {
                 guiGraphics.fill(x, y + 2, x + 2, y + height - 2, color);
                 guiGraphics.fill(x + width - 2, y + 2, x + width, y + height - 2, color);
 
-                guiGraphics.pose().popPose();
+                guiGraphics.pose().popMatrix();
             }
             boolean bl2 = entry.renderBackground;
             entry.renderBackground = false;
@@ -271,13 +270,13 @@ public class WidgetPositionScreen extends Screen {
                 int color = 0x50c7c7c7;
                 int scaleColor = 0x99d9fffa;
 
-                guiGraphics.pose().pushPose();
-                guiGraphics.pose().scale(entry.scale, entry.scale, 1.0f);
+                guiGraphics.pose().pushMatrix();
+                guiGraphics.pose().scale(entry.scale, entry.scale);
 
                 RenderUtils.drawSquare(guiGraphics, bounds, color);
 
                 RenderUtils.drawSquare(guiGraphics, calcScaleButton(), scaleColor);
-                guiGraphics.pose().popPose();
+                guiGraphics.pose().popMatrix();
             }
 
             if (isDragging) {

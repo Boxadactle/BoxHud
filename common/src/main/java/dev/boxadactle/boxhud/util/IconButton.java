@@ -2,6 +2,7 @@ package dev.boxadactle.boxhud.util;
 
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -25,6 +26,6 @@ public class IconButton extends Button {
         super.renderWidget(guiGraphics, mouseX, mouseY, partialTick);
         int i = this.getX() + this.getWidth() / 2 - this.spriteWidth / 2;
         int j = this.getY() + this.getHeight() / 2 - this.spriteHeight / 2;
-        guiGraphics.blit(RenderType::guiTextured, this.sprite, i, j, 0, 0, this.spriteWidth, this.spriteHeight, spriteWidth, spriteHeight);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, this.sprite, i, j, 0, 0, this.spriteWidth, this.spriteHeight, spriteWidth, spriteHeight);
     }
 }

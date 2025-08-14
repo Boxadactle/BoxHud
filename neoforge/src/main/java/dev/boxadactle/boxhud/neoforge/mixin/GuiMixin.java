@@ -1,13 +1,11 @@
 package dev.boxadactle.boxhud.neoforge.mixin;
 
 import dev.boxadactle.boxhud.BoxWidgets;
-import dev.boxadactle.boxhud.Boxhud;
 import net.minecraft.client.DeltaTracker;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.LayeredDraw;
-import net.minecraft.client.gui.components.DebugScreenOverlay;
-import net.minecraft.client.gui.components.SubtitleOverlay;
+import net.minecraft.client.gui.screens.ReceivingLevelScreen;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.client.gui.GuiLayerManager;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
@@ -16,20 +14,26 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@SuppressWarnings("UnstableApiUsage")
+import java.util.function.BooleanSupplier;
+
 @Mixin(Gui.class)
 public abstract class GuiMixin {
+
+    @Shadow @Final private GuiLayerManager layerManager;
+
+    @Shadow @Final private Minecraft minecraft;
+
     @Shadow protected abstract void renderCameraOverlays(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
 
-    @Shadow protected abstract void maybeRenderSpectatorTooltip(GuiGraphics p_316628_, DeltaTracker deltaTracker);
+    @Shadow protected abstract void renderContextualInfoBarBackground(GuiGraphics p_316628_, DeltaTracker p_348543_);
+
+    @Shadow protected abstract void renderSleepOverlay(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
 
     @Shadow protected abstract void renderDemoOverlay(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
 
-    @Shadow @Final protected DebugScreenOverlay debugOverlay;
+    @Shadow protected abstract void renderDebugOverlay(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
 
     @Shadow protected abstract void renderTitle(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
 
@@ -37,48 +41,30 @@ public abstract class GuiMixin {
 
     @Shadow protected abstract void renderTabList(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
 
-    @Shadow @Final protected SubtitleOverlay subtitleOverlay;
+    @Shadow protected abstract void renderSubtitleOverlay(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
 
-    @Shadow public abstract void renderSavingIndicator(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
-
-    @ModifyArg(
-            method = "<init>",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/neoforged/neoforge/client/gui/GuiLayerManager;add(Lnet/neoforged/neoforge/client/gui/GuiLayerManager;Ljava/util/function/BooleanSupplier;)Lnet/neoforged/neoforge/client/gui/GuiLayerManager;",
-                    ordinal = 1
-            )
+    @Inject(
+            method = "registerVanillaLayers",
+            at = @At("HEAD"),
+            cancellable = true
     )
-    public GuiLayerManager overrideManager(GuiLayerManager value) {
-        // we only add what we aren't overriding so it still renders
-        return (new GuiLayerManager())
-                .add(VanillaGuiLayers.CAMERA_OVERLAYS, this::renderCameraOverlays)
-                .add(VanillaGuiLayers.SPECTATOR_TOOLTIP, this::maybeRenderSpectatorTooltip)
-                .add(ResourceLocation.fromNamespaceAndPath(Boxhud.MOD_ID, "widgets"), ((guiGraphics, f) -> BoxWidgets.renderAll(guiGraphics)));
-    }
+    public void removeVanillaLayers(CallbackInfo ci) {
+        BooleanSupplier guiVisible = () -> !this.minecraft.options.hideGui;
+        this.layerManager.add(VanillaGuiLayers.CAMERA_OVERLAYS, this::renderCameraOverlays, guiVisible);
+        this.layerManager.add(VanillaGuiLayers.AFTER_CAMERA_DECORATIONS, (guiGraphics, deltaTracker) -> guiGraphics.nextStratum(), guiVisible);
+        layerManager.add(ResourceLocation.fromNamespaceAndPath("boxhud", "widgets"), (g, d) -> BoxWidgets.renderAll(g));
 
-    @ModifyArg(
-            method = "<init>",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/neoforged/neoforge/client/gui/GuiLayerManager;add(Lnet/neoforged/neoforge/client/gui/GuiLayerManager;Ljava/util/function/BooleanSupplier;)Lnet/neoforged/neoforge/client/gui/GuiLayerManager;",
-                    ordinal = 2
-            )
-    )
-    public GuiLayerManager overrideManager2(GuiLayerManager value) {
-        // we only add what we aren't overriding so it still renders
-        return (new GuiLayerManager())
-                .add(VanillaGuiLayers.DEMO_OVERLAY, this::renderDemoOverlay)
-                .add(VanillaGuiLayers.DEBUG_OVERLAY, (p_315812_, p_315813_) -> {
-                    if (this.debugOverlay.showDebugScreen()) {
-                        this.debugOverlay.render(p_315812_);
-                    }
-                })
-                .add(VanillaGuiLayers.TITLE, this::renderTitle)
-                .add(VanillaGuiLayers.CHAT, this::renderChat)
-                .add(VanillaGuiLayers.TAB_LIST, this::renderTabList)
-                .add(VanillaGuiLayers.SUBTITLE_OVERLAY, (p_315816_, p_315817_) -> this.subtitleOverlay.render(p_315816_))
-                .add(VanillaGuiLayers.SAVING_INDICATOR, this::renderSavingIndicator);
+        this.layerManager.add(VanillaGuiLayers.CONTEXTUAL_INFO_BAR_BACKGROUND, this::renderContextualInfoBarBackground, guiVisible);
+        this.layerManager.add(VanillaGuiLayers.CONTEXTUAL_INFO_BAR, this::renderContextualInfoBarBackground, guiVisible);
+        this.layerManager.add(VanillaGuiLayers.SLEEP_OVERLAY, this::renderSleepOverlay);
+        this.layerManager.add(VanillaGuiLayers.DEMO_OVERLAY, this::renderDemoOverlay, guiVisible);
+        this.layerManager.add(VanillaGuiLayers.DEBUG_OVERLAY, this::renderDebugOverlay, guiVisible);
+        this.layerManager.add(VanillaGuiLayers.TITLE, this::renderTitle, guiVisible);
+        this.layerManager.add(VanillaGuiLayers.CHAT, this::renderChat, guiVisible);
+        this.layerManager.add(VanillaGuiLayers.TAB_LIST, this::renderTabList, guiVisible);
+        this.layerManager.add(VanillaGuiLayers.SUBTITLE_OVERLAY, this::renderSubtitleOverlay, guiVisible);
+
+        ci.cancel();
     }
 
 }

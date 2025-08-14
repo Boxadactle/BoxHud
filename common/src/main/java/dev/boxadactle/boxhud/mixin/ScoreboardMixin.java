@@ -17,14 +17,13 @@ public class ScoreboardMixin {
             at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;fill(IIIII)V", ordinal = 0)
     )
     public void startTranslation(GuiGraphics guiGraphics, Objective objective, CallbackInfo ci, @Local(ordinal = 1) int j) {
-        guiGraphics.pose().pushPose();
+        guiGraphics.pose().pushMatrix();
         int j1 = objective.getScoreboard().listPlayerScores(objective).stream().filter(l -> !l.isHidden()).limit(15L).toArray().length * 9;
         int k1 = guiGraphics.guiHeight() / 2 + j1 / 3;
         int i3 = k1 - j1;
         guiGraphics.pose().translate(
                 -guiGraphics.guiWidth() + 5.0F + j,
-                -i3 + 10.0F,
-                0.0F
+                -i3 + 10.0F
         );
     }
 
@@ -33,7 +32,7 @@ public class ScoreboardMixin {
             at = @At("TAIL")
     )
     public void endTranslation(GuiGraphics guiGraphics, Objective objective, CallbackInfo ci) {
-        guiGraphics.pose().popPose();
+        guiGraphics.pose().popMatrix();
     }
 
 }

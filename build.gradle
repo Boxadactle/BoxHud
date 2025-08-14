@@ -30,6 +30,11 @@ subprojects {
         maven { url = "https://maven.terraformersmc.com/releases/" }
         maven { url = "https://maven.boxadactle.dev/releases" }
         maven { url = "https://maven.boxadactle.dev/snapshots" }
+        flatDir { dirs "$rootProject.rootDir/libs" }
+    }
+
+    configurations.all {
+        resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
     }
 }
 

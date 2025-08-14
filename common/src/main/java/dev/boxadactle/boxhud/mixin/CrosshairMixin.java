@@ -1,5 +1,6 @@
 package dev.boxadactle.boxhud.mixin;
 
+import com.mojang.blaze3d.pipeline.RenderPipeline;
 import dev.boxadactle.boxhud.BoxWidgets;
 import dev.boxadactle.boxhud.WidgetEntry;
 import dev.boxadactle.boxhud.widget.vanilla.CrosshairWidget;
@@ -15,19 +16,16 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-import java.util.function.Function;
-
 @Mixin(Gui.class)
 public class CrosshairMixin {
     @Redirect(
             method = "renderCrosshair",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/gui/GuiGraphics;blitSprite(Ljava/util/function/Function;Lnet/minecraft/resources/ResourceLocation;IIII)V",
-                    ordinal = 0
+                    target = "Lnet/minecraft/client/gui/GuiGraphics;blitSprite(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/ResourceLocation;IIII)V"
             )
     )
-    public void redirectBlitSprite(GuiGraphics instance, Function<ResourceLocation, RenderType> p_365180_, ResourceLocation p_298820_, int p_300417_, int p_298256_, int p_299965_, int p_300008_) {
+    public void redirectBlitSprite(GuiGraphics instance, RenderPipeline pipeline, ResourceLocation sprite, int x, int y, int width, int height) {
         WidgetEntry<CrosshairWidget> entry = BoxWidgets.getWidgetEntryUnchecked("crosshair");
 
         assert entry != null;
@@ -50,32 +48,5 @@ public class CrosshairMixin {
     )
     public int modifyIndicatorX(int x) {
         return 0;
-    }
-
-    @Redirect(
-            method = "renderCrosshair",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/client/gui/components/DebugScreenOverlay;showDebugScreen()Z",
-                    ordinal = 0
-            )
-    )
-    public boolean redirectIsReducedDebugInfo(DebugScreenOverlay instance) {
-        WidgetEntry<CrosshairWidget> entry = BoxWidgets.getWidgetEntryUnchecked("crosshair");
-
-        return instance.showDebugScreen() && entry.widget.allowDebugCrosshair;
-    }
-
-    @Redirect(
-            method = "renderCrosshair",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lorg/joml/Matrix4fStack;translate(FFF)Lorg/joml/Matrix4f;",
-                    ordinal = 0
-            ),
-            remap = false
-    )
-    public Matrix4f redirectTranslate(Matrix4fStack instance, float x, float y, float z) {
-        return instance.translate(10.0F, 10.0F, 0.0F);
     }
 }

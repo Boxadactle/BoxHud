@@ -13,7 +13,7 @@ dependencies {
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
 
     modImplementation ("dev.boxadactle:Boxlib-fabric:${boxlib_version}") { transitive = false }
-    modImplementation("dev.boxadactle:CoordinatesDisplay-fabric:${rootProject.coordinates_display_version}") { transitive = false }
+    modImplementation(name: "coordinatesdisplay-fabric-${rootProject.coordinates_display_version}")
 
     modImplementation("com.terraformersmc:modmenu:${rootProject.modmenu_version}") {
         transitive = false

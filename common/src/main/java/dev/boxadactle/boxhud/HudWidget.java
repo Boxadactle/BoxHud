@@ -6,6 +6,7 @@ import dev.boxadactle.boxlib.layouts.RenderingLayout;
 import dev.boxadactle.boxlib.math.geometry.Vec2;
 import dev.boxadactle.boxlib.util.GuiUtils;
 import net.minecraft.client.DeltaTracker;
+import net.minecraft.client.gui.layouts.LinearLayout;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
@@ -69,19 +70,14 @@ public interface HudWidget {
     }
 
     default Screen getConfigScreen(Screen parent, WidgetEntry<?> entry) {
-        return new BoxhudConfigScreen(parent) {
+        return new BoxhudConfigScreen(parent, Component.translatable("boxhud.gui.widgetconfig.widget", entry.getName())) {
             @Override
-            protected Component getName() {
-                return Component.translatable("boxhud.gui.widgetconfig.widget", entry.getName());
+            protected void initFooter(LinearLayout layout) {
+                layout.addChild(setSaveButton(createDoneButton(parent)));
             }
 
             @Override
-            protected void initFooter(int i, int i1) {
-                addRenderableWidget(setSaveButton(createDoneButton(i, i1, parent)));
-            }
-
-            @Override
-            protected void initConfigButtons() {
+            protected void addOptions() {
                 getConfigFactory().add(entry, this::addConfigLine);
 
                 addConfigLine(new BBooleanButton(

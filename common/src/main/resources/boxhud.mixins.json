@@ -9,12 +9,12 @@
     "BossHealthOverlayMixin",
     "CrosshairMixin",
     "GuiInvoker",
+    "InventoryAccessor",
     "MinecraftAccessor",
     "MinecraftMixin",
     "MouseHandlerMixin",
     "PlayerMixin",
-    "ScoreboardMixin",
-    "InventoryAccessor"
+    "ScoreboardMixin"
   ],
   "injectors": {
     "defaultRequire": 1

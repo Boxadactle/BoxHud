@@ -16,7 +16,7 @@ public class CoordinatesDisplayWrapper {
     static Object tempPos = null;
 
     public static BOptionScreen getConfigScreen(Screen parent) {
-        return new dev.boxadactle.coordinatesdisplay.screen.ConfigScreen(parent);
+        return new dev.boxadactle.coordinatesdisplay.gui.ConfigScreen(parent);
     }
 
     public static void disableModRendering() {
@@ -51,7 +51,7 @@ public class CoordinatesDisplayWrapper {
         }
 
         return Optional.of(dev.boxadactle.coordinatesdisplay.CoordinatesDisplay.HUD.preRender(
-                dev.boxadactle.coordinatesdisplay.hud.Hud.RenderType.SCREEN,
+                dev.boxadactle.coordinatesdisplay.Hud.RenderType.SCREEN,
                 pos, x, y,
                 dev.boxadactle.coordinatesdisplay.CoordinatesDisplay.getConfig().renderMode,
                 dev.boxadactle.coordinatesdisplay.CoordinatesDisplay.getConfig().startCorner

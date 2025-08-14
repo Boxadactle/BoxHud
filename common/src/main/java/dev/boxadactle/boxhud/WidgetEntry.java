@@ -44,27 +44,27 @@ public class WidgetEntry<T extends HudWidget> {
     }
 
     public Rect<Integer> render(GuiGraphics graphics) {
-        graphics.pose().pushPose();
-        graphics.pose().scale(scale, scale, 1.0f);
+        graphics.pose().pushMatrix();
+        graphics.pose().scale(scale, scale);
         RenderingLayout layout = preRender();
         if (renderBackground) {
             RenderUtils.drawSquare(graphics, layout.calculateRect(), Boxhud.getConfig().backgroundColor);
         }
         layout.render(graphics);
-        graphics.pose().popPose();
+        graphics.pose().popMatrix();
 
         return layout.calculateRect();
     }
 
     public Rect<Integer> renderPlaceholder(GuiGraphics graphics) {
-        graphics.pose().pushPose();
-        graphics.pose().scale(scale, scale, 1.0f);
+        graphics.pose().pushMatrix();
+        graphics.pose().scale(scale, scale);
         RenderingLayout layout = preRender(true);
         if (renderBackground) {
             RenderUtils.drawSquare(graphics, layout.calculateRect(), Boxhud.getConfig().backgroundColor);
         }
         layout.render(graphics);
-        graphics.pose().popPose();
+        graphics.pose().popMatrix();
 
         return layout.calculateRect();
     }

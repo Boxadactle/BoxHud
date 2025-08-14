@@ -4,22 +4,18 @@ import dev.boxadactle.boxlib.gui.config.widget.BSpacingEntry;
 import dev.boxadactle.boxlib.gui.config.widget.field.BHexField;
 import dev.boxadactle.boxlib.gui.config.widget.label.BCenteredLabel;
 import dev.boxadactle.boxlib.gui.config.widget.slider.BIntegerSlider;
+import net.minecraft.client.gui.layouts.LinearLayout;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
 public class WidgetConfigScreen extends BoxhudConfigScreen {
     public WidgetConfigScreen(Screen parent) {
-        super(parent);
+        super(parent, Component.translatable("boxhud.gui.globalsettings.title"));
     }
 
     @Override
-    protected Component getName() {
-        return Component.translatable("boxhud.gui.globalsettings.title");
-    }
-
-    @Override
-    protected void initFooter(int i, int i1) {
-        addRenderableWidget(createDoneButton(i, i1, parent));
+    protected void initFooter(LinearLayout layout) {
+        layout.addChild(createDoneButton(parent));
     }
 
     private ModConfig config() {
@@ -27,7 +23,7 @@ public class WidgetConfigScreen extends BoxhudConfigScreen {
     }
 
     @Override
-    protected void initConfigButtons() {
+    protected void addOptions() {
         addConfigLine(new BCenteredLabel(Component.translatable("boxhud.gui.globalsettings.definitionColor")));
 
         addConfigLine(new BHexField(

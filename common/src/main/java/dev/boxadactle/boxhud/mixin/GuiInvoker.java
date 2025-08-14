@@ -15,9 +15,6 @@ public interface GuiInvoker {
     @Invoker("renderCrosshair")
     void invokeRenderCrosshair(GuiGraphics graphics, DeltaTracker deltaTracker);
 
-    @Invoker("renderHotbarAndDecorations")
-    void invokeRenderHotbar(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
-
     @Invoker("renderOverlayMessage")
     void invokeRenderOverlayMessage(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
 

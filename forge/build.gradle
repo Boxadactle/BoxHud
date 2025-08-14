@@ -83,7 +83,7 @@ dependencies {
     implementation('net.sf.jopt-simple:jopt-simple:5.0.4') { version { strictly '5.0.4' } }
 
     implementation "dev.boxadactle:Boxlib-forge:${boxlib_version}"
-    implementation("dev.boxadactle:CoordinatesDisplay-forge:${rootProject.coordinates_display_version}") { transitive = true }
+    implementation (name: "coordinatesdisplay-forge-${rootProject.coordinates_display_version}")
 }
 
 publishing {

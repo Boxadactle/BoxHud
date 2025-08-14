@@ -18,6 +18,7 @@ import dev.boxadactle.boxlib.util.ClientUtils;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.FaviconTexture;
 import net.minecraft.client.multiplayer.ServerData;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -71,7 +72,7 @@ public class ServerInfoWidget implements Widgets.General {
 
                 @Override
                 public void render(GuiGraphics guiGraphics, int i, int i1) {
-                    guiGraphics.blit(RenderType::guiTextured, getIcon(data), i, i1, 0.0F, 0.0F, size, size, size, size);
+                    guiGraphics.blit(RenderPipelines.GUI_TEXTURED, getIcon(data), i, i1, 0.0F, 0.0F, size, size, size, size);
                 }
             });
         }
