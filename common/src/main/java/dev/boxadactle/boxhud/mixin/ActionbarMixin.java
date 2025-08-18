@@ -17,8 +17,7 @@ public class ActionbarMixin {
 
     @Redirect(
             method = "renderOverlayMessage",
-            at = @At(value = "INVOKE", target = "Lorg/joml/Matrix3x2fStack;translate(FF)Lorg/joml/Matrix3x2f;"),
-            remap = false
+            at = @At(value = "INVOKE", target = "Lorg/joml/Matrix3x2fStack;translate(FF)Lorg/joml/Matrix3x2f;")
     )
     public Matrix3x2f dontTranslate(Matrix3x2fStack instance, float v, float i) {
         instance.translate((float) GuiUtils.getTextRenderer().width(overlayMessageString) / 2, 4.0F);

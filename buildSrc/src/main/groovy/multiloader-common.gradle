@@ -123,6 +123,10 @@ processResources {
     inputs.properties(expandProps)
 }
 
+tasks.named('javadoc', Javadoc).configure {
+    enabled = false
+}
+
 publishing {
     publications {
         register('mavenJava', MavenPublication) {
