@@ -1,3 +1,3 @@
 ## Changelog
-- Update 1.21.3
-- Made dynamic crosshair color dark red on critical hit
+- Fixed compass widget starting off screen
+- Fixed coordintaes display integration incorrectly translating

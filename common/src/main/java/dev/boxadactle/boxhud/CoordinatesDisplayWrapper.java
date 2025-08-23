@@ -54,7 +54,7 @@ public class CoordinatesDisplayWrapper {
                 dev.boxadactle.coordinatesdisplay.hud.Hud.RenderType.SCREEN,
                 pos, x, y,
                 dev.boxadactle.coordinatesdisplay.CoordinatesDisplay.getConfig().renderMode,
-                dev.boxadactle.coordinatesdisplay.CoordinatesDisplay.getConfig().startCorner
+                dev.boxadactle.coordinatesdisplay.registry.StartCorner.TOP_LEFT
         ));
     }
 
