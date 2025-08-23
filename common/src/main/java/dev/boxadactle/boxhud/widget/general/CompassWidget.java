@@ -111,7 +111,7 @@ public class CompassWidget implements Widgets.General {
 
     @Override
     public int getDefaultX() {
-        return 3000;
+        return 5;
     }
 
     @Override

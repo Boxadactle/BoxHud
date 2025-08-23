@@ -1,2 +1,3 @@
 ## Changelog
-- Update 1.21.5
+- Fixed compass widget starting off screen
+- Fixed coordintaes display integration incorrectly translating
