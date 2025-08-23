@@ -1,3 +1,3 @@
 ## Changelog
-- Update 1.21.1
-- Fix arrow widget starting off screen
+- Fixed compass widget starting off screen
+- Fixed coordintaes display integration incorrectly translating
