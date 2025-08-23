@@ -5,6 +5,7 @@ import dev.boxadactle.boxhud.WidgetEntry;
 import dev.boxadactle.boxhud.util.InventoryUtils;
 import dev.boxadactle.boxhud.widget.Widgets;
 import dev.boxadactle.boxlib.gui.config.BOptionEntry;
+import dev.boxadactle.boxlib.gui.config.widget.button.BColorPickerButton;
 import dev.boxadactle.boxlib.gui.config.widget.field.BHexField;
 import dev.boxadactle.boxlib.gui.config.widget.label.BCenteredLabel;
 import dev.boxadactle.boxlib.gui.config.widget.slider.BIntegerSlider;
@@ -114,20 +115,23 @@ public class ItemInfoWidget implements Widgets.General {
                         (value) -> entry.widget.itemExpiry = value
                 ));
 
-                consumer.accept(new BCenteredLabel(Component.translatable("boxhud.widget.iteminfo.additionColor")));
-                consumer.accept(new BHexField(
+                consumer.accept(new BColorPickerButton(
+                        "boxhud.widget.iteminfo.additionColor",
+                        screen, false,
                         entry.widget.additionColor,
                         c -> entry.widget.additionColor = c
                 ));
 
-                consumer.accept(new BCenteredLabel(Component.translatable("boxhud.widget.iteminfo.removalColor")));
-                consumer.accept(new BHexField(
+                consumer.accept(new BColorPickerButton(
+                        "boxhud.widget.iteminfo.removalColor",
+                        screen, false,
                         entry.widget.removalColor,
                         c -> entry.widget.removalColor = c
                 ));
 
-                consumer.accept(new BCenteredLabel(Component.translatable("boxhud.widget.iteminfo.countColor")));
-                consumer.accept(new BHexField(
+                consumer.accept(new BColorPickerButton(
+                        "boxhud.widget.iteminfo.countColor",
+                        screen, false,
                         entry.widget.countColor,
                         c -> entry.widget.countColor = c
                 ));

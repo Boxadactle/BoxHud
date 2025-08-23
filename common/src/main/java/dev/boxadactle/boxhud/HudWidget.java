@@ -1,6 +1,7 @@
 package dev.boxadactle.boxhud;
 
 import dev.boxadactle.boxlib.gui.config.BOptionEntry;
+import dev.boxadactle.boxlib.gui.config.BOptionScreen;
 import dev.boxadactle.boxlib.gui.config.widget.button.BBooleanButton;
 import dev.boxadactle.boxlib.layouts.RenderingLayout;
 import dev.boxadactle.boxlib.math.geometry.Vec2;
@@ -78,7 +79,7 @@ public interface HudWidget {
 
             @Override
             protected void addOptions() {
-                getConfigFactory().add(entry, this::addConfigLine);
+                getConfigFactory().add(entry, this::addConfigLine, this);
 
                 addConfigLine(new BBooleanButton(
                         "boxhud.gui.widget.enabled",
@@ -124,10 +125,13 @@ public interface HudWidget {
     HudCategory getCategory();
 
     abstract class ConfigFactory<T extends HudWidget> {
+        public BOptionScreen screen;
+
         protected abstract void addCustomConfigEntries(WidgetEntry<T> entry, Consumer<BOptionEntry<?>> consumer);
 
         @SuppressWarnings("unchecked")
-        public void add(WidgetEntry<?> entry, Consumer<BOptionEntry<?>> consumer) {
+        public void add(WidgetEntry<?> entry, Consumer<BOptionEntry<?>> consumer, BOptionScreen screen) {
+            this.screen = screen;
             addCustomConfigEntries((WidgetEntry<T>) entry, consumer);
         }
     }

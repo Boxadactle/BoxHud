@@ -8,6 +8,7 @@ import dev.boxadactle.boxhud.mixin.GuiInvoker;
 import dev.boxadactle.boxhud.widget.VanillaWidget;
 import dev.boxadactle.boxlib.gui.config.BOptionEntry;
 import dev.boxadactle.boxlib.gui.config.widget.button.BBooleanButton;
+import dev.boxadactle.boxlib.gui.config.widget.button.BColorPickerButton;
 import dev.boxadactle.boxlib.gui.config.widget.button.BEnumButton;
 import dev.boxadactle.boxlib.gui.config.widget.field.BHexField;
 import dev.boxadactle.boxlib.gui.config.widget.label.BCenteredLabel;
@@ -126,8 +127,9 @@ public class CrosshairWidget implements VanillaWidget {
                         GuiUtils.AQUA
                 ));
 
-                consumer.accept(new BCenteredLabel(Component.translatable("boxhud.widget.crosshair.color")));
-                consumer.accept(new BHexField(
+                consumer.accept(new BColorPickerButton(
+                        "boxhud.widget.crosshair.color",
+                        this.screen, false,
                         entry.widget.color,
                         (color) -> entry.widget.color = color
                 ));

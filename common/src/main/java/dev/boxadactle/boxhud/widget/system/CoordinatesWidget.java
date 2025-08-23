@@ -113,11 +113,6 @@ public class CoordinatesWidget implements Widgets.System {
 
     @Override
     public RenderingLayout createWidget(int x, int y) {
-        if (WorldUtils.getWorld() == null) {
-            ColumnLayout layout = new ColumnLayout(0, 0, 0);
-            layout.addComponent(new TextComponent(definition("error")));
-            return new PaddingLayout(x, y, padding(), layout);
-        }
         if (Boxhud.cdInstalled) {
             AtomicReference<Optional<RenderingLayout>> layout = new AtomicReference<>(Optional.empty());
             Boxhud.optDep(() -> layout.set(CoordinatesDisplayWrapper.executePrerender(WorldUtils.getPlayer(), x, y)));
@@ -126,6 +121,12 @@ public class CoordinatesWidget implements Widgets.System {
             } else {
                 Boxhud.LOGGER.error("Failed to get CoordinatesDisplay prerender, using default.");
             }
+        }
+
+        if (WorldUtils.getWorld() == null) {
+            ColumnLayout layout = new ColumnLayout(0, 0, 0);
+            layout.addComponent(new TextComponent(definition("error")));
+            return new PaddingLayout(x, y, padding(), layout);
         }
 
         Player player = WorldUtils.getPlayer();

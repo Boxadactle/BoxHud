@@ -87,7 +87,7 @@ public class ArrowWidget implements Widgets.Pvp {
 
             @Override
             public void render(GuiGraphics guiGraphics, int i, int i1) {
-                guiGraphics.drawCenteredString(GuiUtils.getTextRenderer(), getAmount(finalNumber), i + 8, i1, Boxhud.getConfig().dataColor);
+                guiGraphics.drawCenteredString(GuiUtils.getTextRenderer(), getAmount(finalNumber), i + 8, i1, GuiUtils.AUTO);
             }
         });
 

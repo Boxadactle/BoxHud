@@ -100,7 +100,7 @@
   "boxhud.widget.crosshair.colorType.default": "Default",
   "boxhud.widget.crosshair.colorType.custom": "Custom",
   "boxhud.widget.crosshair.colorType.dynamic": "Dynamic",
-  "boxhud.widget.crosshair.color": "Crosshair Color:",
+  "boxhud.widget.crosshair.color": "Crosshair Color: %s",
   "boxhud.widget.crosshair.opacity": "Crosshair Opacity: %s",
 
   "boxhud.widget.coords.name": "Coordinates",
@@ -126,9 +126,9 @@
   "boxhud.widget.iteminfo.add": "+ %s %s",
   "boxhud.widget.iteminfo.remove": "- %s %s",
   "boxhud.widget.iteminfo.itemExpiry": "Remove After: %s seconds",
-  "boxhud.widget.iteminfo.additionColor": "Addition Color",
-  "boxhud.widget.iteminfo.removalColor": "Removal Color",
-  "boxhud.widget.iteminfo.countColor": "Count Color",
+  "boxhud.widget.iteminfo.additionColor": "Addition Color: %s",
+  "boxhud.widget.iteminfo.removalColor": "Removal Color: %s",
+  "boxhud.widget.iteminfo.countColor": "Count Color: %s",
 
   "boxhud.widget.potions.name": "Potion Effects",
   "boxhud.widget.potions.empty": "No Active Potion Effects",
@@ -148,8 +148,9 @@
   "boxhud.widget.time.twentyFourHourFormat": "24 Hour Format: %s",
 
   "boxhud.gui.globalsettings.title": "BoxHUD Global Settings",
-  "boxhud.gui.globalsettings.definitionColor": "Definition Color",
-  "boxhud.gui.globalsettings.dataColor": "Data Color",
+  "boxhud.gui.globalsettings.definitionColor": "Definition Color: %s",
+  "boxhud.gui.globalsettings.dataColor": "Data Color: %s",
+  "boxhud.gui.globalsettings.backgroundColor": "Background Color: %s",
   "boxhud.gui.globalsettings.padding": "Padding: %s",
 
   "boxhud.gui.widgetconfig.title": "BoxHud Widget Configuration",

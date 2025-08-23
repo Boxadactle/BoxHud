@@ -1,6 +1,7 @@
 package dev.boxadactle.boxhud;
 
 import dev.boxadactle.boxlib.gui.config.widget.BSpacingEntry;
+import dev.boxadactle.boxlib.gui.config.widget.button.BColorPickerButton;
 import dev.boxadactle.boxlib.gui.config.widget.field.BHexField;
 import dev.boxadactle.boxlib.gui.config.widget.label.BCenteredLabel;
 import dev.boxadactle.boxlib.gui.config.widget.slider.BIntegerSlider;
@@ -24,19 +25,26 @@ public class WidgetConfigScreen extends BoxhudConfigScreen {
 
     @Override
     protected void addOptions() {
-        addConfigLine(new BCenteredLabel(Component.translatable("boxhud.gui.globalsettings.definitionColor")));
-
-        addConfigLine(new BHexField(
+        addConfigLine(new BColorPickerButton(
+                "boxhud.gui.globalsettings.definitionColor",
+                this,
+                false,
                 config().definitionColor,
                 c -> config().definitionColor = c
         ));
 
-
-        addConfigLine(new BCenteredLabel(Component.translatable("boxhud.gui.globalsettings.dataColor")));
-
-        addConfigLine(new BHexField(
+        addConfigLine(new BColorPickerButton(
+                "boxhud.gui.globalsettings.dataColor",
+                this, false,
                 config().dataColor,
                 c -> config().dataColor = c
+        ));
+
+        addConfigLine(new BColorPickerButton(
+                "boxhud.gui.globalsettings.backgroundColor",
+                this, true,
+                config().backgroundColor,
+                c -> config().backgroundColor = c
         ));
 
         addConfigLine(new BSpacingEntry());

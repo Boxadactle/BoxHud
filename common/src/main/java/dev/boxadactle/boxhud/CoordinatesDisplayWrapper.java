@@ -6,7 +6,6 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ChunkPos;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
@@ -27,7 +26,7 @@ public class CoordinatesDisplayWrapper {
         return dev.boxadactle.coordinatesdisplay.CoordinatesDisplay.getConfig().renderBackground;
     }
 
-    public static Optional<RenderingLayout> executePrerender(@Nullable Player player, int x, int y) {
+    public static Optional<RenderingLayout> executePrerender(Player player, int x, int y) {
         dev.boxadactle.coordinatesdisplay.position.Position pos;
 
         if (player != null) {
@@ -54,7 +53,7 @@ public class CoordinatesDisplayWrapper {
                 dev.boxadactle.coordinatesdisplay.Hud.RenderType.SCREEN,
                 pos, x, y,
                 dev.boxadactle.coordinatesdisplay.CoordinatesDisplay.getConfig().renderMode,
-                dev.boxadactle.coordinatesdisplay.CoordinatesDisplay.getConfig().startCorner
+                dev.boxadactle.coordinatesdisplay.registry.StartCorner.TOP_LEFT
         ));
     }
 

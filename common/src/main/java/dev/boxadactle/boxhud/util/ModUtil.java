@@ -8,6 +8,7 @@ import dev.boxadactle.boxlib.util.WorldUtils;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.repository.Pack;
@@ -74,8 +75,8 @@ public class ModUtil {
         return String.format("%02d:%02d %s", hour, minute, amPm);
     }
 
-    public static Vec3<Double> mcVecToVec(net.minecraft.world.phys.Vec3 vec) {
-        return new Vec3<>(vec.x, vec.y, vec.z);
+    public static Vec3<Integer> mcVecToVec(BlockPos vec) {
+        return new Vec3<>(vec.getX(), vec.getY(), vec.getZ());
     }
 
     public static String formatDate24h(int hour, int minute) {
