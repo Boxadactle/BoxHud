@@ -4,14 +4,15 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import dev.boxadactle.boxhud.Boxhud;
 import dev.boxadactle.boxhud.PositionModifiers;
 import dev.boxadactle.boxhud.WidgetEntry;
+import dev.boxadactle.boxhud.WidgetListScreen;
 import dev.boxadactle.boxhud.mixin.GuiInvoker;
 import dev.boxadactle.boxhud.widget.VanillaWidget;
 import dev.boxadactle.boxlib.gui.config.BOptionEntry;
+import dev.boxadactle.boxlib.gui.config.widget.BCustomEntry;
+import dev.boxadactle.boxlib.gui.config.widget.BSpacingEntry;
 import dev.boxadactle.boxlib.gui.config.widget.button.BBooleanButton;
 import dev.boxadactle.boxlib.gui.config.widget.button.BColorPickerButton;
 import dev.boxadactle.boxlib.gui.config.widget.button.BEnumButton;
-import dev.boxadactle.boxlib.gui.config.widget.field.BHexField;
-import dev.boxadactle.boxlib.gui.config.widget.label.BCenteredLabel;
 import dev.boxadactle.boxlib.gui.config.widget.slider.BFloatSlider;
 import dev.boxadactle.boxlib.math.geometry.Dimension;
 import dev.boxadactle.boxlib.util.ClientUtils;
@@ -19,8 +20,6 @@ import dev.boxadactle.boxlib.util.GuiUtils;
 import dev.boxadactle.boxlib.util.WorldUtils;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
@@ -119,6 +118,17 @@ public class CrosshairWidget implements VanillaWidget {
                         GuiUtils.AQUA
                 ));
 
+                consumer.accept(new BCustomEntry((guiGraphics, x, y, width, height, mouseX, mouseY, delta) -> {
+                    guiGraphics.pose().pushMatrix();
+                    guiGraphics.pose().translate(x + (float) width / 2 - 30, y);
+                    guiGraphics.pose().scale(4.0F);
+                    renderCrosshair(guiGraphics, 0, 0);
+                    guiGraphics.pose().popMatrix();
+                }));
+
+                consumer.accept(new BSpacingEntry());
+                consumer.accept(new BSpacingEntry());
+
                 consumer.accept(new BEnumButton<>(
                         "boxhud.widget.crosshair.colorType",
                         entry.widget.colorType,
@@ -177,11 +187,13 @@ public class CrosshairWidget implements VanillaWidget {
     public enum CrosshairType {
         DEFAULT("null"),
         DOT("dot.png"),
+        ARROW("arrow.png"),
+        CIRCLE_AND_LINES("circle_lines.png"),
         DOT_AND_CIRCLE("dot_and_circle.png"),
+        DOT_AND_LINES("dot_lines.png"),
+        SQUARE_AND_CROSS("square_and_cross.png"),
         CROSS("cross.png"),
-        SQUARE("square.png"),
-        CIRCLE("circle.png"),
-        TRIANGLE("triangle.png"),
+        SEPARATED_CROSS("lines.png"),
         BOX("box.png"),
         RING("ring.png"),
         DOUBLE_RING("double_ring.png");

@@ -19,14 +19,13 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 
 import java.util.function.Consumer;
 
 public class CompassWidget implements Widgets.General {
     public boolean renderXYZ = true;
     public boolean renderDistance = false;
+    public boolean renderToWorldSpawn = false;
 
     @Override
     public String getNameKey() {
@@ -35,7 +34,11 @@ public class CompassWidget implements Widgets.General {
 
     public BlockPos resolveWorldSpawn() {
         try {
-            return WorldUtils.getWorld().getSharedSpawnPos();
+            if (renderToWorldSpawn) {
+                return WorldUtils.getWorld().getRespawnData().globalPos().pos();
+            } else {
+                return WorldUtils.getWorld().getRespawnData().pos();
+            }
         } catch (Exception var2) {
             return new BlockPos(0, 0, 0);
         }
@@ -135,6 +138,12 @@ public class CompassWidget implements Widgets.General {
                         "boxhud.widget.compass.renderDistance",
                         entry.widget.renderDistance,
                         value -> entry.widget.renderDistance = value
+                ));
+
+                consumer.accept(new BBooleanButton(
+                        "boxhud.widget.compass.renderToWorldSpawn",
+                        entry.widget.renderToWorldSpawn,
+                        value -> entry.widget.renderToWorldSpawn = value
                 ));
             }
         };

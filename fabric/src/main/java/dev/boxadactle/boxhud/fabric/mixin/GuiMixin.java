@@ -5,7 +5,7 @@ import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screens.ReceivingLevelScreen;
+import net.minecraft.client.gui.screens.LevelLoadingScreen;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -22,8 +22,6 @@ public abstract class GuiMixin {
 
     @Shadow protected abstract void renderSleepOverlay(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
 
-    @Shadow protected abstract void renderDebugOverlay(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
-
     @Shadow protected abstract void renderDemoOverlay(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
 
     @Shadow protected abstract void renderTitle(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
@@ -32,7 +30,7 @@ public abstract class GuiMixin {
 
     @Shadow protected abstract void renderTabList(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
 
-    @Shadow protected abstract void renderSubtitleOverlay(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
+    @Shadow public abstract void renderSubtitleOverlay(GuiGraphics p_406760_, boolean p_422895_);
 
     @Inject(
             method = "render",
@@ -40,20 +38,24 @@ public abstract class GuiMixin {
             cancellable = true
     )
     public void removeRenderers1(GuiGraphics guiGraphics, DeltaTracker deltaTracker, CallbackInfo ci) {
-        if (this.minecraft.screen == null || !(this.minecraft.screen instanceof ReceivingLevelScreen)) {
+        if (!(this.minecraft.screen instanceof LevelLoadingScreen)) {
             if (!this.minecraft.options.hideGui) {
                 this.renderCameraOverlays(guiGraphics, deltaTracker);
-                BoxWidgets.renderAll(guiGraphics);
+                guiGraphics.nextStratum();
             }
 
             this.renderSleepOverlay(guiGraphics, deltaTracker);
             if (!this.minecraft.options.hideGui) {
                 this.renderDemoOverlay(guiGraphics, deltaTracker);
-                this.renderDebugOverlay(guiGraphics, deltaTracker);
                 this.renderTitle(guiGraphics, deltaTracker);
                 this.renderChat(guiGraphics, deltaTracker);
                 this.renderTabList(guiGraphics, deltaTracker);
-                this.renderSubtitleOverlay(guiGraphics, deltaTracker);
+                this.renderSubtitleOverlay(guiGraphics, this.minecraft.screen == null || this.minecraft.screen.isInGameUi());
+
+                guiGraphics.nextStratum();
+                BoxWidgets.renderAll(guiGraphics);
+            } else if (this.minecraft.screen != null && this.minecraft.screen.isInGameUi()) {
+                this.renderSubtitleOverlay(guiGraphics, true);
             }
 
         }

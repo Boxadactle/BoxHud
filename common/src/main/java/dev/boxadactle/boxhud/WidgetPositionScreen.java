@@ -1,6 +1,6 @@
 package dev.boxadactle.boxhud;
 
-import dev.boxadactle.boxhud.util.CursorUtil;
+import com.mojang.blaze3d.platform.cursor.CursorTypes;
 import dev.boxadactle.boxhud.util.ModUtil;
 import dev.boxadactle.boxlib.math.geometry.Dimension;
 import dev.boxadactle.boxlib.math.geometry.Rect;
@@ -10,6 +10,7 @@ import dev.boxadactle.boxlib.util.ClientUtils;
 import dev.boxadactle.boxlib.util.RenderUtils;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 
 import java.util.ArrayList;
@@ -58,19 +59,20 @@ public class WidgetPositionScreen extends Screen {
     }
 
     @Override
-    public boolean mouseClicked(double d, double e, int i) {
+    public boolean mouseClicked(MouseButtonEvent event, boolean isDoubleClick) {
         for (WidgetRenderer w : widgets) {
-            if (w.onClick((int) d, (int) e)) return true;
+            if (w.onClick((int) event.x(), (int) event.y())) return true;
         }
-        return super.mouseClicked(d, e, i);
+
+        return super.mouseClicked(event, isDoubleClick);
     }
 
     @Override
-    public boolean mouseReleased(double d, double e, int i) {
+    public boolean mouseReleased(MouseButtonEvent event) {
         for (WidgetRenderer w : widgets) {
             if (w.onRelease()) return true;
         }
-        return super.mouseReleased(d, e, i);
+        return super.mouseReleased(event);
     }
 
     @Override
@@ -78,7 +80,6 @@ public class WidgetPositionScreen extends Screen {
         BoxWidgets.saveConfig(Boxhud.widgetConfigFile);
         Boxhud.CONFIG.save();
         ClientUtils.setScreen(lastScreen);
-        CursorUtil.setDefaultCursor();
     }
 
     class WidgetRenderer {
@@ -137,7 +138,6 @@ public class WidgetPositionScreen extends Screen {
                     isDragging = true;
                     dx = mouse.getX() - bounds.getX();
                     dy = mouse.getY() - bounds.getY();
-                    CursorUtil.setCrosshairCursor();
                 }
                 return true;
             }
@@ -146,7 +146,6 @@ public class WidgetPositionScreen extends Screen {
 
         public boolean onRelease() {
             if (clickBl) {
-                CursorUtil.setDefaultCursor();
                 BoxWidgets.widgetConfigs.put(id, entry);
 
                 clickBl = false;
@@ -224,18 +223,10 @@ public class WidgetPositionScreen extends Screen {
             );
         }
 
-        boolean cursor = false;
-
         public void render(GuiGraphics guiGraphics, int mouseX, int mouseY) {
             if (!clickBl && bounds.containsPoint(new Vec2<>(mouseX, mouseY))) {
-                cursor = true;
-                if (calcScaleButton().containsPoint(new Vec2<>(mouseX, mouseY))) CursorUtil.setVreSizeCursor();
-                else CursorUtil.setHandCursor();
-            } else {
-                if (cursor) {
-                    CursorUtil.setDefaultCursor();
-                    cursor = false;
-                }
+                if (calcScaleButton().containsPoint(new Vec2<>(mouseX, mouseY))) guiGraphics.requestCursor(CursorTypes.RESIZE_ALL);
+                else guiGraphics.requestCursor(CursorTypes.CROSSHAIR);
             }
 
             Vec2<Integer> mouse = new Vec2<>(Math.round(mouseX / entry.scale), Math.round(mouseY / entry.scale));

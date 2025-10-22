@@ -1,5 +1,5 @@
 {
-  "boxhud.mapping.category": "BoxHUD Mappings",
+  "key.category.boxhud.keybinds": "BoxHUD Mappings",
   "boxhud.mapping.openConfig": "Open Widgets Gui",
   "boxhud.mapping.moveWidgets": "Move Widgets",
   "boxhud.mapping.globalConfig": "Open Global Settings",
@@ -15,6 +15,7 @@
 
   "boxhud.widget.fps.name": "FPS Counter",
   "boxhud.widget.fps.text": "FPS: %s",
+  "boxhud.widget.fps.text_advanced": "FPS: %s (Min: %s | Ms: %s | Avg: %s| Lag Score: %s%)",
   "boxhud.widget.fps.advanced": "Show Advanced: %s",
 
   "boxhud.widget.memory.name": "Memory Usage",
@@ -48,6 +49,7 @@
   "boxhud.widget.compass.distance": "Distance: %s",
   "boxhud.widget.compass.renderXYZ": "Render XYZ: %s",
   "boxhud.widget.compass.renderDistance": "Render Distance: %s",
+  "boxhud.widget.compass.renderToWorldSpawn": "Render to World Spawn: %s",
 
   "boxhud.widget.speed.name": "Speed",
   "boxhud.widget.speed.text": "Speed: %s m/s",
@@ -88,11 +90,13 @@
   "boxhud.widget.crosshair.crosshairType": "Crosshair Type: %s",
   "boxhud.widget.crosshair.crosshairType.default": "Default",
   "boxhud.widget.crosshair.crosshairType.dot": "Dot",
+  "boxhud.widget.crosshair.crosshairType.arrow": "Arrow",
+  "boxhud.widget.crosshair.crosshairType.circle_and_lines": "Circle and Lines",
   "boxhud.widget.crosshair.crosshairType.dot_and_circle": "Dot and Circle",
+  "boxhud.widget.crosshair.crosshairType.dot_and_lines": "Dot and Lines",
   "boxhud.widget.crosshair.crosshairType.cross": "Cross",
-  "boxhud.widget.crosshair.crosshairType.square": "Square",
-  "boxhud.widget.crosshair.crosshairType.circle": "Circle",
-  "boxhud.widget.crosshair.crosshairType.triangle": "Triangle",
+  "boxhud.widget.crosshair.crosshairType.square_and_cross": "Square and Cross",
+  "boxhud.widget.crosshair.crosshairType.separated_cross": "Separated Cross",
   "boxhud.widget.crosshair.crosshairType.box": "Box",
   "boxhud.widget.crosshair.crosshairType.ring": "Ring",
   "boxhud.widget.crosshair.crosshairType.double_ring": "Double Ring",

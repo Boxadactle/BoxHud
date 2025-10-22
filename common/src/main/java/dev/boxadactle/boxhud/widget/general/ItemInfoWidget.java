@@ -6,8 +6,6 @@ import dev.boxadactle.boxhud.util.InventoryUtils;
 import dev.boxadactle.boxhud.widget.Widgets;
 import dev.boxadactle.boxlib.gui.config.BOptionEntry;
 import dev.boxadactle.boxlib.gui.config.widget.button.BColorPickerButton;
-import dev.boxadactle.boxlib.gui.config.widget.field.BHexField;
-import dev.boxadactle.boxlib.gui.config.widget.label.BCenteredLabel;
 import dev.boxadactle.boxlib.gui.config.widget.slider.BIntegerSlider;
 import dev.boxadactle.boxlib.layouts.RenderingLayout;
 import dev.boxadactle.boxlib.layouts.component.TextComponent;

@@ -1,11 +1,11 @@
 package dev.boxadactle.boxhud.neoforge.mixin;
 
 import dev.boxadactle.boxhud.BoxWidgets;
+import dev.boxadactle.boxhud.Boxhud;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screens.ReceivingLevelScreen;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.client.gui.GuiLayerManager;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
@@ -33,36 +33,41 @@ public abstract class GuiMixin {
 
     @Shadow protected abstract void renderDemoOverlay(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
 
-    @Shadow protected abstract void renderDebugOverlay(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
-
     @Shadow protected abstract void renderTitle(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
 
     @Shadow protected abstract void renderChat(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
 
     @Shadow protected abstract void renderTabList(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
 
-    @Shadow protected abstract void renderSubtitleOverlay(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
+    @Shadow public abstract void renderSubtitleOverlay(GuiGraphics p_406760_, boolean p_422895_);
 
     @Inject(
             method = "registerVanillaLayers",
             at = @At("HEAD"),
             cancellable = true
     )
-    public void removeVanillaLayers(CallbackInfo ci) {
+    private void unRegisterVanillaLayers(CallbackInfo ci) {
         BooleanSupplier guiVisible = () -> !this.minecraft.options.hideGui;
         this.layerManager.add(VanillaGuiLayers.CAMERA_OVERLAYS, this::renderCameraOverlays, guiVisible);
         this.layerManager.add(VanillaGuiLayers.AFTER_CAMERA_DECORATIONS, (guiGraphics, deltaTracker) -> guiGraphics.nextStratum(), guiVisible);
-        layerManager.add(ResourceLocation.fromNamespaceAndPath("boxhud", "widgets"), (g, d) -> BoxWidgets.renderAll(g));
-
         this.layerManager.add(VanillaGuiLayers.CONTEXTUAL_INFO_BAR_BACKGROUND, this::renderContextualInfoBarBackground, guiVisible);
-        this.layerManager.add(VanillaGuiLayers.CONTEXTUAL_INFO_BAR, this::renderContextualInfoBarBackground, guiVisible);
         this.layerManager.add(VanillaGuiLayers.SLEEP_OVERLAY, this::renderSleepOverlay);
         this.layerManager.add(VanillaGuiLayers.DEMO_OVERLAY, this::renderDemoOverlay, guiVisible);
-        this.layerManager.add(VanillaGuiLayers.DEBUG_OVERLAY, this::renderDebugOverlay, guiVisible);
         this.layerManager.add(VanillaGuiLayers.TITLE, this::renderTitle, guiVisible);
         this.layerManager.add(VanillaGuiLayers.CHAT, this::renderChat, guiVisible);
         this.layerManager.add(VanillaGuiLayers.TAB_LIST, this::renderTabList, guiVisible);
-        this.layerManager.add(VanillaGuiLayers.SUBTITLE_OVERLAY, this::renderSubtitleOverlay, guiVisible);
+        this.layerManager.add(VanillaGuiLayers.SUBTITLE_OVERLAY, (graphics, deltaTracker) -> {
+            if (!this.minecraft.options.hideGui) {
+                this.renderSubtitleOverlay(graphics, this.minecraft.screen == null || this.minecraft.screen.isInGameUi());
+            } else if (this.minecraft.screen != null && this.minecraft.screen.isInGameUi()) {
+                this.renderSubtitleOverlay(graphics, true);
+            }
+
+        });
+        this.layerManager.add(ResourceLocation.fromNamespaceAndPath(Boxhud.MOD_ID, "widgets"), (graphics, deltaTracker) -> {
+            graphics.nextStratum();
+            BoxWidgets.renderAll(graphics);
+        });
 
         ci.cancel();
     }

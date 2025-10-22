@@ -21,7 +21,7 @@ import java.io.File;
 public final class Boxhud {
     public static final String MOD_ID = "boxhud";
 
-    public static final String MOD_VERSION = "1.0.0";
+    public static final String MOD_VERSION = "7.0.0";
 
     public static final ModLogger LOGGER = new ModLogger(MOD_ID);
 

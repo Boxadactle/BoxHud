@@ -36,10 +36,7 @@ public final class BoxhudForge {
         public static void keyInput(InputEvent.Key e) {
             Bindings.check();
         }
-    }
 
-    @Mod.EventBusSubscriber(modid = Boxhud.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
-    public static class ModForgeEvents {
         @SubscribeEvent
         public static void registerKeys(RegisterKeyMappingsEvent e) {
             Bindings.register(e::register);

@@ -2,8 +2,6 @@ package dev.boxadactle.boxhud;
 
 import dev.boxadactle.boxlib.gui.config.widget.BSpacingEntry;
 import dev.boxadactle.boxlib.gui.config.widget.button.BColorPickerButton;
-import dev.boxadactle.boxlib.gui.config.widget.field.BHexField;
-import dev.boxadactle.boxlib.gui.config.widget.label.BCenteredLabel;
 import dev.boxadactle.boxlib.gui.config.widget.slider.BIntegerSlider;
 import net.minecraft.client.gui.layouts.LinearLayout;
 import net.minecraft.client.gui.screens.Screen;

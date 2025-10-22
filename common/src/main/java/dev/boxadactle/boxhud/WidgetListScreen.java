@@ -11,6 +11,7 @@ import dev.boxadactle.boxlib.layouts.RenderingLayout;
 import dev.boxadactle.boxlib.util.ClientUtils;
 import dev.boxadactle.boxlib.util.GuiUtils;
 import dev.boxadactle.boxlib.util.RenderUtils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.EditBox;
@@ -26,6 +27,14 @@ public class WidgetListScreen extends BOptionScreen {
 
     public WidgetListScreen(Screen parent) {
         super(parent, Component.translatable("boxhud.gui.widget"));
+    }
+
+    @Override
+    protected void addContents() {
+        configList = new CustomConfigList(ClientUtils.getClient(), this);
+        if (shouldRenderScrollingWidget()) layout.addToContents(configList);
+
+        addOptions();
     }
 
     @Override
@@ -45,7 +54,7 @@ public class WidgetListScreen extends BOptionScreen {
 
     @Override
     protected int getRowHeight() {
-        return 60;
+        return 70;
     }
 
     @Override
@@ -57,7 +66,7 @@ public class WidgetListScreen extends BOptionScreen {
         EditBox searchField = addRenderableWidget(new EditBox(GuiUtils.getTextRenderer(), 0, 20, Component.translatable("screen.flatedit.selectblock.search")));
         searchField.setResponder(s -> {
             search = s;
-            configList.children().clear();
+            ((CustomConfigList) configList).clearEntries();
             addOptions();
         });
         searchField.setMaxLength(128);
@@ -72,7 +81,6 @@ public class WidgetListScreen extends BOptionScreen {
         addRenderableWidget(new IconButton(3, 3, 24, 24, 16, 16, ResourceLocation.fromNamespaceAndPath(Boxhud.MOD_ID, "textures/icons/move.png"), (b) -> ClientUtils.setScreen(new WidgetPositionScreen(this))));
 
         addRenderableWidget(new IconButton(width - 27, 3, 24, 24, 16, 16, ResourceLocation.fromNamespaceAndPath(Boxhud.MOD_ID, "textures/icons/settings.png"), (b) -> ClientUtils.setScreen(new WidgetConfigScreen(this))));
-
     }
 
     @Override
@@ -98,6 +106,23 @@ public class WidgetListScreen extends BOptionScreen {
         BoxWidgets.saveConfig(Boxhud.widgetConfigFile);
     }
 
+    public static class CustomConfigList extends BConfigList {
+        /**
+         * Constructs a BConfigList with the specified Minecraft instance and BOptionScreen.
+         *
+         * @param minecraft The Minecraft instance.
+         * @param screen    The BOptionScreen that this list belongs to.
+         */
+        public CustomConfigList(Minecraft minecraft, BOptionScreen screen) {
+            super(minecraft, screen);
+        }
+
+        @Override
+        public void clearEntries() {
+            super.clearEntries();
+        }
+    }
+
     public class WidgetCategoryEntry extends BConfigList.ConfigEntry {
 
         Component title;
@@ -118,10 +143,10 @@ public class WidgetListScreen extends BOptionScreen {
         }
 
         @Override
-        public void render(GuiGraphics p_93523_, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+        public void renderContent(GuiGraphics p_93523_, int i, int i1, boolean b, float v) {
             p_93523_.pose().pushMatrix();
             p_93523_.pose().scale(2.0F, 2.0F);
-            p_93523_.drawCenteredString(GuiUtils.getTextRenderer(), title, WidgetListScreen.this.width / 4, y / 2 + entryHeight / 4, GuiUtils.WHITE);
+            p_93523_.drawCenteredString(GuiUtils.getTextRenderer(), title, WidgetListScreen.this.width / 4, getY() / 2 + getContentHeight() / 4, GuiUtils.WHITE);
             p_93523_.pose().popMatrix();
         }
     }
@@ -146,7 +171,7 @@ public class WidgetListScreen extends BOptionScreen {
             this.settings = new BScreenButton(
                     Component.translatable("boxhud.gui.widget.settings"),
                     WidgetListScreen.this,
-                    p -> entry.widget.getConfigScreen(p, entry)
+                    p -> entry.widget.getConfigScreen(WidgetListScreen.this, entry)
             );
 
             this.entry = entry;
@@ -193,26 +218,30 @@ public class WidgetListScreen extends BOptionScreen {
         }
 
         @Override
-        public void render(GuiGraphics p_93523_, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-            RenderUtils.drawSquare(p_93523_, x, y, entryWidth, entryHeight, 0x601f1f1f);
+        public void renderContent(GuiGraphics p_93523_, int i, int i1, boolean b, float v) {
+            RenderUtils.drawSquare(p_93523_, getX(), getY(), getWidth(), getContentHeight(), 0x601f1f1f);
 
-            p_93523_.renderOutline(x, y, entryWidth, entryHeight, 0xFF1f1f1f);
+            int color = 0xFF1f1f1f;
+            p_93523_.fill(getX(), getY(), getX() + getWidth(), getY() + 1, color);
+            p_93523_.fill(getX(), getY() + getContentHeight() - 1, getX() + getWidth(), getY() + getContentHeight(), color);
+            p_93523_.fill(getX(), getY() + 1, getX() + 1, getY() + getContentHeight() - 1, color);
+            p_93523_.fill(getX() + getWidth() - 1, getY() + 1, getX() + getWidth(), getY() + getContentHeight() - 1, color);
 
-            renderWidget(p_93523_, x, y);
+            renderWidget(p_93523_, getX(), getY());
 
-            title.setX(x + 113);
-            title.setY(entryHeight / 2 - title.getHeight() / 2 + y);
-            title.render(p_93523_, mouseX, mouseY, tickDelta);
+            title.setX(getX() + 113);
+            title.setY(getContentHeight() / 2 - title.getHeight() / 2 + getY());
+            title.render(p_93523_, i, i1, v);
 
-            enabled.setX(entryWidth / 5 * 3 - 7 + x);
-            enabled.setY(entryHeight / 2 - 10 + y);
-            enabled.setWidth(entryWidth / 5 + 6);
-            enabled.render(p_93523_, mouseX, mouseY, tickDelta);
+            enabled.setX(getWidth() / 5 * 3 - 7 + getX());
+            enabled.setY(getContentHeight() / 2 - 10 + getY());
+            enabled.setWidth(getWidth() / 5 + 6);
+            enabled.render(p_93523_, i, i1, v);
 
-            settings.setX(entryWidth / 5 * 4 + 2 + x);
-            settings.setY(entryHeight / 2 - 10 + y);
-            settings.setWidth(entryWidth / 5 - 4);
-            settings.render(p_93523_, mouseX, mouseY, tickDelta);
+            settings.setX(getWidth() / 5 * 4 + 2 + getX());
+            settings.setY(getContentHeight() / 2 - 10 + getY());
+            settings.setWidth(getWidth() / 5 - 4);
+            settings.render(p_93523_, i, i1, v);
         }
     }
 }

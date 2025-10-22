@@ -10,8 +10,6 @@
     "CrosshairMixin",
     "GuiInvoker",
     "InventoryAccessor",
-    "MinecraftAccessor",
-    "MinecraftMixin",
     "MouseHandlerMixin",
     "PlayerMixin",
     "ScoreboardMixin"

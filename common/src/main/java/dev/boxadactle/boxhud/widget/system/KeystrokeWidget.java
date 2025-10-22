@@ -77,7 +77,7 @@ public class KeystrokeWidget implements Widgets.System, HudWidget {
             @Override
             public void render(GuiGraphics guiGraphics, int i, int i1) {
                 int color;
-                if (jump.getValue() != -1 && InputConstants.isKeyDown(ClientUtils.getWindow(), jump.getValue())) {
+                if (jump.getValue() != -1 && InputConstants.isKeyDown(ClientUtils.getClient().getWindow(), jump.getValue())) {
                     color = downColor;
                 } else {
                     color = upColor;
@@ -199,7 +199,7 @@ public class KeystrokeWidget implements Widgets.System, HudWidget {
 
             boolean bl = key.getValue() != -1 && (isMouse ?
                     ModUtil.isMouseDown(key.getValue()) :
-                    InputConstants.isKeyDown(ClientUtils.getWindow(), key.getValue()));
+                    InputConstants.isKeyDown(ClientUtils.getClient().getWindow(), key.getValue()));
 
             int color;
             if (key.getValue() != -1 && bl) {

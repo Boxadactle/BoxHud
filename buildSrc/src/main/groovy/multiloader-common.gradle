@@ -4,7 +4,7 @@ plugins {
 }
 
 base {
-    archivesName = "${mod_name}-${project.name}"
+    archivesName = "BoxHud-${project.name}-${version}"
 }
 
 java {
