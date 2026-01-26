@@ -6,7 +6,7 @@ import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.neoforge.client.gui.GuiLayerManager;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import org.spongepowered.asm.mixin.Final;
@@ -64,7 +64,7 @@ public abstract class GuiMixin {
             }
 
         });
-        this.layerManager.add(ResourceLocation.fromNamespaceAndPath(Boxhud.MOD_ID, "widgets"), (graphics, deltaTracker) -> {
+        this.layerManager.add(Identifier.fromNamespaceAndPath(Boxhud.MOD_ID, "widgets"), (graphics, deltaTracker) -> {
             graphics.nextStratum();
             BoxWidgets.renderAll(graphics);
         });

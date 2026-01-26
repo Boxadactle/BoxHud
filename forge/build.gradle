@@ -1,8 +1,12 @@
 plugins {
     id 'multiloader-loader'
-    id 'net.minecraftforge.gradle' version '[6.0.24,6.2)'
+    id 'net.minecraftforge.gradle' version '[6.0.46,6.2)'
     id 'org.spongepowered.mixin' version '0.7-SNAPSHOT'
+    id 'idea'
     id "me.shedaniel.unified-publishing"
+}
+base {
+    archivesName = "${mod_name}-forge-${minecraft_version}"
 }
 mixin {
     config("boxhud.mixins.json")
@@ -69,15 +73,9 @@ minecraft {
 
 sourceSets.main.resources.srcDir 'src/generated/resources'
 
-build.dependsOn(tasks.named("jarJar"))
-
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
     annotationProcessor("org.spongepowered:mixin:0.8.5-SNAPSHOT:processor")
-    compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.4.1"))
-    implementation(jarJar("io.github.llamalad7:mixinextras-forge:0.4.1")) {
-        jarJar.ranged(it, "[0.4.1,)")
-    }
 
     // Forge's hack fix
     implementation('net.sf.jopt-simple:jopt-simple:5.0.4') { version { strictly '5.0.4' } }
@@ -98,6 +96,25 @@ sourceSets.each {
     def dir = layout.buildDirectory.dir("sourcesSets/$it.name")
     it.output.resourcesDir = dir
     it.java.destinationDirectory = dir
+}
+
+// Implement mcgradleconventions loader attribute
+def loaderAttribute = Attribute.of('io.github.mcgradleconventions.loader', String)
+['apiElements', 'runtimeElements', 'sourcesElements', 'javadocElements'].each { variant ->
+    configurations.named("$variant") {
+        attributes {
+            attribute(loaderAttribute, 'forge')
+        }
+    }
+}
+sourceSets.configureEach {
+    [it.compileClasspathConfigurationName, it.runtimeClasspathConfigurationName].each { variant->
+        configurations.named("$variant") {
+            attributes {
+                attribute(loaderAttribute, 'forge')
+            }
+        }
+    }
 }
 
 unifiedPublishing {

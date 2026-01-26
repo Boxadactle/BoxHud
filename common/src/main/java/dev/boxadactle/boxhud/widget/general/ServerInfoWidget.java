@@ -19,9 +19,8 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.FaviconTexture;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.util.HashMap;
 import java.util.function.Consumer;
@@ -30,7 +29,7 @@ public class ServerInfoWidget implements Widgets.General {
 
     final static HashMap<String, FaviconTexture> serverIcons = new HashMap<>();
 
-    final static ResourceLocation empty = ResourceLocation.withDefaultNamespace("textures/misc/unknown_server.png");
+    final static Identifier empty = Identifier.withDefaultNamespace("textures/misc/unknown_server.png");
 
     public boolean showIcon = true;
     public boolean showName = true;
@@ -47,7 +46,7 @@ public class ServerInfoWidget implements Widgets.General {
         }
     }
 
-    private ResourceLocation getIcon(ServerData serverData) {
+    private Identifier getIcon(ServerData serverData) {
         if (!ClientUtils.getClient().isSingleplayer() && serverData != null) {
             return serverIcons.computeIfAbsent(serverData.ip, a -> FaviconTexture.forServer(ClientUtils.getClient().getTextureManager(), serverData.ip)).textureLocation();
         }

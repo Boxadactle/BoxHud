@@ -18,7 +18,7 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.layouts.LinearLayout;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.util.List;
 
@@ -78,9 +78,9 @@ public class WidgetListScreen extends BOptionScreen {
     protected void initFooter(LinearLayout layout) {
         layout.addChild(createDoneButton(b -> onClose()));
 
-        addRenderableWidget(new IconButton(3, 3, 24, 24, 16, 16, ResourceLocation.fromNamespaceAndPath(Boxhud.MOD_ID, "textures/icons/move.png"), (b) -> ClientUtils.setScreen(new WidgetPositionScreen(this))));
+        addRenderableWidget(new IconButton(3, 3, 24, 24, 16, 16, Identifier.fromNamespaceAndPath(Boxhud.MOD_ID, "textures/icons/move.png"), (b) -> ClientUtils.setScreen(new WidgetPositionScreen(this))));
 
-        addRenderableWidget(new IconButton(width - 27, 3, 24, 24, 16, 16, ResourceLocation.fromNamespaceAndPath(Boxhud.MOD_ID, "textures/icons/settings.png"), (b) -> ClientUtils.setScreen(new WidgetConfigScreen(this))));
+        addRenderableWidget(new IconButton(width - 27, 3, 24, 24, 16, 16, Identifier.fromNamespaceAndPath(Boxhud.MOD_ID, "textures/icons/settings.png"), (b) -> ClientUtils.setScreen(new WidgetConfigScreen(this))));
     }
 
     @Override

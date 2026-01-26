@@ -20,7 +20,7 @@ import dev.boxadactle.boxlib.util.GuiUtils;
 import dev.boxadactle.boxlib.util.WorldUtils;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -93,7 +93,7 @@ public class CrosshairWidget implements VanillaWidget {
 
     public void renderCrosshair(GuiGraphics guiGraphics, int x, int y) {
         if (crosshairType == CrosshairType.DEFAULT) {
-            guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, ResourceLocation.withDefaultNamespace("hud/crosshair"), x, y, 15, 15, applyAlpha(getColor()));
+            guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, Identifier.withDefaultNamespace("hud/crosshair"), x, y, 15, 15, applyAlpha(getColor()));
         } else {
             guiGraphics.blit(RenderPipelines.GUI_TEXTURED, crosshairType.texture, x, y, 0, 0, 15, 15, 15, 15, applyAlpha(getColor()));
         }
@@ -198,14 +198,14 @@ public class CrosshairWidget implements VanillaWidget {
         RING("ring.png"),
         DOUBLE_RING("double_ring.png");
 
-        public final ResourceLocation texture;
+        public final Identifier texture;
 
-        CrosshairType(ResourceLocation texture) {
+        CrosshairType(Identifier texture) {
             this.texture = texture;
         }
 
         CrosshairType(String n) {
-            this(ResourceLocation.fromNamespaceAndPath(Boxhud.MOD_ID, "textures/crosshairs/" + n));
+            this(Identifier.fromNamespaceAndPath(Boxhud.MOD_ID, "textures/crosshairs/" + n));
         }
     }
 

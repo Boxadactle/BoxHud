@@ -16,16 +16,15 @@ import dev.boxadactle.boxlib.layouts.layout.ColumnLayout;
 import dev.boxadactle.boxlib.layouts.layout.PaddingLayout;
 import dev.boxadactle.boxlib.layouts.layout.RowLayout;
 import dev.boxadactle.boxlib.util.ClientUtils;
-import net.minecraft.Util;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.DynamicTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackRepository;
 import net.minecraft.server.packs.resources.IoSupplier;
+import net.minecraft.util.Util;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -34,7 +33,7 @@ import java.util.function.Consumer;
 
 public class ResourcePackWidget implements Widgets.General {
 
-    static HashMap<String, ResourceLocation> packIcons = new HashMap<>();
+    static HashMap<String, Identifier> packIcons = new HashMap<>();
 
     public int textPadding = 4;
 
@@ -43,12 +42,12 @@ public class ResourcePackWidget implements Widgets.General {
         return "resourcepack";
     }
 
-    private ResourceLocation getPackIcon(Pack resourcepack) {
+    private Identifier getPackIcon(Pack resourcepack) {
         if (packIcons.containsKey(resourcepack.getId())) {
             return packIcons.get(resourcepack.getId());
         }
 
-        ResourceLocation unknownPackIcon = ResourceLocation.withDefaultNamespace("textures/misc/unknown_pack.png");
+        Identifier unknownPackIcon = Identifier.withDefaultNamespace("textures/misc/unknown_pack.png");
         try (PackResources packresources = resourcepack.open()) {
             IoSupplier<InputStream> iosupplier = packresources.getRootResource("pack.png");
             if (iosupplier == null) {
@@ -58,8 +57,8 @@ public class ResourcePackWidget implements Widgets.General {
             }
 
             String s = resourcepack.getId();
-            String var10003 = Util.sanitizeName(s, ResourceLocation::validPathChar);
-            ResourceLocation resourcelocation = ResourceLocation.withDefaultNamespace("pack/" + var10003 + "/" + Hashing.sha256().hashUnencodedChars(s) + "/icon");
+            String var10003 = Util.sanitizeName(s, Identifier::validPathChar);
+            Identifier resourcelocation = Identifier.withDefaultNamespace("pack/" + var10003 + "/" + Hashing.sha256().hashUnencodedChars(s) + "/icon");
 
             try (InputStream inputstream = iosupplier.get()) {
                 NativeImage nativeimage = NativeImage.read(inputstream);

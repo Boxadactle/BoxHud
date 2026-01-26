@@ -6,11 +6,7 @@ import dev.boxadactle.boxhud.WidgetEntry;
 import dev.boxadactle.boxhud.widget.vanilla.CrosshairWidget;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.DebugScreenOverlay;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.resources.ResourceLocation;
-import org.joml.Matrix4f;
-import org.joml.Matrix4fStack;
+import net.minecraft.resources.Identifier;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
@@ -22,10 +18,10 @@ public class CrosshairMixin {
             method = "renderCrosshair",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/gui/GuiGraphics;blitSprite(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/ResourceLocation;IIII)V"
+                    target = "Lnet/minecraft/client/gui/GuiGraphics;blitSprite(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIII)V"
             )
     )
-    public void redirectBlitSprite(GuiGraphics instance, RenderPipeline pipeline, ResourceLocation sprite, int x, int y, int width, int height) {
+    public void redirectBlitSprite(GuiGraphics instance, RenderPipeline pipeline, Identifier sprite, int x, int y, int width, int height) {
         WidgetEntry<CrosshairWidget> entry = BoxWidgets.getWidgetEntryUnchecked("crosshair");
 
         assert entry != null;

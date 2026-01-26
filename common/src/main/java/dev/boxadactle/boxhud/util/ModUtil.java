@@ -10,7 +10,7 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.world.level.biome.Biome;
 
@@ -56,7 +56,7 @@ public class ModUtil {
         return direction;
     }
 
-    public static Component getBiomeComponent(ResourceLocation key, Biome biome) {
+    public static Component getBiomeComponent(Identifier key, Biome biome) {
         if (biome == null && WorldUtils.getWorld() != null) {
             return Component.translatable("hud.coordinatesdisplay.biome.unknown");
         } else {

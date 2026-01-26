@@ -7,7 +7,8 @@ import dev.boxadactle.boxhud.util.ModUtil;
 import dev.boxadactle.boxlib.keybind.KeybindHelper;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.impl.resource.loader.FabricResourcePackProfile;
+import net.minecraft.network.chat.contents.TranslatableContents;
+import net.minecraft.server.packs.repository.PackSource;
 
 public final class BoxhudFabric implements ClientModInitializer {
     @Override
@@ -19,7 +20,7 @@ public final class BoxhudFabric implements ClientModInitializer {
             Bindings.check();
         });
 
-        ModUtil.packExclusionFilter = (pack) -> ((FabricResourcePackProfile) pack).fabric_isHidden() || pack.getId().equalsIgnoreCase("fabric");
+        ModUtil.packExclusionFilter = (pack) -> ((TranslatableContents)(pack.getTitle().getContents())).getKey().contains("fabricMod") || pack.getId().equalsIgnoreCase("fabric");
         Bindings.register(KeybindHelper::registerKey);
 
         ModUtil.hotbarRenderer = (gui, graphics, delta) -> ((GuiInvoker) gui).invokeRenderHotbar(graphics, delta);

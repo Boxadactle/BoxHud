@@ -19,8 +19,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import dev.boxadactle.boxhud.util.ModUtil;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.biome.Biome;
@@ -103,12 +103,12 @@ public class CoordinatesWidget implements Widgets.System {
         return layout;
     }
 
-    private ResourceLocation getBiomeKey(Holder<Biome> b) {
-        ResourceLocation def = ResourceLocation.fromNamespaceAndPath("minecraft", "plains");
+    private Identifier getBiomeKey(Holder<Biome> b) {
+        Identifier def = Identifier.fromNamespaceAndPath("minecraft", "plains");
         if (b == null) {
             return def;
         }
-        return b.unwrap().map(ResourceKey::location, (biome) -> def);
+        return b.unwrap().map(ResourceKey::identifier, (biome) -> def);
     }
 
     @Override
@@ -134,7 +134,7 @@ public class CoordinatesWidget implements Widgets.System {
         BlockPos b = new BlockPos(player.getBlockX(), player.getBlockY(), player.getBlockZ());
 
         Holder<Biome> biome = WorldUtils.getWorld().getBiome(b);
-        ResourceLocation location = getBiomeKey(biome);
+        Identifier location = getBiomeKey(biome);
 
         float yaw = Mth.wrapDegrees(player.getYRot());
 

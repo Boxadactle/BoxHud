@@ -4,7 +4,7 @@ plugins {
 }
 
 base {
-    archivesName = "BoxHud-${project.name}-${version}"
+    archivesName = "${mod_id}-${project.name}"
 }
 
 java {
@@ -121,10 +121,6 @@ processResources {
     }
 
     inputs.properties(expandProps)
-}
-
-tasks.named('javadoc', Javadoc).configure {
-    enabled = false
 }
 
 publishing {

@@ -3,6 +3,7 @@ package dev.boxadactle.boxhud.neoforge;
 import dev.boxadactle.boxhud.*;
 import dev.boxadactle.boxhud.neoforge.mixin.GuiInvoker;
 import dev.boxadactle.boxhud.util.ModUtil;
+import net.minecraft.server.packs.repository.PackSource;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModLoadingContext;
@@ -21,7 +22,7 @@ public final class BoxhudNeoForge {
                 (minecraft, screen) -> new WidgetListScreen(screen)
         );
 
-        ModUtil.packExclusionFilter = (pack) -> pack.getId().startsWith("mod/") || pack.getId().equalsIgnoreCase("mod_resources");
+        ModUtil.packExclusionFilter = (pack) -> pack.getPackSource().equals(PackSource.BUILT_IN) || pack.getId().startsWith("mod/") || pack.getId().equalsIgnoreCase("mod_resources");
         ModUtil.hotbarRenderer = (gui, graphics, delta) -> ((GuiInvoker) gui).invokeRenderHotbar(graphics, delta);
     }
 
