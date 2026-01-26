@@ -12,6 +12,7 @@ import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -41,6 +42,11 @@ public abstract class GuiMixin {
 
     @Shadow public abstract void renderSubtitleOverlay(GuiGraphics p_406760_, boolean p_422895_);
 
+    @Unique
+    private void boxHud$emptyRenderer(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
+
+    }
+
     @Inject(
             method = "registerVanillaLayers",
             at = @At("HEAD"),
@@ -49,10 +55,25 @@ public abstract class GuiMixin {
     private void unRegisterVanillaLayers(CallbackInfo ci) {
         BooleanSupplier guiVisible = () -> !this.minecraft.options.hideGui;
         this.layerManager.add(VanillaGuiLayers.CAMERA_OVERLAYS, this::renderCameraOverlays, guiVisible);
+        this.layerManager.add(VanillaGuiLayers.CROSSHAIR, this::boxHud$emptyRenderer, guiVisible);
         this.layerManager.add(VanillaGuiLayers.AFTER_CAMERA_DECORATIONS, (guiGraphics, deltaTracker) -> guiGraphics.nextStratum(), guiVisible);
+        this.layerManager.add(VanillaGuiLayers.HOTBAR, this::boxHud$emptyRenderer, guiVisible);
+        this.layerManager.add(VanillaGuiLayers.PLAYER_HEALTH, this::boxHud$emptyRenderer, guiVisible);
+        this.layerManager.add(VanillaGuiLayers.ARMOR_LEVEL, this::boxHud$emptyRenderer, guiVisible);
+        this.layerManager.add(VanillaGuiLayers.FOOD_LEVEL, this::boxHud$emptyRenderer, guiVisible);
+        this.layerManager.add(VanillaGuiLayers.VEHICLE_HEALTH, this::boxHud$emptyRenderer, guiVisible);
+        this.layerManager.add(VanillaGuiLayers.AIR_LEVEL, this::boxHud$emptyRenderer, guiVisible);
         this.layerManager.add(VanillaGuiLayers.CONTEXTUAL_INFO_BAR_BACKGROUND, this::renderContextualInfoBarBackground, guiVisible);
+        this.layerManager.add(VanillaGuiLayers.EXPERIENCE_LEVEL, this::boxHud$emptyRenderer, guiVisible);
+        this.layerManager.add(VanillaGuiLayers.CONTEXTUAL_INFO_BAR, this::boxHud$emptyRenderer, guiVisible);
+        this.layerManager.add(VanillaGuiLayers.SELECTED_ITEM_NAME, this::boxHud$emptyRenderer, guiVisible);
+        this.layerManager.add(VanillaGuiLayers.SPECTATOR_TOOLTIP, this::boxHud$emptyRenderer, guiVisible);
+        this.layerManager.add(VanillaGuiLayers.EFFECTS, this::boxHud$emptyRenderer, guiVisible);
+        this.layerManager.add(VanillaGuiLayers.BOSS_OVERLAY, this::boxHud$emptyRenderer, guiVisible);
         this.layerManager.add(VanillaGuiLayers.SLEEP_OVERLAY, this::renderSleepOverlay);
         this.layerManager.add(VanillaGuiLayers.DEMO_OVERLAY, this::renderDemoOverlay, guiVisible);
+        this.layerManager.add(VanillaGuiLayers.SCOREBOARD_SIDEBAR, this::boxHud$emptyRenderer, guiVisible);
+        this.layerManager.add(VanillaGuiLayers.OVERLAY_MESSAGE, this::boxHud$emptyRenderer, guiVisible);
         this.layerManager.add(VanillaGuiLayers.TITLE, this::renderTitle, guiVisible);
         this.layerManager.add(VanillaGuiLayers.CHAT, this::renderChat, guiVisible);
         this.layerManager.add(VanillaGuiLayers.TAB_LIST, this::renderTabList, guiVisible);
