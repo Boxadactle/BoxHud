@@ -6,21 +6,21 @@ import dev.boxadactle.boxhud.widget.VanillaWidget;
 import dev.boxadactle.boxlib.math.geometry.Dimension;
 import dev.boxadactle.boxlib.util.ClientUtils;
 import dev.boxadactle.boxlib.util.GuiUtils;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 
 public class ActionbarWidget implements VanillaWidget {
     transient Component defaultMessage = Component.literal("Actionbar Text");
 
     @Override
-    public void render(GuiGraphics graphics, int x, int y) {
+    public void render(GuiGraphicsExtractor graphics, int x, int y) {
         renderPositioned(graphics, x, y, () -> ((GuiInvoker) ClientUtils.getClient().gui).invokeRenderOverlayMessage(graphics, getDummyTracker()));
     }
 
     @Override
-    public void renderPlaceholder(GuiGraphics graphics, int x, int y) {
+    public void renderPlaceholder(GuiGraphicsExtractor graphics, int x, int y) {
         var comp = ((GuiInvoker) ClientUtils.getClient().gui).getOverlayMessageString();
-        graphics.drawString(GuiUtils.getTextRenderer(), comp != null ? comp : defaultMessage, x, y, GuiUtils.WHITE);
+        graphics.text(GuiUtils.getTextRenderer(), comp != null ? comp : defaultMessage, x, y, GuiUtils.WHITE);
     }
 
     @Override

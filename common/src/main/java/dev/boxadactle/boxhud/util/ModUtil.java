@@ -7,7 +7,7 @@ import dev.boxadactle.boxlib.util.ClientUtils;
 import dev.boxadactle.boxlib.util.WorldUtils;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -100,12 +100,12 @@ public class ModUtil {
 
     @FunctionalInterface
     public interface HotbarRenderer {
-        void renderHotbar(Gui gui, GuiGraphics graphics, DeltaTracker delta);
+        void renderHotbar(Gui gui, GuiGraphicsExtractor graphics, DeltaTracker delta);
     }
 
     public static HotbarRenderer hotbarRenderer;
 
-    public static void renderHotbar(Gui gui, GuiGraphics graphics, DeltaTracker tracker) {
+    public static void renderHotbar(Gui gui, GuiGraphicsExtractor graphics, DeltaTracker tracker) {
         if (hotbarRenderer != null) {
             hotbarRenderer.renderHotbar(gui, graphics, tracker);
         } else {

@@ -1,22 +1,16 @@
 plugins {
     id 'multiloader-loader'
-    id 'fabric-loom'
-    id "me.shedaniel.unified-publishing"
+    id 'net.fabricmc.fabric-loom'
 }
-
 dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
-    mappings loom.layered {
-        officialMojangMappings()
-        parchment("org.parchmentmc.data:parchment-${parchment_minecraft}:${parchment_version}@zip")
-    }
-    modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
+    implementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
+    implementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
 
-    modImplementation ("dev.boxadactle:Boxlib-fabric:${boxlib_version}") { transitive = false }
-    modImplementation(name: "coordinatesdisplay-fabric-${rootProject.coordinates_display_version}")
+    implementation ("dev.boxadactle:Boxlib-fabric:${boxlib_version}") { transitive = false }
+    implementation("dev.boxadactle.coordinatesdisplay:CoordinatesDisplay-fabric:${rootProject.coordinates_display_version}")
 
-    modImplementation("com.terraformersmc:modmenu:${rootProject.modmenu_version}") {
+    implementation("com.terraformersmc:modmenu:${rootProject.modmenu_version}") {
         transitive = false
     }
 }
@@ -25,9 +19,6 @@ loom {
     def aw = project(':common').file("src/main/resources/${mod_id}.accesswidener")
     if (aw.exists()) {
         accessWidenerPath.set(aw)
-    }
-    mixin {
-        defaultRefmapName.set("${mod_id}.refmap.json")
     }
     runs {
         client {
@@ -59,49 +50,6 @@ sourceSets.configureEach {
         configurations.named("$variant") {
             attributes {
                 attribute(loaderAttribute, 'fabric')
-            }
-        }
-    }
-}
-loom.remapConfigurations.configureEach {
-    configurations.named(it.name) {
-        attributes {
-            attribute(loaderAttribute, 'fabric')
-        }
-    }
-}
-
-unifiedPublishing {
-    project {
-        displayName = "[Fabric ${rootProject.minecraft_version}] v$rootProject.version"
-        version = "$rootProject.version-fabric"
-        changelog = "A changelog can be found here: https://github.com/Boxadactle/BoxHud/releases/tag/$rootProject.version"
-        releaseType = rootProject.release_type
-        gameVersions = Arrays.asList(rootProject.game_versions.split(","))
-        gameLoaders = [ "fabric", "quilt" ]
-        relations {
-            it.depends {
-                it.curseforge = "boxlib"
-                it.modrinth = "boxlib"
-            }
-        }
-
-        mainPublication tasks.remapJar
-
-        var cfToken = System.getenv("CURSEFORGE_TOKEN")
-        if (cfToken != null) {
-            curseforge {
-                token = cfToken
-                id = rootProject.project_id_curseforge
-            }
-        }
-
-        var modrinthToken = System.getenv("MODRINTH_TOKEN")
-        if (modrinthToken != null) {
-            modrinth {
-                token = modrinthToken
-                id = rootProject.project_id_modrinth
-                version = "${rootProject.version}-fabric"
             }
         }
     }

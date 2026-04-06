@@ -5,7 +5,7 @@ import dev.boxadactle.boxhud.BoxWidgets;
 import dev.boxadactle.boxhud.WidgetEntry;
 import dev.boxadactle.boxhud.widget.vanilla.CrosshairWidget;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.resources.Identifier;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -15,13 +15,13 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(Gui.class)
 public class CrosshairMixin {
     @Redirect(
-            method = "renderCrosshair",
+            method = "extractCrosshair",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/gui/GuiGraphics;blitSprite(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIII)V"
+                    target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;blitSprite(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIII)V"
             )
     )
-    public void redirectBlitSprite(GuiGraphics instance, RenderPipeline pipeline, Identifier sprite, int x, int y, int width, int height) {
+    public void redirectBlitSprite(GuiGraphicsExtractor instance, RenderPipeline pipeline, Identifier sprite, int x, int y, int width, int height) {
         WidgetEntry<CrosshairWidget> entry = BoxWidgets.getWidgetEntryUnchecked("crosshair");
 
         assert entry != null;
@@ -29,19 +29,17 @@ public class CrosshairMixin {
     }
 
     @ModifyVariable(
-            method = "renderCrosshair",
+            method = "extractCrosshair",
             at = @At("STORE"),
-            ordinal = 1
-    )
+            name = "y")
     public int modifyIndicatorY(int y) {
         return 15;
     }
 
     @ModifyVariable(
-            method = "renderCrosshair",
+            method = "extractCrosshair",
             at = @At("STORE"),
-            ordinal = 2
-    )
+            name = "x")
     public int modifyIndicatorX(int x) {
         return 0;
     }

@@ -14,7 +14,7 @@ import dev.boxadactle.boxlib.layouts.layout.ColumnLayout;
 import dev.boxadactle.boxlib.layouts.layout.PaddingLayout;
 import dev.boxadactle.boxlib.util.GuiUtils;
 import dev.boxadactle.boxlib.util.WorldUtils;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -68,8 +68,8 @@ public class ArrowWidget implements Widgets.Pvp {
             }
 
             @Override
-            public void render(GuiGraphics guiGraphics, int i, int i1) {
-                guiGraphics.renderItem(new ItemStack(Items.ARROW), i, i1);
+            public void render(GuiGraphicsExtractor guiGraphics, int i, int i1) {
+                renderFakeFlatItem(guiGraphics, "arrow", i, i1);
             }
         });
 
@@ -86,8 +86,8 @@ public class ArrowWidget implements Widgets.Pvp {
             }
 
             @Override
-            public void render(GuiGraphics guiGraphics, int i, int i1) {
-                guiGraphics.drawCenteredString(GuiUtils.getTextRenderer(), getAmount(finalNumber), i + 8, i1, GuiUtils.AUTO);
+            public void render(GuiGraphicsExtractor guiGraphics, int i, int i1) {
+                guiGraphics.centeredText(GuiUtils.getTextRenderer(), getAmount(finalNumber), i + 8, i1, GuiUtils.AUTO);
             }
         });
 

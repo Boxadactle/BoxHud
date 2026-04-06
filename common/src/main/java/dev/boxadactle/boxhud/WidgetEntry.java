@@ -4,7 +4,7 @@ import dev.boxadactle.boxhud.util.ModUtil;
 import dev.boxadactle.boxlib.layouts.RenderingLayout;
 import dev.boxadactle.boxlib.math.geometry.Rect;
 import dev.boxadactle.boxlib.util.RenderUtils;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 
 public class WidgetEntry<T extends HudWidget> {
@@ -43,7 +43,7 @@ public class WidgetEntry<T extends HudWidget> {
         return layout;
     }
 
-    public Rect<Integer> render(GuiGraphics graphics) {
+    public Rect<Integer> render(GuiGraphicsExtractor graphics) {
         graphics.pose().pushMatrix();
         graphics.pose().scale(scale, scale);
         RenderingLayout layout = preRender();
@@ -56,7 +56,7 @@ public class WidgetEntry<T extends HudWidget> {
         return layout.calculateRect();
     }
 
-    public Rect<Integer> renderPlaceholder(GuiGraphics graphics) {
+    public Rect<Integer> renderPlaceholder(GuiGraphicsExtractor graphics) {
         graphics.pose().pushMatrix();
         graphics.pose().scale(scale, scale);
         RenderingLayout layout = preRender(true);

@@ -2,10 +2,7 @@ package dev.boxadactle.boxhud;
 
 import com.google.gson.*;
 import dev.boxadactle.boxlib.core.BoxLib;
-import dev.boxadactle.boxlib.layouts.RenderingLayout;
-import dev.boxadactle.boxlib.util.ClientUtils;
-import dev.boxadactle.boxlib.util.RenderUtils;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.util.profiling.Profiler;
 
 import java.io.BufferedReader;
@@ -125,7 +122,7 @@ public class BoxWidgets {
         }
     }
 
-    public static void renderAll(GuiGraphics graphics) {
+    public static void renderAll(GuiGraphicsExtractor graphics) {
         for (var entry : widgetConfigs.entrySet()) {
             WidgetEntry<?> hudEntry = entry.getValue();
             if (hudEntry.enabled) {

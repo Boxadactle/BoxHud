@@ -15,7 +15,7 @@ import dev.boxadactle.boxlib.layouts.layout.ColumnLayout;
 import dev.boxadactle.boxlib.layouts.layout.PaddingLayout;
 import dev.boxadactle.boxlib.layouts.layout.RowLayout;
 import dev.boxadactle.boxlib.util.ClientUtils;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.FaviconTexture;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -70,7 +70,7 @@ public class ServerInfoWidget implements Widgets.General {
                 }
 
                 @Override
-                public void render(GuiGraphics guiGraphics, int i, int i1) {
+                public void render(GuiGraphicsExtractor guiGraphics, int i, int i1) {
                     guiGraphics.blit(RenderPipelines.GUI_TEXTURED, getIcon(data), i, i1, 0.0F, 0.0F, size, size, size, size);
                 }
             });

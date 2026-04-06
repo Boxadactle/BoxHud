@@ -14,7 +14,7 @@ import dev.boxadactle.boxlib.layouts.layout.PaddingLayout;
 import dev.boxadactle.boxlib.math.geometry.Vec3;
 import dev.boxadactle.boxlib.util.RenderUtils;
 import dev.boxadactle.boxlib.util.WorldUtils;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
@@ -87,7 +87,7 @@ public class CompassWidget implements Widgets.General {
             }
 
             @Override
-            public void render(GuiGraphics guiGraphics, int i, int i1) {
+            public void render(GuiGraphicsExtractor guiGraphics, int i, int i1) {
                 Player p = WorldUtils.getPlayer();
                 double degrees = bl ? 231.3 : calculateRelativeDirection(new Vec3<>(p.getBlockX(), p.getBlockY(), p.getBlockZ()), ModUtil.mcVecToVec(spawnPos), p.getYRot());
                 RenderUtils.drawTexture(resolveCompassTexture(degrees), guiGraphics, i, i1, 32, 32, 0, 0);

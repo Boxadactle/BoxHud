@@ -5,7 +5,7 @@ import dev.boxadactle.boxhud.Boxhud;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.resources.Identifier;
 import net.neoforged.neoforge.client.gui.GuiLayerManager;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
@@ -26,24 +26,32 @@ public abstract class GuiMixin {
 
     @Shadow @Final private Minecraft minecraft;
 
-    @Shadow protected abstract void renderCameraOverlays(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
+    @Shadow
+    protected abstract void extractCameraOverlays(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker);
 
-    @Shadow protected abstract void renderContextualInfoBarBackground(GuiGraphics p_316628_, DeltaTracker p_348543_);
+    @Shadow
+    protected abstract void extractContextualInfoBarBackground(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker);
 
-    @Shadow protected abstract void renderSleepOverlay(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
+    @Shadow
+    protected abstract void extractSleepOverlay(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker);
 
-    @Shadow protected abstract void renderDemoOverlay(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
+    @Shadow
+    protected abstract void extractDemoOverlay(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker);
 
-    @Shadow protected abstract void renderTitle(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
+    @Shadow
+    protected abstract void extractTitle(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker);
 
-    @Shadow protected abstract void renderChat(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
+    @Shadow
+    protected abstract void extractChat(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker);
 
-    @Shadow protected abstract void renderTabList(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
+    @Shadow
+    protected abstract void extractTabList(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker);
 
-    @Shadow public abstract void renderSubtitleOverlay(GuiGraphics p_406760_, boolean p_422895_);
+    @Shadow
+    protected abstract void extractSubtitleOverlay(GuiGraphicsExtractor graphics, boolean deferRendering);
 
     @Unique
-    private void boxHud$emptyRenderer(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
+    private void boxHud$emptyRenderer(GuiGraphicsExtractor guiGraphics, DeltaTracker deltaTracker) {
 
     }
 
@@ -54,7 +62,7 @@ public abstract class GuiMixin {
     )
     private void unRegisterVanillaLayers(CallbackInfo ci) {
         BooleanSupplier guiVisible = () -> !this.minecraft.options.hideGui;
-        this.layerManager.add(VanillaGuiLayers.CAMERA_OVERLAYS, this::renderCameraOverlays, guiVisible);
+        this.layerManager.add(VanillaGuiLayers.CAMERA_OVERLAYS, this::extractCameraOverlays, guiVisible);
         this.layerManager.add(VanillaGuiLayers.CROSSHAIR, this::boxHud$emptyRenderer, guiVisible);
         this.layerManager.add(VanillaGuiLayers.AFTER_CAMERA_DECORATIONS, (guiGraphics, deltaTracker) -> guiGraphics.nextStratum(), guiVisible);
         this.layerManager.add(VanillaGuiLayers.HOTBAR, this::boxHud$emptyRenderer, guiVisible);
@@ -63,25 +71,25 @@ public abstract class GuiMixin {
         this.layerManager.add(VanillaGuiLayers.FOOD_LEVEL, this::boxHud$emptyRenderer, guiVisible);
         this.layerManager.add(VanillaGuiLayers.VEHICLE_HEALTH, this::boxHud$emptyRenderer, guiVisible);
         this.layerManager.add(VanillaGuiLayers.AIR_LEVEL, this::boxHud$emptyRenderer, guiVisible);
-        this.layerManager.add(VanillaGuiLayers.CONTEXTUAL_INFO_BAR_BACKGROUND, this::renderContextualInfoBarBackground, guiVisible);
+        this.layerManager.add(VanillaGuiLayers.CONTEXTUAL_INFO_BAR_BACKGROUND, this::extractContextualInfoBarBackground, guiVisible);
         this.layerManager.add(VanillaGuiLayers.EXPERIENCE_LEVEL, this::boxHud$emptyRenderer, guiVisible);
         this.layerManager.add(VanillaGuiLayers.CONTEXTUAL_INFO_BAR, this::boxHud$emptyRenderer, guiVisible);
         this.layerManager.add(VanillaGuiLayers.SELECTED_ITEM_NAME, this::boxHud$emptyRenderer, guiVisible);
         this.layerManager.add(VanillaGuiLayers.SPECTATOR_TOOLTIP, this::boxHud$emptyRenderer, guiVisible);
         this.layerManager.add(VanillaGuiLayers.EFFECTS, this::boxHud$emptyRenderer, guiVisible);
         this.layerManager.add(VanillaGuiLayers.BOSS_OVERLAY, this::boxHud$emptyRenderer, guiVisible);
-        this.layerManager.add(VanillaGuiLayers.SLEEP_OVERLAY, this::renderSleepOverlay);
-        this.layerManager.add(VanillaGuiLayers.DEMO_OVERLAY, this::renderDemoOverlay, guiVisible);
+        this.layerManager.add(VanillaGuiLayers.SLEEP_OVERLAY, this::extractSleepOverlay);
+        this.layerManager.add(VanillaGuiLayers.DEMO_OVERLAY, this::extractDemoOverlay, guiVisible);
         this.layerManager.add(VanillaGuiLayers.SCOREBOARD_SIDEBAR, this::boxHud$emptyRenderer, guiVisible);
         this.layerManager.add(VanillaGuiLayers.OVERLAY_MESSAGE, this::boxHud$emptyRenderer, guiVisible);
-        this.layerManager.add(VanillaGuiLayers.TITLE, this::renderTitle, guiVisible);
-        this.layerManager.add(VanillaGuiLayers.CHAT, this::renderChat, guiVisible);
-        this.layerManager.add(VanillaGuiLayers.TAB_LIST, this::renderTabList, guiVisible);
+        this.layerManager.add(VanillaGuiLayers.TITLE, this::extractTitle, guiVisible);
+        this.layerManager.add(VanillaGuiLayers.CHAT, this::extractChat, guiVisible);
+        this.layerManager.add(VanillaGuiLayers.TAB_LIST, this::extractTabList, guiVisible);
         this.layerManager.add(VanillaGuiLayers.SUBTITLE_OVERLAY, (graphics, deltaTracker) -> {
             if (!this.minecraft.options.hideGui) {
-                this.renderSubtitleOverlay(graphics, this.minecraft.screen == null || this.minecraft.screen.isInGameUi());
+                this.extractSubtitleOverlay(graphics, this.minecraft.screen == null || this.minecraft.screen.isInGameUi());
             } else if (this.minecraft.screen != null && this.minecraft.screen.isInGameUi()) {
-                this.renderSubtitleOverlay(graphics, true);
+                this.extractSubtitleOverlay(graphics, true);
             }
 
         });

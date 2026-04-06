@@ -11,7 +11,7 @@ import dev.boxadactle.boxlib.layouts.component.TextComponent;
 import dev.boxadactle.boxlib.layouts.layout.ColumnLayout;
 import dev.boxadactle.boxlib.layouts.layout.PaddingLayout;
 import dev.boxadactle.boxlib.util.WorldUtils;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
@@ -44,17 +44,18 @@ public class TimeWidget implements Widgets.General {
                 }
 
                 @Override
-                public void render(GuiGraphics guiGraphics, int i, int i1) {
+                public void render(GuiGraphicsExtractor guiGraphics, int i, int i1) {
                     guiGraphics.pose().pushMatrix();
                     guiGraphics.pose().scale(2, 2);
-                    guiGraphics.renderItem(new ItemStack(Items.CLOCK), i / 2, i1 / 2);
+                    if (WorldUtils.getWorld() != null) guiGraphics.fakeItem(new ItemStack(Items.CLOCK), i / 2, i1 / 2);
+                    else renderFakeFlatItem(guiGraphics, "clock_00", i / 2, i1 / 2);
                     guiGraphics.pose().popMatrix();
                 }
             });
         }
 
         if (showGameTime) {
-            long timestamp = bl ? WorldUtils.getWorld().getDayTime() % 24000 : 16372;
+            long timestamp = bl ? WorldUtils.getWorld().getGameTime() % 24000 : 16372;
             int hours = (int) (timestamp / 1000 + 6) % 24;
             int minutes = (int) ((timestamp % 1000) / 1000.0 * 60);
             String timeStamp = twentyFourHourFormat ? ModUtil.formatDate24h(hours, minutes) : ModUtil.formatDate12h(hours, minutes);

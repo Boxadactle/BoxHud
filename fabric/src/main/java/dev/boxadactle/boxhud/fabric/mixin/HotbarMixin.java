@@ -2,7 +2,7 @@ package dev.boxadactle.boxhud.fabric.mixin;
 
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -12,19 +12,19 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class HotbarMixin {
 
     @Inject(
-            method = "renderHotbarAndDecorations",
+            method = "extractHotbarAndDecorations",
             at = @At("HEAD")
     )
-    public void startTranslate(GuiGraphics guiGraphics, DeltaTracker deltaTracker, CallbackInfo ci) {
+    public void startTranslate(GuiGraphicsExtractor guiGraphics, DeltaTracker deltaTracker, CallbackInfo ci) {
         guiGraphics.pose().pushMatrix();
         guiGraphics.pose().translate(-guiGraphics.guiWidth() / 2.0F + 91.0F, -guiGraphics.guiHeight() + 60);
     }
 
     @Inject(
-            method = "renderHotbarAndDecorations",
+            method = "extractHotbarAndDecorations",
             at = @At("RETURN")
     )
-    public void endTranslate(GuiGraphics guiGraphics, DeltaTracker deltaTracker, CallbackInfo ci) {
+    public void endTranslate(GuiGraphicsExtractor guiGraphics, DeltaTracker deltaTracker, CallbackInfo ci) {
         guiGraphics.pose().popMatrix();
     }
 }

@@ -7,9 +7,12 @@ import dev.boxadactle.boxlib.layouts.RenderingLayout;
 import dev.boxadactle.boxlib.math.geometry.Vec2;
 import dev.boxadactle.boxlib.util.GuiUtils;
 import net.minecraft.client.DeltaTracker;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.layouts.LinearLayout;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 
 import java.util.function.Consumer;
 
@@ -20,6 +23,14 @@ public interface HudWidget {
     }
 
     String getNameKey();
+
+    static void renderFakeItemFlat(GuiGraphicsExtractor graphics, String item, int x, int y) {
+        graphics.blit(RenderPipelines.GUI_TEXTURED, Identifier.withDefaultNamespace("textures/item/" + item + ".png"), x, y, 0.0f, 0.0f, 15, 15, 16, 16);
+    }
+
+    default void renderFakeFlatItem(GuiGraphicsExtractor graphics, String item, int x, int y) {
+        renderFakeItemFlat(graphics, item, x, y);
+    }
 
     default Component translation(String t, Object ...args) {
         return Component.translatable(getTranslationKey() + t, args);
@@ -70,11 +81,11 @@ public interface HudWidget {
         return null;
     }
 
-    default Screen getConfigScreen(Screen parent, WidgetEntry<?> entry) {
-        return new BoxhudConfigScreen(parent, Component.translatable("boxhud.gui.widgetconfig.widget", entry.getName())) {
+    default Screen getConfigScreen(Screen last, WidgetEntry<?> entry) {
+        return new BoxhudConfigScreen(last, Component.translatable("boxhud.gui.widgetconfig.widget", entry.getName())) {
             @Override
             protected void initFooter(LinearLayout layout) {
-                layout.addChild(setSaveButton(createDoneButton(parent)));
+                layout.addChild(setSaveButton(createDoneButton(last)));
             }
 
             @Override

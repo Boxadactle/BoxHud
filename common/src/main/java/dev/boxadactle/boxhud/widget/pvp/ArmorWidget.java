@@ -14,12 +14,15 @@ import dev.boxadactle.boxlib.layouts.layout.PaddingLayout;
 import dev.boxadactle.boxlib.layouts.layout.RowLayout;
 import dev.boxadactle.boxlib.util.GuiUtils;
 import dev.boxadactle.boxlib.util.WorldUtils;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 public class ArmorWidget implements Widgets.Pvp {
@@ -31,54 +34,37 @@ public class ArmorWidget implements Widgets.Pvp {
         return "armor";
     }
 
-    private RenderingLayout create(List<ItemStack> items) {
+    @Override
+    public RenderingLayout createWidget(int x, int y) {
+        Inventory inventory = WorldUtils.getPlayer().getInventory();
+        List<ItemStack> items = List.of(
+                inventory.getItem(36),
+                inventory.getItem(37),
+                inventory.getItem(38),
+                inventory.getItem(39)
+        );
+
         RenderingLayout base = isColumn ? new ColumnLayout(0, 0, innerPadding) : new RowLayout(0, 0, innerPadding);
 
         for (ItemStack item : items.reversed()) {
             if (item.isEmpty()) continue;
 
-            base.addComponent(new LayoutComponent<>(null) {
-                @Override
-                public int getWidth() {
-                    return 16;
-                }
-
-                @Override
-                public int getHeight() {
-                    return 16;
-                }
-
-                @Override
-                public void render(GuiGraphics guiGraphics, int i, int i1) {
-                    guiGraphics.renderItem(item, i, i1);
-
-                    guiGraphics.renderItemDecorations(GuiUtils.getTextRenderer(), item, i, i1);
-                }
-            });
+            base.addComponent(new ItemRenderer(item));
         }
 
-        return base;
-    }
-
-    @Override
-    public RenderingLayout createWidget(int x, int y) {
-        Inventory inventory = WorldUtils.getPlayer().getInventory();
-        return new PaddingLayout(x, y, padding(), create(List.of(
-                inventory.getItem(36),
-                inventory.getItem(37),
-                inventory.getItem(38),
-                inventory.getItem(39)
-        )));
+        return new PaddingLayout(x, y, padding(), base);
     }
 
     @Override
     public RenderingLayout createPlaceholderWidget(int x, int y) {
-        return new PaddingLayout(x, y, padding(), create(List.of(
-                new ItemStack(Items.NETHERITE_BOOTS),
-                new ItemStack(Items.IRON_LEGGINGS),
-                new ItemStack(Items.DIAMOND_CHESTPLATE),
-                new ItemStack(Items.LEATHER_HELMET)
-        )));
+        RenderingLayout base = isColumn ? new ColumnLayout(0, 0, innerPadding) : new RowLayout(0, 0, innerPadding);
+
+        base.addComponent(new ItemRenderer("netherite_helmet"));
+        base.addComponent(new ItemRenderer("leather_chestplate"));
+        base.addComponent(new ItemRenderer("diamond_leggings"));
+        base.addComponent(new ItemRenderer("iron_boots"));
+
+        return new PaddingLayout(x, y, padding(), base);
     }
 
     @Override
@@ -125,5 +111,44 @@ public class ArmorWidget implements Widgets.Pvp {
     @Override
     public boolean defaultRenderBackground() {
         return false;
+    }
+
+    static class ItemRenderer extends LayoutComponent<ItemStack> {
+        String placeholder = null;
+
+        /**
+         * Constructs a new layout component with the specified component.
+         *
+         * @param component the component for the layout component
+         */
+        public ItemRenderer(ItemStack component) {
+            super(component);
+        }
+
+        public ItemRenderer(String placeholder) {
+            this((ItemStack) null);
+            this.placeholder = placeholder;
+        }
+
+        @Override
+        public int getWidth() {
+            return 16;
+        }
+
+        @Override
+        public int getHeight() {
+            return 16;
+        }
+
+        @Override
+        public void render(GuiGraphicsExtractor guiGraphics, int i, int i1) {
+            if (component == null) {
+                HudWidget.renderFakeItemFlat(guiGraphics, Objects.requireNonNull(placeholder), i, i1);
+            } else {
+                guiGraphics.item(component, i, i1);
+
+                guiGraphics.itemDecorations(GuiUtils.getTextRenderer(), component, i, i1);
+            }
+        }
     }
 }

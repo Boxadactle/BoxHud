@@ -4,7 +4,7 @@ import dev.boxadactle.boxhud.BoxWidgets;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.LevelLoadingScreen;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -18,44 +18,51 @@ public abstract class GuiMixin {
 
     @Shadow @Final private Minecraft minecraft;
 
-    @Shadow protected abstract void renderCameraOverlays(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
+    @Shadow
+    protected abstract void extractCameraOverlays(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker);
 
-    @Shadow protected abstract void renderSleepOverlay(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
+    @Shadow
+    protected abstract void extractSleepOverlay(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker);
 
-    @Shadow protected abstract void renderDemoOverlay(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
+    @Shadow
+    protected abstract void extractDemoOverlay(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker);
 
-    @Shadow protected abstract void renderTitle(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
+    @Shadow
+    protected abstract void extractTitle(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker);
 
-    @Shadow protected abstract void renderChat(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
+    @Shadow
+    protected abstract void extractChat(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker);
 
-    @Shadow protected abstract void renderTabList(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
+    @Shadow
+    protected abstract void extractTabList(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker);
 
-    @Shadow public abstract void renderSubtitleOverlay(GuiGraphics p_406760_, boolean p_422895_);
+    @Shadow
+    protected abstract void extractSubtitleOverlay(GuiGraphicsExtractor graphics, boolean deferRendering);
 
     @Inject(
-            method = "render",
+            method = "extractRenderState",
             at = @At("HEAD"),
             cancellable = true
     )
-    public void removeRenderers1(GuiGraphics guiGraphics, DeltaTracker deltaTracker, CallbackInfo ci) {
+    public void removeRenderers1(GuiGraphicsExtractor guiGraphics, DeltaTracker deltaTracker, CallbackInfo ci) {
         if (!(this.minecraft.screen instanceof LevelLoadingScreen)) {
             if (!this.minecraft.options.hideGui) {
-                this.renderCameraOverlays(guiGraphics, deltaTracker);
+                this.extractCameraOverlays(guiGraphics, deltaTracker);
                 guiGraphics.nextStratum();
             }
 
-            this.renderSleepOverlay(guiGraphics, deltaTracker);
+            this.extractSleepOverlay(guiGraphics, deltaTracker);
             if (!this.minecraft.options.hideGui) {
-                this.renderDemoOverlay(guiGraphics, deltaTracker);
-                this.renderTitle(guiGraphics, deltaTracker);
-                this.renderChat(guiGraphics, deltaTracker);
-                this.renderTabList(guiGraphics, deltaTracker);
-                this.renderSubtitleOverlay(guiGraphics, this.minecraft.screen == null || this.minecraft.screen.isInGameUi());
+                this.extractDemoOverlay(guiGraphics, deltaTracker);
+                this.extractTitle(guiGraphics, deltaTracker);
+                this.extractChat(guiGraphics, deltaTracker);
+                this.extractTabList(guiGraphics, deltaTracker);
+                this.extractSubtitleOverlay(guiGraphics, this.minecraft.screen == null || this.minecraft.screen.isInGameUi());
 
                 guiGraphics.nextStratum();
                 BoxWidgets.renderAll(guiGraphics);
             } else if (this.minecraft.screen != null && this.minecraft.screen.isInGameUi()) {
-                this.renderSubtitleOverlay(guiGraphics, true);
+                this.extractSubtitleOverlay(guiGraphics, true);
             }
 
         }

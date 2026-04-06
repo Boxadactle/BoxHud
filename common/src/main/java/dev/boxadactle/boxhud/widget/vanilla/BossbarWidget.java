@@ -6,7 +6,7 @@ import dev.boxadactle.boxhud.mixin.GuiInvoker;
 import dev.boxadactle.boxhud.widget.VanillaWidget;
 import dev.boxadactle.boxlib.math.geometry.Dimension;
 import dev.boxadactle.boxlib.util.ClientUtils;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.BossHealthOverlay;
 import net.minecraft.client.gui.components.LerpingBossEvent;
 import net.minecraft.network.chat.Component;
@@ -35,9 +35,9 @@ public class BossbarWidget implements VanillaWidget {
         );
     }
 
-    public void renderBar(GuiGraphics graphics, int x, int y, BossHealthOverlay overlay) {
+    public void renderBar(GuiGraphicsExtractor graphics, int x, int y, BossHealthOverlay overlay) {
         if (!((BossHealthOverlayAccessor)overlay).getEvents().isEmpty()) {
-            renderPositioned(graphics, x, y, () -> overlay.render(graphics));
+            renderPositioned(graphics, x, y, () -> overlay.extractRenderState(graphics));
         }
     }
 
@@ -47,12 +47,12 @@ public class BossbarWidget implements VanillaWidget {
     }
 
     @Override
-    public void render(GuiGraphics graphics, int x, int y) {
+    public void render(GuiGraphicsExtractor graphics, int x, int y) {
         renderBar(graphics, x, y, ((GuiInvoker) ClientUtils.getClient().gui).getBossOverlay());
     }
 
     @Override
-    public void renderPlaceholder(GuiGraphics graphics, int x, int y) {
+    public void renderPlaceholder(GuiGraphicsExtractor graphics, int x, int y) {
         renderBar(graphics, x, y, placeholder);
     }
 

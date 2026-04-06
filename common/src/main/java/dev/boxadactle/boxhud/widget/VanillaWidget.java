@@ -6,7 +6,7 @@ import dev.boxadactle.boxlib.layouts.RenderingLayout;
 import dev.boxadactle.boxlib.layouts.layout.ColumnLayout;
 import dev.boxadactle.boxlib.layouts.layout.PaddingLayout;
 import dev.boxadactle.boxlib.math.geometry.Dimension;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 public interface VanillaWidget extends Widgets.Vanilla {
 
@@ -15,8 +15,8 @@ public interface VanillaWidget extends Widgets.Vanilla {
         return true;
     }
 
-    void render(GuiGraphics graphics, int x, int y);
-    void renderPlaceholder(GuiGraphics graphics, int x, int y);
+    void render(GuiGraphicsExtractor graphics, int x, int y);
+    void renderPlaceholder(GuiGraphicsExtractor graphics, int x, int y);
 
     Dimension<Integer> getSize();
 
@@ -24,7 +24,7 @@ public interface VanillaWidget extends Widgets.Vanilla {
         return getSize();
     }
 
-    default void renderPositioned(GuiGraphics graphics, int x, int y, Runnable runnable) {
+    default void renderPositioned(GuiGraphicsExtractor graphics, int x, int y, Runnable runnable) {
         // since our mixin moves the overlay to 0, 0,
         // we can use matrix to translate the position
         graphics.pose().pushMatrix();
@@ -49,7 +49,7 @@ public interface VanillaWidget extends Widgets.Vanilla {
             }
 
             @Override
-            public void render(GuiGraphics guiGraphics, int i, int i1) {
+            public void render(GuiGraphicsExtractor guiGraphics, int i, int i1) {
                 VanillaWidget.this.render(guiGraphics, i, i1);
             }
         });
@@ -73,7 +73,7 @@ public interface VanillaWidget extends Widgets.Vanilla {
             }
 
             @Override
-            public void render(GuiGraphics guiGraphics, int i, int i1) {
+            public void render(GuiGraphicsExtractor guiGraphics, int i, int i1) {
                 VanillaWidget.this.renderPlaceholder(guiGraphics, i, i1);
             }
         });

@@ -13,6 +13,8 @@ import dev.boxadactle.boxlib.layouts.layout.ColumnLayout;
 import dev.boxadactle.boxlib.layouts.layout.PaddingLayout;
 import dev.boxadactle.boxlib.util.GuiUtils;
 import dev.boxadactle.boxlib.util.WorldUtils;
+import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -81,11 +83,11 @@ public class ItemInfoWidget implements Widgets.General {
                 layout.addComponent(new TextComponent(items.get(i).createComponent()));
             }
         } else {
-            layout.addComponent(new TextComponent(new ItemChangeEntry(new ItemStack(Items.DIAMOND, 23), 23).createComponent()));
-            layout.addComponent(new TextComponent(new ItemChangeEntry(new ItemStack(Items.GOLD_INGOT, 5), -5).createComponent()));
-            layout.addComponent(new TextComponent(new ItemChangeEntry(new ItemStack(Items.IRON_INGOT, 10), 10).createComponent()));
-            layout.addComponent(new TextComponent(new ItemChangeEntry(new ItemStack(Items.EMERALD, 2), -23).createComponent()));
-            layout.addComponent(new TextComponent(new ItemChangeEntry(new ItemStack(Items.COAL, 15), 5).createComponent()));
+            layout.addComponent(new TextComponent(new ItemChangeEntry(Component.translatable("item.minecraft.diamond_helmet"), new ItemStack(Holder.direct(Items.DIAMOND_HELMET), 23, DataComponentPatch.EMPTY), 23).createComponent()));
+            layout.addComponent(new TextComponent(new ItemChangeEntry(Component.translatable("item.minecraft.gold_ingot"), new ItemStack(Holder.direct(Items.GOLD_INGOT), 5, DataComponentPatch.EMPTY), -5).createComponent()));
+            layout.addComponent(new TextComponent(new ItemChangeEntry(Component.translatable("item.minecraft.iron_ingot"), new ItemStack(Holder.direct(Items.IRON_INGOT), 10, DataComponentPatch.EMPTY), 10).createComponent()));
+            layout.addComponent(new TextComponent(new ItemChangeEntry(Component.translatable("item.minecraft.emerald"), new ItemStack(Holder.direct(Items.EMERALD), 2, DataComponentPatch.EMPTY), -23).createComponent()));
+            layout.addComponent(new TextComponent(new ItemChangeEntry(Component.translatable("item.minecraft.coal"), new ItemStack(Holder.direct(Items.COAL), 15, DataComponentPatch.EMPTY), 5).createComponent()));
         }
 
         return layout;
@@ -160,12 +162,18 @@ public class ItemInfoWidget implements Widgets.General {
     public class ItemChangeEntry {
         public final ItemStack item;
         public int count;
+        Component name;
 
         public int despawn = itemExpiry * 20; // Convert seconds to ticks
 
         public ItemChangeEntry(ItemStack item, int count) {
+            this(item.getHoverName(), item, count);
+        }
+
+        public ItemChangeEntry(Component name, ItemStack item, int count) {
             this.item = item;
             this.count = count;
+            this.name = name;
         }
 
         public void tick() {
@@ -187,12 +195,11 @@ public class ItemInfoWidget implements Widgets.General {
 
         public Component createComponent() {
             Component count = Component.literal(Math.abs(this.count) + "x").withColor(countColor);
-            Component itemName = item.getHoverName();
             if (this.count > 0) {
-                return translation("add", count, itemName.copy().withColor(additionColor))
+                return translation("add", count, name.copy().withColor(additionColor))
                         .copy().withColor(additionColor);
             } else {
-                return translation("remove", count, itemName.copy().withColor(removalColor))
+                return translation("remove", count, name.copy().withColor(removalColor))
                         .copy().withColor(removalColor);
             }
         }

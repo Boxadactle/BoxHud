@@ -21,7 +21,7 @@ import dev.boxadactle.boxlib.util.ClientUtils;
 import dev.boxadactle.boxlib.util.RenderUtils;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Options;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 
 import java.util.function.Consumer;
@@ -75,7 +75,7 @@ public class KeystrokeWidget implements Widgets.System, HudWidget {
             }
 
             @Override
-            public void render(GuiGraphics guiGraphics, int i, int i1) {
+            public void render(GuiGraphicsExtractor guiGraphics, int i, int i1) {
                 int color;
                 if (jump.getValue() != -1 && InputConstants.isKeyDown(ClientUtils.getClient().getWindow(), jump.getValue())) {
                     color = downColor;
@@ -194,7 +194,7 @@ public class KeystrokeWidget implements Widgets.System, HudWidget {
         }
 
         @Override
-        public void render(GuiGraphics guiGraphics, int i, int i1) {
+        public void render(GuiGraphicsExtractor guiGraphics, int i, int i1) {
             if (toggle) return;
 
             boolean bl = key.getValue() != -1 && (isMouse ?

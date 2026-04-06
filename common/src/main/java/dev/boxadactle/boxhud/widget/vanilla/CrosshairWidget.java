@@ -18,7 +18,7 @@ import dev.boxadactle.boxlib.math.geometry.Dimension;
 import dev.boxadactle.boxlib.util.ClientUtils;
 import dev.boxadactle.boxlib.util.GuiUtils;
 import dev.boxadactle.boxlib.util.WorldUtils;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.effect.MobEffects;
@@ -37,12 +37,12 @@ public class CrosshairWidget implements VanillaWidget {
     public float opacity = 1.0F;
 
     @Override
-    public void render(GuiGraphics graphics, int x, int y) {
+    public void render(GuiGraphicsExtractor graphics, int x, int y) {
         renderPositioned(graphics, x, y, () -> ((GuiInvoker) ClientUtils.getClient().gui).invokeRenderCrosshair(graphics, getDummyTracker()));
     }
 
     @Override
-    public void renderPlaceholder(GuiGraphics graphics, int x, int y) {
+    public void renderPlaceholder(GuiGraphicsExtractor graphics, int x, int y) {
         renderCrosshair(graphics, x, y);
     }
 
@@ -91,7 +91,7 @@ public class CrosshairWidget implements VanillaWidget {
         return (color & 0x00FFFFFF) | (alpha << 24);
     }
 
-    public void renderCrosshair(GuiGraphics guiGraphics, int x, int y) {
+    public void renderCrosshair(GuiGraphicsExtractor guiGraphics, int x, int y) {
         if (crosshairType == CrosshairType.DEFAULT) {
             guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, Identifier.withDefaultNamespace("hud/crosshair"), x, y, 15, 15, applyAlpha(getColor()));
         } else {

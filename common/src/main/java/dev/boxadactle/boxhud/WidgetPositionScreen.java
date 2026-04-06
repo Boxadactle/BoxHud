@@ -8,7 +8,7 @@ import dev.boxadactle.boxlib.math.geometry.Vec2;
 import dev.boxadactle.boxlib.math.mathutils.Clamps;
 import dev.boxadactle.boxlib.util.ClientUtils;
 import dev.boxadactle.boxlib.util.RenderUtils;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
@@ -51,9 +51,9 @@ public class WidgetPositionScreen extends Screen {
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, int i, int j, float f) {
+    public void extractRenderState(GuiGraphicsExtractor guiGraphics, int i, int j, float f) {
         RenderUtils.drawSquare(guiGraphics, 0, 0, width, height, 0x901b1c1c);
-        super.render(guiGraphics, i, j, f);
+        super.extractRenderState(guiGraphics, i, j, f);
         RenderUtils.drawTextCentered(guiGraphics, Component.translatable("boxhud.gui.widgetconfig.doubleClick"), width / 2, 5);
         widgets.forEach(widget -> widget.render(guiGraphics, i, j));
     }
@@ -223,7 +223,7 @@ public class WidgetPositionScreen extends Screen {
             );
         }
 
-        public void render(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+        public void render(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY) {
             if (!clickBl && bounds.containsPoint(new Vec2<>(mouseX, mouseY))) {
                 if (calcScaleButton().containsPoint(new Vec2<>(mouseX, mouseY))) guiGraphics.requestCursor(CursorTypes.RESIZE_ALL);
                 else guiGraphics.requestCursor(CursorTypes.CROSSHAIR);

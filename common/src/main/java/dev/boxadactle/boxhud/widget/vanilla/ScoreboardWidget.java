@@ -7,7 +7,7 @@ import dev.boxadactle.boxlib.math.geometry.Dimension;
 import dev.boxadactle.boxlib.util.ClientUtils;
 import dev.boxadactle.boxlib.util.GuiUtils;
 import dev.boxadactle.boxlib.util.WorldUtils;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.numbers.NumberFormat;
 import net.minecraft.network.chat.numbers.StyledFormat;
@@ -67,7 +67,7 @@ public class ScoreboardWidget implements VanillaWidget {
     }
 
     @Override
-    public void render(GuiGraphics graphics, int x, int y) {
+    public void render(GuiGraphicsExtractor graphics, int x, int y) {
         renderPositioned(graphics, x, y, () -> ((GuiInvoker) ClientUtils.getClient().gui).invokeRenderScoreboardSidebar(graphics, getDummyTracker()));
 
         Scoreboard scoreboard = WorldUtils.getWorld().getScoreboard();
@@ -92,7 +92,7 @@ public class ScoreboardWidget implements VanillaWidget {
     }
 
     @Override
-    public void renderPlaceholder(GuiGraphics graphics, int x, int y) {
+    public void renderPlaceholder(GuiGraphicsExtractor graphics, int x, int y) {
         renderPositioned(graphics, x, y, () -> {
             Scoreboard s = new Scoreboard();
             Objective obj = s.addObjective(

@@ -35,7 +35,7 @@ public class CoordinatesDisplayWrapper {
             if (tempPos == null) {
                 net.minecraft.world.phys.Vec3 position = new net.minecraft.world.phys.Vec3(392, 64, 5743);
                 BlockPos b = new BlockPos(dev.boxadactle.coordinatesdisplay.ModUtil.doubleVecToIntVec(position));
-                ChunkPos chunkPos = new ChunkPos(b);
+                ChunkPos chunkPos = ChunkPos.containing(b);
                 float cameraYaw = 210.3f;
                 float cameraPitch  = -12.5f;
 

@@ -12,7 +12,7 @@ import dev.boxadactle.boxlib.util.ClientUtils;
 import dev.boxadactle.boxlib.util.GuiUtils;
 import dev.boxadactle.boxlib.util.RenderUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.layouts.LinearLayout;
@@ -143,10 +143,10 @@ public class WidgetListScreen extends BOptionScreen {
         }
 
         @Override
-        public void renderContent(GuiGraphics p_93523_, int i, int i1, boolean b, float v) {
+        public void extractContent(GuiGraphicsExtractor p_93523_, int i, int i1, boolean b, float v) {
             p_93523_.pose().pushMatrix();
             p_93523_.pose().scale(2.0F, 2.0F);
-            p_93523_.drawCenteredString(GuiUtils.getTextRenderer(), title, WidgetListScreen.this.width / 4, getY() / 2 + getContentHeight() / 4, GuiUtils.WHITE);
+            p_93523_.centeredText(GuiUtils.getTextRenderer(), title, WidgetListScreen.this.width / 4, getY() / 2 + getContentHeight() / 4, GuiUtils.WHITE);
             p_93523_.pose().popMatrix();
         }
     }
@@ -187,7 +187,7 @@ public class WidgetListScreen extends BOptionScreen {
             return false;
         }
 
-        private void renderWidget(GuiGraphics guiGraphics, int x, int y) {
+        private void renderWidget(GuiGraphicsExtractor guiGraphics, int x, int y) {
             int maxHeight = getRowHeight() - 10;
             int maxWidth = 100;
 
@@ -218,7 +218,7 @@ public class WidgetListScreen extends BOptionScreen {
         }
 
         @Override
-        public void renderContent(GuiGraphics p_93523_, int i, int i1, boolean b, float v) {
+        public void extractContent(GuiGraphicsExtractor p_93523_, int i, int i1, boolean b, float v) {
             RenderUtils.drawSquare(p_93523_, getX(), getY(), getWidth(), getContentHeight(), 0x601f1f1f);
 
             int color = 0xFF1f1f1f;
@@ -231,17 +231,17 @@ public class WidgetListScreen extends BOptionScreen {
 
             title.setX(getX() + 113);
             title.setY(getContentHeight() / 2 - title.getHeight() / 2 + getY());
-            title.render(p_93523_, i, i1, v);
+            title.extractRenderState(p_93523_, i, i1, v);
 
             enabled.setX(getWidth() / 5 * 3 - 7 + getX());
             enabled.setY(getContentHeight() / 2 - 10 + getY());
             enabled.setWidth(getWidth() / 5 + 6);
-            enabled.render(p_93523_, i, i1, v);
+            enabled.extractRenderState(p_93523_, i, i1, v);
 
             settings.setX(getWidth() / 5 * 4 + 2 + getX());
             settings.setY(getContentHeight() / 2 - 10 + getY());
             settings.setWidth(getWidth() / 5 - 4);
-            settings.render(p_93523_, i, i1, v);
+            settings.extractRenderState(p_93523_, i, i1, v);
         }
     }
 }

@@ -16,7 +16,7 @@ public class ActionbarMixin {
     @Shadow private Component overlayMessageString;
 
     @Redirect(
-            method = "renderOverlayMessage",
+            method = "extractOverlayMessage",
             at = @At(value = "INVOKE", target = "Lorg/joml/Matrix3x2fStack;translate(FF)Lorg/joml/Matrix3x2f;")
     )
     public Matrix3x2f dontTranslate(Matrix3x2fStack instance, float v, float i) {

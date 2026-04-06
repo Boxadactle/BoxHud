@@ -2,7 +2,7 @@ package dev.boxadactle.boxhud.mixin;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.world.scores.Objective;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -14,9 +14,9 @@ public class ScoreboardMixin {
 
     @Inject(
             method = "displayScoreboardSidebar",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;fill(IIIII)V", ordinal = 0)
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;fill(IIIII)V", ordinal = 0)
     )
-    public void startTranslation(GuiGraphics guiGraphics, Objective objective, CallbackInfo ci, @Local(ordinal = 1) int j) {
+    public void startTranslation(GuiGraphicsExtractor guiGraphics, Objective objective, CallbackInfo ci, @Local(ordinal = 1) int j) {
         guiGraphics.pose().pushMatrix();
         int j1 = objective.getScoreboard().listPlayerScores(objective).stream().filter(l -> !l.isHidden()).limit(15L).toArray().length * 9;
         int k1 = guiGraphics.guiHeight() / 2 + j1 / 3;
@@ -31,7 +31,7 @@ public class ScoreboardMixin {
             method = "displayScoreboardSidebar",
             at = @At("TAIL")
     )
-    public void endTranslation(GuiGraphics guiGraphics, Objective objective, CallbackInfo ci) {
+    public void endTranslation(GuiGraphicsExtractor guiGraphics, Objective objective, CallbackInfo ci) {
         guiGraphics.pose().popMatrix();
     }
 
