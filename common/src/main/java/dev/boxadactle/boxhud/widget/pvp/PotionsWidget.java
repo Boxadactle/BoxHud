@@ -57,7 +57,6 @@ public class PotionsWidget implements Widgets.Pvp {
         ColumnLayout columnLayout = new ColumnLayout(0, 0, padding);
 
         if (effects.isEmpty()) {
-            columnLayout.addComponent(new TextComponent(definition("empty")));
             return columnLayout;
         }
 
@@ -112,6 +111,10 @@ public class PotionsWidget implements Widgets.Pvp {
     @Override
     public RenderingLayout createWidget(int x, int y) {
         Collection<MobEffectInstance> collection = WorldUtils.getPlayer().getActiveEffects();
+
+        if (collection.isEmpty()) {
+            return create(collection, false);
+        }
 
         return new PaddingLayout(x, y, padding(), create(collection, false));
     }

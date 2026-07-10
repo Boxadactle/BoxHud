@@ -7,6 +7,7 @@ import dev.boxadactle.boxhud.util.ModUtil;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
+import net.minecraft.network.chat.ComponentContents;
 import net.minecraft.network.chat.contents.TranslatableContents;
 
 public final class BoxhudFabric implements ClientModInitializer {
@@ -19,7 +20,15 @@ public final class BoxhudFabric implements ClientModInitializer {
             Bindings.check();
         });
 
-        ModUtil.packExclusionFilter = (pack) -> ((TranslatableContents)(pack.getTitle().getContents())).getKey().contains("fabricMod") || pack.getId().equalsIgnoreCase("fabric");
+        ModUtil.packExclusionFilter = (pack) -> {
+            if (pack.getId().equalsIgnoreCase("fabric")) {
+                return true;
+            }
+
+            ComponentContents titleContents = pack.getTitle().getContents();
+            return titleContents instanceof TranslatableContents translatableContents
+                    && translatableContents.getKey().contains("fabricMod");
+        };
         Bindings.register(KeyMappingHelper::registerKeyMapping);
 
         ModUtil.hotbarRenderer = (gui, graphics, delta) -> ((GuiInvoker) gui.hud).invokeRenderHotbar(graphics, delta);
