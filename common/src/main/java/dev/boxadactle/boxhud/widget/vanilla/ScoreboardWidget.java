@@ -14,6 +14,8 @@ import net.minecraft.network.chat.numbers.StyledFormat;
 import net.minecraft.world.scores.*;
 import net.minecraft.world.scores.criteria.ObjectiveCriteria;
 
+import java.util.Optional;
+
 public class ScoreboardWidget implements VanillaWidget {
 
     transient int width = 0;
@@ -68,15 +70,15 @@ public class ScoreboardWidget implements VanillaWidget {
 
     @Override
     public void render(GuiGraphicsExtractor graphics, int x, int y) {
-        renderPositioned(graphics, x, y, () -> ((GuiInvoker) ClientUtils.getClient().gui).invokeRenderScoreboardSidebar(graphics, getDummyTracker()));
+        renderPositioned(graphics, x, y, () -> ((GuiInvoker) ClientUtils.getClient().gui.hud).invokeRenderScoreboardSidebar(graphics, getDummyTracker()));
 
-        Scoreboard scoreboard = WorldUtils.getWorld().getScoreboard();
+        Scoreboard scoreboard = ClientUtils.getClient().level.getScoreboard();
         Objective objective = null;
-        PlayerTeam playerteam = scoreboard.getPlayersTeam(WorldUtils.getPlayer().getScoreboardName());
-        if (playerteam != null) {
-            DisplaySlot displayslot = DisplaySlot.teamColorToSlot(playerteam.getColor());
-            if (displayslot != null) {
-                objective = scoreboard.getDisplayObjective(displayslot);
+        PlayerTeam playerTeam = scoreboard.getPlayersTeam(ClientUtils.getClient().player.getScoreboardName());
+        if (playerTeam != null) {
+            Optional<TeamColor> teamColor = playerTeam.getColor();
+            if (teamColor.isPresent()) {
+                objective = scoreboard.getDisplayObjective((teamColor.get()).displaySlot());
             }
         }
 
@@ -108,7 +110,7 @@ public class ScoreboardWidget implements VanillaWidget {
             s.getOrCreatePlayerScore(ScoreHolder.forNameOnly("Third Player"), obj);
             s.getOrCreatePlayerScore(ScoreHolder.forNameOnly("Fourth Player"), obj);
 
-            ((GuiInvoker) ClientUtils.getClient().gui).invokeDrawScoreboardSidebar(graphics, obj);
+            ((GuiInvoker) ClientUtils.getClient().gui.hud).invokeDrawScoreboardSidebar(graphics, obj);
 
             plWidth = calculateSidebarScoreboardWidth(obj);
             plHeight = calculateSidebarScoreboardHeight(obj);

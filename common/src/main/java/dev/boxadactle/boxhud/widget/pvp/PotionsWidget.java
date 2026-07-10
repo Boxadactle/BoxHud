@@ -17,6 +17,7 @@ import dev.boxadactle.boxlib.layouts.layout.RowLayout;
 import dev.boxadactle.boxlib.util.WorldUtils;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.Hud;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.CommonComponents;
@@ -77,7 +78,7 @@ public class PotionsWidget implements Widgets.Pvp {
                 @Override
                 public void render(GuiGraphicsExtractor guiGraphics, int i, int i1) {
                     Holder<MobEffect> holder = effect.getEffect();
-                    guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, Gui.getMobEffectSprite(holder), i, i1, getWidth(), getHeight());
+                    guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, Hud.getMobEffectSprite(holder), i, i1, getWidth(), getHeight());
                 }
             });
 

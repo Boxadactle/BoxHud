@@ -1,2 +1,3 @@
 ## Changelog
-- Updated to 26.1.1
+- Updated to 26.2
+- Added day count to time widget

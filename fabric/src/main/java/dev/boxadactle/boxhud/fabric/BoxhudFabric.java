@@ -22,6 +22,6 @@ public final class BoxhudFabric implements ClientModInitializer {
         ModUtil.packExclusionFilter = (pack) -> ((TranslatableContents)(pack.getTitle().getContents())).getKey().contains("fabricMod") || pack.getId().equalsIgnoreCase("fabric");
         Bindings.register(KeyMappingHelper::registerKeyMapping);
 
-        ModUtil.hotbarRenderer = (gui, graphics, delta) -> ((GuiInvoker) gui).invokeRenderHotbar(graphics, delta);
+        ModUtil.hotbarRenderer = (gui, graphics, delta) -> ((GuiInvoker) gui.hud).invokeRenderHotbar(graphics, delta);
     }
 }

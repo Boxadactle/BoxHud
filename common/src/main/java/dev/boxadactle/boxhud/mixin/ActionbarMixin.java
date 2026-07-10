@@ -2,6 +2,7 @@ package dev.boxadactle.boxhud.mixin;
 
 import dev.boxadactle.boxlib.util.GuiUtils;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.Hud;
 import net.minecraft.network.chat.Component;
 import org.joml.Matrix3x2f;
 import org.joml.Matrix3x2fStack;
@@ -10,7 +11,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(Gui.class)
+@Mixin(Hud.class)
 public class ActionbarMixin {
 
     @Shadow private Component overlayMessageString;

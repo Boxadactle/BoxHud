@@ -14,18 +14,18 @@ public class ActionbarWidget implements VanillaWidget {
 
     @Override
     public void render(GuiGraphicsExtractor graphics, int x, int y) {
-        renderPositioned(graphics, x, y, () -> ((GuiInvoker) ClientUtils.getClient().gui).invokeRenderOverlayMessage(graphics, getDummyTracker()));
+        renderPositioned(graphics, x, y, () -> ((GuiInvoker) ClientUtils.getClient().gui.hud).invokeRenderOverlayMessage(graphics, getDummyTracker()));
     }
 
     @Override
     public void renderPlaceholder(GuiGraphicsExtractor graphics, int x, int y) {
-        var comp = ((GuiInvoker) ClientUtils.getClient().gui).getOverlayMessageString();
+        var comp = ((GuiInvoker) ClientUtils.getClient().gui.hud).getOverlayMessageString();
         graphics.text(GuiUtils.getTextRenderer(), comp != null ? comp : defaultMessage, x, y, GuiUtils.WHITE);
     }
 
     @Override
     public Dimension<Integer> getSize() {
-        var comp = ((GuiInvoker) ClientUtils.getClient().gui).getOverlayMessageString();
+        var comp = ((GuiInvoker) ClientUtils.getClient().gui.hud).getOverlayMessageString();
         return new Dimension<>(comp != null ? GuiUtils.getTextSize(comp) : GuiUtils.getTextSize(defaultMessage), GuiUtils.getTextHeight());
     }
 

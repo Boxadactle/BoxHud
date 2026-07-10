@@ -23,7 +23,7 @@ public final class BoxhudNeoForge {
         );
 
         ModUtil.packExclusionFilter = (pack) -> pack.getPackSource().equals(PackSource.BUILT_IN) || pack.getId().startsWith("mod/") || pack.getId().equalsIgnoreCase("mod_resources");
-        ModUtil.hotbarRenderer = (gui, graphics, delta) -> ((GuiInvoker) gui).invokeRenderHotbar(graphics, delta);
+        ModUtil.hotbarRenderer = (gui, graphics, delta) -> ((GuiInvoker) gui.hud).invokeRenderHotbar(graphics, delta);
     }
 
     @EventBusSubscriber(modid = Boxhud.MOD_ID, value = Dist.CLIENT)

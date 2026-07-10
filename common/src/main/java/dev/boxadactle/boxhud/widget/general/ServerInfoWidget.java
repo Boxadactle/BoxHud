@@ -37,7 +37,7 @@ public class ServerInfoWidget implements Widgets.General {
     public int textPadding = 2;
 
     public Component getText(ServerData serverData) {
-        if (ClientUtils.getClient().isSingleplayer()) {
+        if (ClientUtils.getClient().isLocalServer()) {
             return definition("text", value("singleplayer"));
         } else if (serverData == null) {
             return definition("text", value("noconnection"));
@@ -47,7 +47,7 @@ public class ServerInfoWidget implements Widgets.General {
     }
 
     private Identifier getIcon(ServerData serverData) {
-        if (!ClientUtils.getClient().isSingleplayer() && serverData != null) {
+        if (!ClientUtils.getClient().isLocalServer() && serverData != null) {
             return serverIcons.computeIfAbsent(serverData.ip, a -> FaviconTexture.forServer(ClientUtils.getClient().getTextureManager(), serverData.ip)).textureLocation();
         }
         return empty;

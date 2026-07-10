@@ -8,7 +8,9 @@ dependencies {
     implementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
 
     implementation ("dev.boxadactle:Boxlib-fabric:${boxlib_version}") { transitive = false }
-    implementation("dev.boxadactle.coordinatesdisplay:CoordinatesDisplay-fabric:${rootProject.coordinates_display_version}")
+
+    // coordinates display
+    implementation "maven.modrinth:3mW8PdUo:$cd_fabric_modrinth_id"
 
     implementation("com.terraformersmc:modmenu:${rootProject.modmenu_version}") {
         transitive = false

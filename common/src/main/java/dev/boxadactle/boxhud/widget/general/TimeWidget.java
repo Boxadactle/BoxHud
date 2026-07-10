@@ -12,14 +12,19 @@ import dev.boxadactle.boxlib.layouts.layout.ColumnLayout;
 import dev.boxadactle.boxlib.layouts.layout.PaddingLayout;
 import dev.boxadactle.boxlib.util.WorldUtils;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.clock.ClockManager;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.timeline.Timelines;
 
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
 public class TimeWidget implements Widgets.General {
     public boolean showGameClock = true;
     public boolean showGameTime = true;
+    public boolean showDayCount = true;
     public boolean showRealTime = false;
     public boolean twentyFourHourFormat = true;
 
@@ -55,12 +60,24 @@ public class TimeWidget implements Widgets.General {
         }
 
         if (showGameTime) {
-            long timestamp = bl ? WorldUtils.getWorld().getGameTime() % 24000 : 16372;
+            long timestamp = bl ? WorldUtils.getWorld().getDefaultClockTime() % 24000 : 16372;
             int hours = (int) (timestamp / 1000 + 6) % 24;
             int minutes = (int) ((timestamp % 1000) / 1000.0 * 60);
             String timeStamp = twentyFourHourFormat ? ModUtil.formatDate24h(hours, minutes) : ModUtil.formatDate12h(hours, minutes);
 
             columnLayout.addComponent(new TextComponent(definition("game", value(timeStamp))));
+        }
+
+        if (showDayCount) {
+            AtomicInteger day = new AtomicInteger();
+            if (bl) WorldUtils.getWorld().registryAccess().get(Timelines.OVERWORLD_DAY)
+                    .ifPresentOrElse(
+                            (timeline) -> day.set((timeline.value()).getPeriodCount(WorldUtils.getWorld().clockManager())),
+                            () -> day.set(-1)
+                    );
+            else day.set(32);
+
+            columnLayout.addComponent(new TextComponent(definition("day", value(day.get() >= 0 ? Component.literal(Integer.toString(day.get())) : Component.translatable("boxhud.widget.time.day.unknown")))));
         }
 
         if (showRealTime) {

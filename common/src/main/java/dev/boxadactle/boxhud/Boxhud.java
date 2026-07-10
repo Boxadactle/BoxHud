@@ -77,7 +77,7 @@ public final class Boxhud {
                     argumentBuilder.then(BCommandManager.literal(id).executes(context -> {
                         BoxWidgets.getWidgetEntry(id).enabled = false;
                         BoxWidgets.saveConfig(widgetConfigFile);
-                        Minecraft.getInstance().setScreen(new WidgetPositionScreen(null));
+                        ClientUtils.setScreen(new WidgetPositionScreen(null));
                         return 0;
                     }));
                 }
@@ -96,7 +96,7 @@ public final class Boxhud {
                     argumentBuilder.then(BCommandManager.literal(id).executes(context -> {
                         BoxWidgets.getWidgetEntry(id).enabled = true;
                         BoxWidgets.saveConfig(widgetConfigFile);
-                        Minecraft.getInstance().setScreen(new WidgetPositionScreen(null));
+                        ClientUtils.setScreen(new WidgetPositionScreen(null));
                         return 0;
                     }));
                 }

@@ -2,10 +2,12 @@ package dev.boxadactle.boxhud.neoforge.mixin;
 
 import dev.boxadactle.boxhud.BoxWidgets;
 import dev.boxadactle.boxhud.Boxhud;
+import dev.boxadactle.boxlib.util.ClientUtils;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.Hud;
 import net.minecraft.resources.Identifier;
 import net.neoforged.neoforge.client.gui.GuiLayerManager;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
@@ -19,7 +21,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.function.BooleanSupplier;
 
-@Mixin(Gui.class)
+@Mixin(Hud.class)
 public abstract class GuiMixin {
 
     @Shadow @Final private GuiLayerManager layerManager;
@@ -61,7 +63,7 @@ public abstract class GuiMixin {
             cancellable = true
     )
     private void unRegisterVanillaLayers(CallbackInfo ci) {
-        BooleanSupplier guiVisible = () -> !this.minecraft.options.hideGui;
+        BooleanSupplier guiVisible = () -> !this.minecraft.gui.hud.isHidden();
         this.layerManager.add(VanillaGuiLayers.CAMERA_OVERLAYS, this::extractCameraOverlays, guiVisible);
         this.layerManager.add(VanillaGuiLayers.CROSSHAIR, this::boxHud$emptyRenderer, guiVisible);
         this.layerManager.add(VanillaGuiLayers.AFTER_CAMERA_DECORATIONS, (guiGraphics, deltaTracker) -> guiGraphics.nextStratum(), guiVisible);
@@ -86,9 +88,9 @@ public abstract class GuiMixin {
         this.layerManager.add(VanillaGuiLayers.CHAT, this::extractChat, guiVisible);
         this.layerManager.add(VanillaGuiLayers.TAB_LIST, this::extractTabList, guiVisible);
         this.layerManager.add(VanillaGuiLayers.SUBTITLE_OVERLAY, (graphics, deltaTracker) -> {
-            if (!this.minecraft.options.hideGui) {
-                this.extractSubtitleOverlay(graphics, this.minecraft.screen == null || this.minecraft.screen.isInGameUi());
-            } else if (this.minecraft.screen != null && this.minecraft.screen.isInGameUi()) {
+            if (!this.minecraft.gui.hud.isHidden()) {
+                this.extractSubtitleOverlay(graphics, ClientUtils.getCurrentScreen() == null || ClientUtils.getCurrentScreen().isInGameUi());
+            } else if (ClientUtils.getCurrentScreen() != null && ClientUtils.getCurrentScreen().isInGameUi()) {
                 this.extractSubtitleOverlay(graphics, true);
             }
 

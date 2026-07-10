@@ -9,7 +9,7 @@ import net.minecraft.world.level.ChunkPos;
 
 import java.util.Optional;
 
-// THESE METHODS MUST NOT BE CALLED IF THE COORDINATES DISPLAY MOD IS NOT INSTALLED
+// THESE METHODS SHOULD NOT BE CALLED IF THE COORDINATES DISPLAY MOD IS NOT INSTALLED
 public class CoordinatesDisplayWrapper {
 
     static Object tempPos = null;

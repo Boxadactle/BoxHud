@@ -48,7 +48,7 @@ public class BossbarWidget implements VanillaWidget {
 
     @Override
     public void render(GuiGraphicsExtractor graphics, int x, int y) {
-        renderBar(graphics, x, y, ((GuiInvoker) ClientUtils.getClient().gui).getBossOverlay());
+        renderBar(graphics, x, y, ((GuiInvoker) ClientUtils.getClient().gui.hud).getBossOverlay());
     }
 
     @Override

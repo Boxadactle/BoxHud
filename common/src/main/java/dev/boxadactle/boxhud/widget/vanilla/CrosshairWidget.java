@@ -38,7 +38,7 @@ public class CrosshairWidget implements VanillaWidget {
 
     @Override
     public void render(GuiGraphicsExtractor graphics, int x, int y) {
-        renderPositioned(graphics, x, y, () -> ((GuiInvoker) ClientUtils.getClient().gui).invokeRenderCrosshair(graphics, getDummyTracker()));
+        renderPositioned(graphics, x, y, () -> ((GuiInvoker) ClientUtils.getClient().gui.hud).invokeRenderCrosshair(graphics, getDummyTracker()));
     }
 
     @Override

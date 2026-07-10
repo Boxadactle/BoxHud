@@ -21,6 +21,10 @@ subprojects {
         maven { url = "https://maven.terraformersmc.com/releases/" }
         maven { url = "https://maven.boxadactle.dev/releases" }
         maven { url = "https://maven.boxadactle.dev/snapshots" }
+        maven {
+            name = "Modrinth"
+            url = "https://api.modrinth.com/maven"
+        }
     }
 
     configurations.all {
@@ -53,6 +57,7 @@ publishMods {
         requires {
             slug = "fabric-api"
         }
+
         displayName = "[Fabric ${project.minecraft_version}] v${project.version}"
     }
 

@@ -146,6 +146,8 @@
   "boxhud.widget.time.name": "Time",
   "boxhud.widget.time.game": "Game Time: %s",
   "boxhud.widget.time.real": "Real Time: %s",
+  "boxhud.widget.time.day": "Day: %s",
+  "boxhud.widget.time.day.unknown": "Unknown Dimension",
   "boxhud.widget.time.showGameClock": "Show Game Clock: %s",
   "boxhud.widget.time.showGameTime": "Show Game Time: %s",
   "boxhud.widget.time.showRealTime": "Show Real Time: %s",

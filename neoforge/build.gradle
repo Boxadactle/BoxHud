@@ -41,7 +41,9 @@ neoForge {
 
 dependencies {
     implementation "dev.boxadactle:Boxlib-neoforge:$boxlib_version"
-    compileOnly("dev.boxadactle.coordinatesdisplay:CoordinatesDisplay-neoforge:$coordinates_display_version")
+
+    // coordinates display
+    compileOnly "maven.modrinth:3mW8PdUo:$cd_neo_modrinth_id"
 }
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }

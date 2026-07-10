@@ -19,7 +19,9 @@ dependencies {
     annotationProcessor group: 'io.github.llamalad7', name: 'mixinextras-common', version: '0.3.5'
 
     compileOnly "dev.boxadactle:Boxlib-common:${boxlib_version}"
-    compileOnly("dev.boxadactle.coordinatesdisplay:CoordinatesDisplay-common:${coordinates_display_version}")
+
+    // coordinates display
+    compileOnly "maven.modrinth:3mW8PdUo:$cd_neo_modrinth_id"
 }
 
 configurations {
